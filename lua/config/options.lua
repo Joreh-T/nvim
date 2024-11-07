@@ -18,8 +18,9 @@ vim.opt.list = true
 vim.opt.tabstop = 4       -- 设置 tab 键的宽度为 4
 vim.opt.shiftwidth = 4    -- 设置自动缩进时的宽度为 4
 vim.opt.expandtab = true -- 保持 tab 字符不转换为空格
-vim.opt.listchars = { space = "·", tab = ">-"}
+vim.opt.listchars = { space = "·", tab = ">~"}
 vim.opt.conceallevel = 0
+vim.opt.clipboard = "unnamedplus"
 vim.g.python3_host_prog = '/usr/bin/python3'
 
 
