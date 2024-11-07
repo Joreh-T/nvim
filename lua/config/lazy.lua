@@ -21,14 +21,12 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     -- 添加 LazyVim 并导入插件
-    { 
-      "LazyVim/LazyVim", 
-      import = "lazyvim.plugins",
-      opts = {
-        format = {
-          enabled = false, -- 关闭自动格式化
-        },
-      },
+    {
+      "LazyVim/LazyVim",
+      { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+      { import = "lazyvim.plugins.extras.coding.codeium" },
+      { import = "lazyvim.plugins.extras.coding.mini-surround" },
+      { import = "lazyvim.plugins.extras.editor.outline" },
     },
     -- 导入自定义插件
     { import = "plugins" },

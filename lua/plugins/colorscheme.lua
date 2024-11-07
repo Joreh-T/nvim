@@ -28,19 +28,22 @@ return {
       -- 其他设置
       transparent = false,
       colors = {
-        locoal_white = "#BABAE5",
-        locoal_orange = "#F8957B",
+        local_white = "#BEC4EF",
+        local_orange = "#F8957B",
         local_light_purple = "#E0CAFB",
         dir_color = "#90a4ae",
+        type_pr_color = "#79C5C3",
+        var_color = "#F1AFF5"
       },
       themes = function(colors)
         return {
-          Statement = { fg = colors.locoal_orange }, -- 将 Statement 的颜色改为 cyan
-          Operator = { fg = colors.locoal_white },
+          Statement = { fg = colors.local_orange }, -- 将 Statement 的颜色改为 cyan
+          Operator = { fg = colors.local_white },
           Macro = { fg = colors.pink },
           Directory = { fg = colors.dir_color },
-          ["@lsp.type.macro"] = { fg = colors.locoal_white },
-          ["@variable"] = { fg = colors.locoal_white },
+          ["@lsp.type.macro"] = { fg = colors.local_white },
+          ["@lsp.type.property"] = { fg = colors.type_pr_color},
+          ["@variable"] = { fg = colors.var_color },
         }
       end,
     },

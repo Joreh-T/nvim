@@ -21,4 +21,6 @@ return {
   { map("n", "<leader>r", "<cmd>LspRestart<CR>", { noremap = true, silent = false, desc = "Restart LSP" }) },
   { map({ "n", "v" }, "<S-h>", "^", { noremap = true, silent = true }) },
   { map({ "n", "v" }, "<S-l>", "$", { noremap = true, silent = true }) },
+  { map("i", "jk", "<esc>", { noremap = true, silent = true }) },
+  { map("v", "jkl", "<esc>", { noremap = true, silent = true }) },
 }
