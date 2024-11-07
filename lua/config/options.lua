@@ -23,6 +23,38 @@ vim.opt.conceallevel = 0
 vim.opt.clipboard = "unnamedplus"
 vim.g.python3_host_prog = '/usr/bin/python3'
 
+--
+-- if vim.fn.has("wsl") == 1 then
+--     vim.g.clipboard = {
+--         name = "winclp",
+--         copy = {
+--             ["+"] = "clip.exe",
+--             ["*"] = "clip.exe"
+--         },
+--         paste = {
+--             ["+"] = "powershell.exe -command 'Get-Clipboard'",
+--             ["*"] = "powershell.exe -command 'Get-Clipboard'"
+--         },
+--         cache_enabled = false,
+--     }
+-- end
+
+if vim.fn.has("wsl") == 1 then
+    vim.g.clipboard = {
+        name = "win32yank",
+        copy = {
+            ["+"] = "win32yank.exe -i --crlf",
+            ["*"] = "win32yank.exe -i --crlf"
+        },
+        paste = {
+            ["+"] = "win32yank.exe -o --lf",
+            ["*"] = "win32yank.exe -o --lf"
+        },
+        cache_enabled = false,
+    }
+end
+
+
 
 -- 在打开 Makefile 时设置 expandtab = false
 vim.api.nvim_create_autocmd("FileType", {
