@@ -31,7 +31,7 @@ return {
         local_white = "#BEC4EF",
         local_orange = "#F8957B",
         local_light_purple = "#E0CAFB",
-        dir_color = "#90a4ae",
+        dir_color = "#79AEC5",
         type_pr_color = "#79C5C3",
         var_color = "#F1AFF5"
       },

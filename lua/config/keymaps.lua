@@ -3,24 +3,20 @@
 -- Add any additional keymaps here
 
 local map = vim.keymap.set
--- -- Resize window using <ctrl> arrow keys
--- map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
--- map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
--- map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Width" })
--- map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
 
 return {
-  {
-    map("n", "<leader>sx", require("telescope.builtin").resume, { noremap = true, silent = true, desc = "Resume" }),
-  },
-  -- Resize window using <ctrl> arrow keys
-  -- {map("n", "<C-Right>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Width" })},
-  -- {map("n", "<C-Left>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })},
-  -- {map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })},
-  -- {map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })},
+-----------------------------------------------------------
+  { map("n", "<leader>sx", require("telescope.builtin").resume, { noremap = true, silent = true, desc = "Resume" }),},
+  { map("n", "<S-u>", "<C-r>", { noremap = true, silent = true}) },
   { map("n", "<leader>r", "<cmd>LspRestart<CR>", { noremap = true, silent = false, desc = "Restart LSP" }) },
+  { map("n", "<CR>", "o<esc>", { noremap = true, silent = true })},
+-----------------------------------------------------------
   { map({ "n", "v" }, "<S-h>", "^", { noremap = true, silent = true }) },
   { map({ "n", "v" }, "<S-l>", "$", { noremap = true, silent = true }) },
+
+-----------------------------------------------------------
   { map("i", "jk", "<esc>", { noremap = true, silent = true }) },
+
+-----------------------------------------------------------
   { map("v", "jkl", "<esc>", { noremap = true, silent = true }) },
 }
