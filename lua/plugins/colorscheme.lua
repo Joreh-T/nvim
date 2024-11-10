@@ -46,6 +46,7 @@ return {
           Macro = { fg = colors.pink },
           Directory = { fg = colors.dir_color },
           String = { fg = colors.string_color },
+          Structure = { fg = colors.orange },
           NormalFloat = {fg = colors.float_color_fg, bg = colors.float_color_bg},
           ["@lsp.type.macro"] = { fg = colors.local_white },
           ["@lsp.type.property"] = { fg = colors.type_pr_color},
