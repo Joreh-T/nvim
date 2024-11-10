@@ -78,6 +78,11 @@ return {
           },
         },
         sorting = defaults.sorting,
+         -- 添加边框
+        window = {
+        completion = cmp.config.window.bordered(), -- 为补全窗口添加边框
+        documentation = cmp.config.window.bordered(), -- 为文档窗口添加边框
+        },
       }
     end,
     main = "lazyvim.util.cmp",

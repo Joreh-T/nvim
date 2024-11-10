@@ -23,11 +23,23 @@ return {
   },
 
   {
+    -- 如果启用了codeium则在lualine右下角显示相应符号
     "nvim-lualine/lualine.nvim",
     optional = true,
     event = "VeryLazy",
     opts = function(_, opts)
-      table.insert(opts.sections.lualine_x, 2, LazyVim.lualine.cmp_source("codeium"))
+      -- Check if 'codeium' is already loaded
+      if pcall(require, "codeium") then
+        -- Insert a new component (symbol) if codeium is found
+        table.insert(opts.sections.lualine_x, 2, {
+          -- function() return "󱠁" end,
+          function()
+            return "󱠀"
+          end,
+          color = { fg = "#e5c07b" },
+          padding = { left = 1, right = 1 },
+        })
+      end
     end,
   },
 }
