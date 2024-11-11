@@ -31,12 +31,13 @@ return {
         local_white = "#C2C7E5",
         local_orange = "#F8957B",
         local_light_purple = "#E0CAFB",
-        dir_color = "#79AEC5",
+        dir_color = "#cccccc",
         type_pr_color = "#79C5C3",
         var_color = "#F1AFF5",
         string_color = "#DFCF9A",
         float_color_bg = "#21242C", -- #21252b
         float_color_fg = "#B0C996", 
+        type_comment_color = "#879FA7",
         -- float_color_fg = "#91A4C4", 
       },
       themes = function(colors)
@@ -48,6 +49,7 @@ return {
           String = { fg = colors.string_color },
           Structure = { fg = colors.orange },
           NormalFloat = {fg = colors.float_color_fg, bg = colors.float_color_bg},
+          ["@lsp.type.comment"] = { fg = colors.type_comment_color}, -- c/cpp中宏控制的未启用的代码
           ["@lsp.type.macro"] = { fg = colors.local_white },
           ["@lsp.type.property"] = { fg = colors.type_pr_color},
           ["@variable"] = { fg = colors.var_color },

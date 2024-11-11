@@ -25,7 +25,7 @@ return {
       vim.diagnostic.open_float(nil, {
         border = "rounded", -- You can choose "single", "double", "rounded", or "solid"
       })
-    end, { noremap = true, silent = true }),
+    end, { noremap = true, silent = true, desc = "Hover diagnostic"}),
   },
   --   {map("n", "gk", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true, silent = true })},
   --   {map("n", "gj", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = true })}
