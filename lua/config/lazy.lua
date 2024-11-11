@@ -24,8 +24,8 @@ require("lazy").setup({
     {
       "LazyVim/LazyVim",
       { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-      { import = "lazyvim.plugins.extras.coding.codeium" },
-      { import = "lazyvim.plugins.extras.coding.mini-surround" },
+      -- { import = "lazyvim.plugins.extras.coding.codeium" },
+      -- { import = "lazyvim.plugins.extras.coding.mini-surround" },
     --   { import = "lazyvim.plugins.extras.editor.outline" },
     },
     -- 导入自定义插件
