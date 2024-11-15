@@ -10,6 +10,9 @@ return {
   { map("n", "<S-u>", "<C-r>", { noremap = true, silent = true }) },
   { map("n", "<leader>r", "<cmd>LspRestart<CR>", { noremap = true, silent = false, desc = "Restart LSP" }) },
   { map("n", "<CR>", "o<esc>", { noremap = true, silent = true }) },
+
+  {map("n", "<a-`>",      function() Snacks.terminal(nil, { cwd = LazyVim.root() }) end, { desc = "Terminal (Root Dir)" })},
+  {map("t", "<a-`>", "<cmd>close<cr>", { desc = "Hide Terminal" })},
   -----------------------------------------------------------
   { map({ "n", "v" }, "<S-h>", "^", { noremap = true, silent = true }) },
   { map({ "n", "v" }, "<S-l>", "$", { noremap = true, silent = true }) },
