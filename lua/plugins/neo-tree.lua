@@ -9,6 +9,12 @@ return {
       filesystem = {
         filtered_items = {
           hide_dotfiles = false, -- 显示隐藏文件
+          -- hide_gitignored = false,
+          follow_current_file = {
+            enabled = true, -- This will find and focus the file in the active buffer every time
+            --               -- the current file is changed while the tree is open.
+            leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+          },
         },
         window = {
           title = "", -- 隐藏文件系统窗口标题
