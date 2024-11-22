@@ -5,10 +5,10 @@ return {
       {
         mode = { "n", "v" },
         -- 新增的 path 分组
-        {
-          "<leader>y",
-          group = "path", -- 定义一个 "path" 分组
-        },
+        -- {
+        --   "<leader>y",
+        --   group = "path", -- 定义一个 "path" 分组
+        -- },
         { "<leader>y", group = "Yank path", icon = { icon = "󰡰", color = "cyan" } },
         {
           "<leader>yn",

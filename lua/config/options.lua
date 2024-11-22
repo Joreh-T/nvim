@@ -12,19 +12,15 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 ---------------------------------------------------------------------
----
--- 显示不可见字符
-vim.opt.list = true
+vim.opt.list = true -- 显示不可见字符
 vim.opt.tabstop = 4 -- 设置 tab 键的宽度为 4
 vim.opt.shiftwidth = 4 -- 设置自动缩进时的宽度为 4
 vim.opt.expandtab = true -- 保持 tab 字符不转换为空格
 vim.opt.listchars = { space = "·", tab = ">~" }
-
 vim.opt.conceallevel = 0 -- 显示隐藏字符
-vim.opt.clipboard = "unnamedplus"
+vim.opt.clipboard = "unnamedplus" --使用系统剪切板替换nvim剪切板 
 
 ---------------------------------------------------------------------
----
 vim.g.python3_host_prog = "/usr/bin/python3"
 vim.g.autoformat = false
 
