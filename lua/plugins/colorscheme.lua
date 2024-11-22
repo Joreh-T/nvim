@@ -35,6 +35,7 @@ return {
         type_pr_color = "#79C5C3",
         var_color = "#F1AFF5",
         var_color_2 = "#C6C2C2",
+        delimiter_color = "#bbbbbb",
         string_color = "#DFCF9A",
         float_color_bg = "#21242C", -- #21252b
         float_color_fg = "#B0C996", 
@@ -43,13 +44,14 @@ return {
       },
       themes = function(colors)
         return {
-          Statement = { fg = colors.local_orange }, -- 将 Statement 的颜色改为 cyan
-          Operator = { fg = colors.local_white },
+          Statement = { fg = colors.local_orange },
+          Operator = { fg = colors.pink },
           Macro = { fg = colors.pink },
           Directory = { fg = colors.dir_color },
           String = { fg = colors.string_color },
           Structure = { fg = colors.orange },
           NormalFloat = {fg = colors.float_color_fg, bg = colors.float_color_bg},
+          Delimiter = { fg = colors.delimiter_color }, -- 分隔符符号:“;”
           ["@lsp.type.comment"] = { fg = colors.type_comment_color}, -- c/cpp中宏控制的未启用的代码
           ["@lsp.type.macro"] = { fg = colors.local_white },
           ["@lsp.type.property"] = { fg = colors.type_pr_color},
