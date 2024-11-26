@@ -2,6 +2,32 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
+local function close_terminal_and_focus_largest()
+  -- 关闭当前窗口
+  vim.cmd("close")
+
+  -- 查找剩余窗口中面积最大的窗口
+  local max_area = 0
+  local target_win = nil
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    local config = vim.api.nvim_win_get_config(win)
+    if not config.relative or config.relative == "" then -- 忽略浮动窗口
+      local width = vim.api.nvim_win_get_width(win)
+      local height = vim.api.nvim_win_get_height(win)
+      local area = width * height
+      if area > max_area then
+        max_area = area
+        target_win = win
+      end
+    end
+  end
+
+  -- 如果找到了目标窗口，则跳转到该窗口
+  if target_win then
+    vim.api.nvim_set_current_win(target_win)
+  end
+end
+
 local map = vim.keymap.set
 
 return {
@@ -27,7 +53,8 @@ return {
     end, { noremap = true, silent = true, desc = "Recent Files" }),
   },
 
-  { map("t", "<a-`>", "<cmd>close<cr>", { desc = "Hide Terminal" }) },
+  -- { map("t", "<a-`>", "<cmd>close<cr>", { desc = "Hide Terminal" }) },
+  { map("t", "<a-`>", close_terminal_and_focus_largest, { desc = "Hide Terminal and Focus Largest Window" })},
   -----------------------------------------------------------
   { map({ "n", "v" }, "<S-h>", "^", { noremap = true, silent = true }) },
   { map({ "n", "v" }, "<S-l>", "$", { noremap = true, silent = true }) },
