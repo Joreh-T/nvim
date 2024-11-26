@@ -19,7 +19,8 @@ vim.opt.expandtab = true -- 保持 tab 字符不转换为空格
 vim.opt.listchars = { space = "·", tab = ">~" }
 vim.opt.conceallevel = 0 -- 显示隐藏字符
 vim.opt.clipboard = "unnamedplus" --使用系统剪切板替换nvim剪切板 
-
+vim.opt.relativenumber = true -- 相对行号
+vim.opt.number = true
 ---------------------------------------------------------------------
 vim.g.python3_host_prog = "/usr/bin/python3"
 vim.g.autoformat = false
