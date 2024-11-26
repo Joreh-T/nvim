@@ -24,6 +24,15 @@ return {
       jump_highlight_duration = 400,
       center_on_jump = true,
     },
+    preview_window = {
+      -- Border option for floating preview window.
+      -- Options include: single/double/rounded/solid/shadow or an array of border
+      -- characters.
+      -- See :help nvim_open_win() and search for "border" option.
+      border = "rounded",
+      -- Experimental feature that let's you edit the source content live
+      -- in the preview window. Like VS Code's "peek editor".
+      live = true,
+    },
   },
 }
-
