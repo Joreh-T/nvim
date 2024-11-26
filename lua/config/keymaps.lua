@@ -40,8 +40,11 @@ return {
   {
     map("n", "<a-`>", function()
       Snacks.terminal(nil, { cwd = LazyVim.root() })
-    end, { desc = "Terminal (Root Dir)" }),
+      vim.cmd("resize " .. math.floor(vim.api.nvim_win_get_height(0) / 1.5)) -- resize the terminal window height
+    end, { desc = "Open Terminal (Root Dir)" }),
   },
+  -- { map("t", "<a-`>", "<cmd>close<cr>", { desc = "Hide Terminal" }) },
+  { map("t", "<a-`>", close_terminal_and_focus_largest, { desc = "Hide Terminal and Focus Largest Window" }) },
 
   { map("n", "<leader>bh", "<cmd>bprevious<cr>", { desc = "Prev Buffer" }) },
   { map("n", "<leader>bl", "<cmd>bnext<cr>", { desc = "Next Buffer" }) },
@@ -53,8 +56,6 @@ return {
     end, { noremap = true, silent = true, desc = "Recent Files" }),
   },
 
-  -- { map("t", "<a-`>", "<cmd>close<cr>", { desc = "Hide Terminal" }) },
-  { map("t", "<a-`>", close_terminal_and_focus_largest, { desc = "Hide Terminal and Focus Largest Window" })},
   -----------------------------------------------------------
   { map({ "n", "v" }, "<S-h>", "^", { noremap = true, silent = true }) },
   { map({ "n", "v" }, "<S-l>", "$", { noremap = true, silent = true }) },
