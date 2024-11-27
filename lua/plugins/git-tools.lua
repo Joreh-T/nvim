@@ -26,9 +26,13 @@ return {
   {
     "APZelos/blamer.nvim",
     config = function()
-      -- 启用 Blamer
-      vim.g.blamer_enabled = true
-      vim.g.blamer_delay = 500
+      -- 检测操作系统
+      local os_name = vim.loop.os_uname().sysname
+      -- 如果不是 Windows，则启用 Blamer
+      if os_name ~= "Windows_NT" then
+        vim.g.blamer_enabled = true
+        vim.g.blamer_delay = 500
+      end
     end,
   },
   -- diffview
