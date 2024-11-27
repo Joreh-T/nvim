@@ -29,6 +29,7 @@ local function close_terminal_and_focus_largest()
 end
 
 local map = vim.keymap.set
+local del = vim.keymap.del
 
 return {
   -----------------------------------------------------------
@@ -56,6 +57,9 @@ return {
     end, { noremap = true, silent = true, desc = "Recent Files" }),
   },
 
+  { del("n", "<leader>|") }, -- del keymap: map("<leader>|", "<C-W>v", { desc = "Split Window Right" }) },
+  { map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true }) },
+  { map("n", "<leader>\\", "<C-W>v", { desc = "Split Window Right", remap = false }) },
   -----------------------------------------------------------
   { map({ "n", "v" }, "<S-h>", "^", { noremap = true, silent = true }) },
   { map({ "n", "v" }, "<S-l>", "$", { noremap = true, silent = true }) },
