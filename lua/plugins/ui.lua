@@ -1,6 +1,6 @@
 -- if true then return {} end
 return {
-  { "MunifTanjim/nui.nvim", lazy = true },
+  -- { "MunifTanjim/nui.nvim", lazy = true },
 
   --     {
   --       "nvimdev/dashboard-nvim",
@@ -125,19 +125,33 @@ return {
   --       end,
   --     },
   --   },
+    --
+
+  { "MunifTanjim/nui.nvim", lazy = true },
 
   {
     "folke/snacks.nvim",
     opts = {
       dashboard = {
         preset = {
+          --           header = [[
+          -- ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+          -- ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+          -- ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+          -- ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+          -- ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+          -- ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
+
           header = [[
-███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
-████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
-██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
-██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
-██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
-╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
+                                                                         
+           ████ ██████           █████      ██                     
+          ███████████             █████                             
+          █████████ ███████████████████ ███   ███████████   
+         █████████  ███    █████████████ █████ ██████████████   
+        █████████ ██████████ █████████ █████ █████ ████ █████   
+      ███████████ ███    ███ █████████ █████ █████ ████ █████  
+     ██████  █████████████████████ ████ █████ █████ ████ ██████ 
+          ]],
         },
         sections = {
           {
@@ -148,13 +162,13 @@ return {
           {
             pane = 2,
             section = "terminal",
-            cmd = "fortune -s | cowsay",
-            hl = "header",
-            padding = 1,
-            indent = 8,
-            height = 8,
+            cmd = "pokemon-colorscripts -n pikachu --no-title; sleep .2", -- https://github.com/gricardo87/pokemon-colorscripts.git
+            random = 10,
+            padding = 0,
+            indent = 2,
+            height = 12,
           },
-          { section = "keys", gap = 1, padding = 1 },
+          { section = "keys", gap = 1, padding = 1, },
           { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
           { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
           {
