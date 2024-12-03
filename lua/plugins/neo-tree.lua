@@ -38,16 +38,31 @@ return {
             end
           end,
           -- 自定义高亮颜色
-          default = "*",
-          highlight = "NeoTreeFileIcon", -- 为文件图标定义高亮
+          -- default = "*",
+          -- highlight = "NeoTreeFileIcon", -- 为文件图标定义高亮
         },
+        git_status = {
+            symbols = {
+              -- Change type
+              added     = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
+              modified  = "", -- or "", but this is redundant info if you use git_status_colors on the name
+              deleted   = "✖",-- this can only be used in the git_status source
+              renamed   = "󰁕",-- this can only be used in the git_status source
+              -- Status type
+              untracked = "",
+              ignored   = "",
+              unstaged  = "",
+              staged    = "",
+              conflict  = "",
+            }
+          },
       },
       -- 自定义高亮颜色
-      config = function()
-        -- 自定义文件夹图标颜色
-        vim.api.nvim_set_hl(0, "NeoTreeFileIcon", { fg = "#CD2626" }) -- 文件图标颜色
-        vim.api.nvim_set_hl(0, "NeoTreeFolderIcon", { fg = "#CD2626" }) -- 文件夹图标颜色
-      end,
+      -- config = function()
+      --   -- 自定义文件夹图标颜色
+      --   vim.api.nvim_set_hl(0, "NeoTreeFileIcon", { fg = "#CD2626" }) -- 文件图标颜色
+      --   vim.api.nvim_set_hl(0, "NeoTreeFolderIcon", { fg = "#CD2626" }) -- 文件夹图标颜色
+      -- end,
     },
   },
 }
