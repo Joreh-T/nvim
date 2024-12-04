@@ -44,11 +44,17 @@ return {
         NeoTreeGitConflict = { fg = local_colors[onedark_style].yellow, fmt = "bold,italic" },
         -- ["@tag.delimiter"] = colors.Purple, -- "<", ">"
         ["@function"] = { fg = local_colors[onedark_style].green },
+        ["@lsp.typemod.method.defaultLibrary"] = { fg = local_colors[onedark_style].blue },
+        ["@lsp.typemod.function.defaultLibrary"] = { fg = local_colors[onedark_style].blue},
+
         ["@punctuation.delimiter"] = { fg = "$delimiter_color" }, -- ",", ";"
+
         ["@keyword"] = { fg = "$keyword_color" },
         ["@keyword.conditional"] = { fg = "$keyword_conditional_color" },
+
         ["@variable"] = { fg = "$var_color_2" },
         ["@lsp.type.variable"] = { fg = "$var_color_2" },
+
         ["@string"] = { fg = "$string_color_3" },
       },
     },
