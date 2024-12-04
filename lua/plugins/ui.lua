@@ -125,7 +125,7 @@ return {
   --       end,
   --     },
   --   },
-    --
+  --
 
   { "MunifTanjim/nui.nvim", lazy = true },
 
@@ -168,7 +168,7 @@ return {
             indent = 2,
             height = 12,
           },
-          { section = "keys", gap = 1, padding = 1, },
+          { section = "keys", gap = 1, padding = 1 },
           { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
           { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
           {
@@ -179,7 +179,14 @@ return {
             enabled = function()
               return Snacks.git.get_root() ~= nil
             end,
-            cmd = "hub status --short --branch --renames",
+            cmd = (function()
+              -- 检查 'hub' 是否可用
+              if vim.fn.executable("hub") == 1 then
+                return "hub status --short --branch --renames"
+              else
+                return "git status --short --branch --renames"
+              end
+            end)(), -- 注意这里直接执行函数，将返回值作为结果
             height = 5,
             padding = 1,
             ttl = 5 * 60,

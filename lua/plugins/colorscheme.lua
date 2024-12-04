@@ -1,6 +1,9 @@
 local enable = 1000
 local disable = 50
 
+local local_colors = require("plugins.colorscheme-base-cfg.onedark-palette")
+local onedark_style = "dark"
+
 vim.g.sonokai_style = "atlantis" -- default, atlantis, espresso, maia, andromeda, shusia
 return {
   {
@@ -9,32 +12,44 @@ return {
     priority = enable, -- defautl 50, make it higher to fast load
     -- toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'}, -- List of styles to toggle between
     opts = {
-      style = "dark", -- dark, darker, cool, deep, warm, warmer, light
+      style = onedark_style, -- dark, darker, cool, deep, warm, warmer, light
       --   transparent = false,     -- 是否启用透明背景
       term_colors = true, -- 是否调整终端颜色
       ending_tildes = true, -- 是否显示缓冲区末尾的波浪符
 
       colors = {
-        local_white = "#C2C7E5",
-        local_orange = "#F8957B",
-        local_light_purple = "#E0CAFB",
         dir_color = "#cccccc",
+        delimiter_color = "#bbbbbb",
+        keyword_color = "#E47255",
+        keyword_conditional_color = "#bb97ee",
+        string_color_1 = "#D7D7E0",
+        string_color_2 = "#BEA79D",
+        string_color_3 = "#D2B6A9",
+        git_untracked_color = "#72cce8",
+        var_color_2 = "#C6C2C2",
+
+        local_white = "#C2C7E5",
+        local_light_purple = "#E0CAFB",
         type_pr_color = "#79C5C3",
         var_color = "#F1AFF5",
-        var_color_2 = "#C6C2C2",
-        delimiter_color = "#bbbbbb",
-        string_color = "#DFCF9A",
         float_color_bg = "#21242C", -- #21252b
         float_color_fg = "#B0C996",
         type_comment_color = "#879FA7",
-        -- float_color_fg = "#91A4C4",
       },
 
       highlights = {
-        Directory = { fg = '$dir_color' },
-        Delimiter = { fg = '$delimiter_color'},
+        Directory = { fg = "$dir_color" },
+        Delimiter = { fg = "$delimiter_color" },
+        NeoTreeGitUntracked = { fg = "$git_untracked_color" },
+        NeoTreeGitConflict = { fg = local_colors[onedark_style].yellow, fmt = "bold,italic" },
         -- ["@tag.delimiter"] = colors.Purple, -- "<", ">"
-        ["@punctuation.delimiter"] = { fg = '$delimiter_color'}, -- ",", ";"
+        ["@function"] = { fg = local_colors[onedark_style].green },
+        ["@punctuation.delimiter"] = { fg = "$delimiter_color" }, -- ",", ";"
+        ["@keyword"] = { fg = "$keyword_color" },
+        ["@keyword.conditional"] = { fg = "$keyword_conditional_color" },
+        ["@variable"] = { fg = "$var_color_2" },
+        ["@lsp.type.variable"] = { fg = "$var_color_2" },
+        ["@string"] = { fg = "$string_color_3" },
       },
     },
     -- load colorscheme directly
@@ -43,47 +58,47 @@ return {
     -- end,
   },
 
-  -- {
-  --   "cpea2506/one_monokai.nvim",
-  --   lazy = true,
-  --   priority = disable, -- defautl 50, make it higher to fast load
-  --
-  --   opts = {
-  --     -- 其他设置
-  --     transparent = false,
-  --     colors = {
-  --       local_white = "#C2C7E5",
-  --       local_orange = "#F8957B",
-  --       local_light_purple = "#E0CAFB",
-  --       dir_color = "#cccccc",
-  --       type_pr_color = "#79C5C3",
-  --       var_color = "#F1AFF5",
-  --       var_color_2 = "#C6C2C2",
-  --       delimiter_color = "#bbbbbb",
-  --       string_color = "#DFCF9A",
-  --       float_color_bg = "#21242C", -- #21252b
-  --       float_color_fg = "#B0C996",
-  --       type_comment_color = "#879FA7",
-  --       -- float_color_fg = "#91A4C4",
-  --     },
-  --     themes = function(colors)
-  --       return {
-  --         Statement = { fg = colors.local_orange },
-  --         Operator = { fg = colors.pink },
-  --         Macro = { fg = colors.pink },
-  --         Directory = { fg = colors.dir_color },
-  --         String = { fg = colors.string_color },
-  --         Structure = { fg = colors.orange },
-  --         NormalFloat = { fg = colors.float_color_fg, bg = colors.float_color_bg },
-  --         Delimiter = { fg = colors.delimiter_color }, -- 分隔符符号:“;”
-  --         ["@lsp.type.comment"] = { fg = colors.type_comment_color }, -- c/cpp中宏控制的未启用的代码
-  --         ["@lsp.type.macro"] = { fg = colors.local_white },
-  --         ["@lsp.type.property"] = { fg = colors.type_pr_color },
-  --         ["@variable"] = { fg = colors.var_color_2 },
-  --       }
-  --     end,
-  --   },
-  -- },
+  {
+    "cpea2506/one_monokai.nvim",
+    lazy = true,
+    --   priority = disable, -- defautl 50, make it higher to fast load
+    --
+    --   opts = {
+    --     -- 其他设置
+    --     transparent = false,
+    --     colors = {
+    --       local_white = "#C2C7E5",
+    --       local_orange = "#F8957B",
+    --       local_light_purple = "#E0CAFB",
+    --       dir_color = "#cccccc",
+    --       type_pr_color = "#79C5C3",
+    --       var_color = "#F1AFF5",
+    --       var_color_2 = "#C6C2C2",
+    --       delimiter_color = "#bbbbbb",
+    --       string_color = "#DFCF9A",
+    --       float_color_bg = "#21242C", -- #21252b
+    --       float_color_fg = "#B0C996",
+    --       type_comment_color = "#879FA7",
+    --       -- float_color_fg = "#91A4C4",
+    --     },
+    --     themes = function(colors)
+    --       return {
+    --         Statement = { fg = colors.local_orange },
+    --         Operator = { fg = colors.pink },
+    --         Macro = { fg = colors.pink },
+    --         Directory = { fg = colors.dir_color },
+    --         String = { fg = colors.string_color },
+    --         Structure = { fg = colors.orange },
+    --         NormalFloat = { fg = colors.float_color_fg, bg = colors.float_color_bg },
+    --         Delimiter = { fg = colors.delimiter_color }, -- 分隔符符号:“;”
+    --         ["@lsp.type.comment"] = { fg = colors.type_comment_color }, -- c/cpp中宏控制的未启用的代码
+    --         ["@lsp.type.macro"] = { fg = colors.local_white },
+    --         ["@lsp.type.property"] = { fg = colors.type_pr_color },
+    --         ["@variable"] = { fg = colors.var_color_2 },
+    --       }
+    --     end,
+    --   },
+  },
   --
   -- {
   --   "olimorris/onedarkpro.nvim",
@@ -94,6 +109,17 @@ return {
     "sainnhe/sonokai",
     lazy = false,
     priority = enable,
+  },
+
+  -- 格式化占位符颜色跟随主题style
+  {
+    "Joreh-T/placeholder_highlighter.nvim",
+    config = function()
+      require("placeholder_highlighter").setup({
+        fg = local_colors[onedark_style].yellow,
+        bold = true,
+      })
+    end,
   },
 
   -- load colorscheme by lazyVim
