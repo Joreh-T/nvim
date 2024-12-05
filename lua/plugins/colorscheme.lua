@@ -23,10 +23,12 @@ return {
         keyword_color = "#E47255",
         keyword_conditional_color = "#bb97ee",
         string_color_1 = "#D7D7E0",
-        string_color_2 = "#BEA79D",
-        string_color_3 = "#E7DCAF",
+        string_color_2 = "#D2E1E4",
+        string_color_3 = "#AEC7CD",
         git_untracked_color = "#72cce8",
         var_color_2 = "#C6C2C2",
+        purple = "#B98ED2",
+        pink = "#e06c75",
 
         local_white = "#C2C7E5",
         local_light_purple = "#E0CAFB",
@@ -45,10 +47,10 @@ return {
         -- ["@tag.delimiter"] = colors.Purple, -- "<", ">"
         ["@function"] = { fg = local_colors[onedark_style].green },
         ["@lsp.typemod.method.defaultLibrary"] = { fg = local_colors[onedark_style].blue },
-        ["@lsp.typemod.function.defaultLibrary"] = { fg = local_colors[onedark_style].blue},
+        ["@lsp.typemod.function.defaultLibrary"] = { fg = local_colors[onedark_style].blue },
 
-        ["@function.macro"] = {fg = local_colors[onedark_style].orange, fmt = "bold" },
-        ["@lsp.type.macro"] = {fg = local_colors[onedark_style].orange, fmt = "bold" },
+        ["@function.macro"] = { fg = local_colors[onedark_style].orange, fmt = "bold" },
+        ["@lsp.type.macro"] = { fg = local_colors[onedark_style].orange, fmt = "bold" },
 
         ["@punctuation.delimiter"] = { fg = "$delimiter_color" },
 
@@ -57,8 +59,13 @@ return {
 
         ["@variable"] = { fg = "$var_color_2" },
         ["@lsp.type.variable"] = { fg = "$var_color_2" },
+        ["@variable.parameter"] = {fg = "$purple"},
+        ["@lsp.type.parameter"] = {fg = "$purple"},
+        -- ["@variable.builtin"] = {fg = "$pink"},
 
         ["@string"] = { fg = "$string_color_3" },
+
+        ["@operator"] = { fg = "$pink" },
       },
     },
     -- load colorscheme directly
@@ -125,7 +132,7 @@ return {
     "Joreh-T/placeholder_highlighter.nvim",
     config = function()
       require("placeholder_highlighter").setup({
-        fg = "#bb97ee",
+        fg = "#F6D5A4",
         bold = true,
       })
     end,
