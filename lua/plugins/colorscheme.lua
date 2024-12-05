@@ -24,7 +24,7 @@ return {
         keyword_conditional_color = "#bb97ee",
         string_color_1 = "#D7D7E0",
         string_color_2 = "#BEA79D",
-        string_color_3 = "#D2B6A9",
+        string_color_3 = "#E7DCAF",
         git_untracked_color = "#72cce8",
         var_color_2 = "#C6C2C2",
 
@@ -47,7 +47,10 @@ return {
         ["@lsp.typemod.method.defaultLibrary"] = { fg = local_colors[onedark_style].blue },
         ["@lsp.typemod.function.defaultLibrary"] = { fg = local_colors[onedark_style].blue},
 
-        ["@punctuation.delimiter"] = { fg = "$delimiter_color" }, -- ",", ";"
+        ["@function.macro"] = {fg = local_colors[onedark_style].orange, fmt = "bold" },
+        ["@lsp.type.macro"] = {fg = local_colors[onedark_style].orange, fmt = "bold" },
+
+        ["@punctuation.delimiter"] = { fg = "$delimiter_color" },
 
         ["@keyword"] = { fg = "$keyword_color" },
         ["@keyword.conditional"] = { fg = "$keyword_conditional_color" },
@@ -122,7 +125,7 @@ return {
     "Joreh-T/placeholder_highlighter.nvim",
     config = function()
       require("placeholder_highlighter").setup({
-        fg = local_colors[onedark_style].yellow,
+        fg = "#bb97ee",
         bold = true,
       })
     end,
