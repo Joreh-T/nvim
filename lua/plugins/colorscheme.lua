@@ -55,7 +55,7 @@ return {
         ["@punctuation.delimiter"] = { fg = "$delimiter_color" },
 
         ["@keyword"] = { fg = "$keyword_color" },
-        ["@keyword.conditional"] = { fg = "$keyword_conditional_color" },
+        ["@keyword.conditional"] = { fg = local_colors[onedark_style].red },
 
         ["@variable"] = { fg = "$var_color_2" },
         ["@lsp.type.variable"] = { fg = "$var_color_2" },
