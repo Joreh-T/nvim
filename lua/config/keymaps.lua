@@ -57,6 +57,11 @@ return {
       require("telescope").extensions["recent-files"].recent_files({})
     end, { noremap = true, silent = true, desc = "Recent Files" }),
   },
+  {
+    map("n", "<leader><leader>", function()
+      require("telescope").extensions["recent-files"].recent_files({})
+    end, { noremap = true, silent = true, desc = "Recent Files" }),
+  },
 
   { del("n", "<leader>|") }, -- del keymap: map("<leader>|", "<C-W>v", { desc = "Split Window Right" }) },
   { map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true }) },
