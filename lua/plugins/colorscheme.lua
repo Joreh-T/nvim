@@ -41,6 +41,7 @@ return {
 
       highlights = {
         TelescopeBorder = { fg = local_colors[onedark_style].cyan },
+        DiagnosticHint = { fg = "$keyword_color" },
 
         Directory = { fg = "$dir_color" },
         Delimiter = { fg = "$delimiter_color" },
