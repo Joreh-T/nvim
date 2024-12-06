@@ -49,8 +49,8 @@ return {
         ["@lsp.typemod.method.defaultLibrary"] = { fg = local_colors[onedark_style].blue },
         ["@lsp.typemod.function.defaultLibrary"] = { fg = local_colors[onedark_style].blue },
 
-        ["@function.macro"] = { fg = local_colors[onedark_style].orange, fmt = "bold" },
-        ["@lsp.type.macro"] = { fg = local_colors[onedark_style].orange, fmt = "bold" },
+        ["@function.macro"] = { fg = local_colors[onedark_style].bg_blue, fmt = "bold" },
+        ["@lsp.type.macro"] = { fg = local_colors[onedark_style].bg_blue, fmt = "bold" },
 
         ["@punctuation.delimiter"] = { fg = "$delimiter_color" },
 
