@@ -40,6 +40,8 @@ return {
       },
 
       highlights = {
+        TelescopeBorder = { fg = local_colors[onedark_style].cyan },
+
         Directory = { fg = "$dir_color" },
         Delimiter = { fg = "$delimiter_color" },
         NeoTreeGitUntracked = { fg = "$git_untracked_color" },
