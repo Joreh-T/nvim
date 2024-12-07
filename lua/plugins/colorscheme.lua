@@ -24,9 +24,10 @@ return {
         keyword_conditional_color = "#bb97ee",
         string_color_1 = "#D7D7E0",
         string_color_2 = "#D2E1E4",
-        string_color_3 = "#AEC7CD",
+        string_color_3 = "#E1E2E3",
         git_untracked_color = "#72cce8",
         var_color_2 = "#C6C2C2",
+        var_color_3 = "#E4E3E1",
         purple = "#B98ED2",
         pink = "#e06c75",
 
@@ -47,6 +48,9 @@ return {
         Delimiter = { fg = "$delimiter_color" },
         NeoTreeGitUntracked = { fg = "$git_untracked_color" },
         NeoTreeGitConflict = { fg = local_colors[onedark_style].yellow, fmt = "bold,italic" },
+
+        Title = { fg = local_colors[onedark_style].green },
+        Special = { fg = "#e6756e" },
         -- ["@tag.delimiter"] = colors.Purple, -- "<", ">"
         ["@function"] = { fg = local_colors[onedark_style].green },
         ["@lsp.typemod.method.defaultLibrary"] = { fg = local_colors[onedark_style].blue },

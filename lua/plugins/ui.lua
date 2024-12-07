@@ -215,4 +215,119 @@ return {
       },
     },
   },
+
+  {
+    "folke/edgy.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.opt.laststatus = 3
+      vim.opt.splitkeep = "screen"
+    end,
+
+    ---@module 'edgy'
+    ---@param opts Edgy.Config
+    opts = function(_, opts)
+      opts.wo = vim.tbl_deep_extend("force", opts.wo or {}, {
+        winhighlight = "WinBar:EdgyWinBarNC,WinBarNC:EdgyWinBarNC",
+      })
+      opts.animate = vim.tbl_deep_extend("force", opts.animate or {}, {
+        enabled = false, -- 禁用动画效果
+      })
+      opts.icons = {
+        closed = " ",
+        open = " ",
+      }
+      opts.keys = {
+        -- increase width
+        ["<c-Right>"] = function(win)
+          win:resize("width", 2)
+        end,
+        -- decrease width
+        ["<c-Left>"] = function(win)
+          win:resize("width", -2)
+        end,
+        -- increase height
+        ["<c-Up>"] = function(win)
+          win:resize("height", 2)
+        end,
+        -- decrease height
+        ["<c-Down>"] = function(win)
+          win:resize("height", -2)
+        end,
+      }
+
+      -- snacks_terminal configuration
+      for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
+        opts[pos] = opts[pos] or {}
+        table.insert(opts[pos], {
+          ft = "snacks_terminal",
+          size = { height = 0.2 },
+
+          title = function()
+            local term_title = vim.b.term_title or "Terminal"
+            term_title = string.match(term_title, "[^/\\]+$") or term_title
+            local max_length = 20 -- 设置最大长度
+            if #term_title > max_length then
+              term_title = string.sub(term_title, 1, max_length) .. "…" -- 截断并添加省略号
+            end
+            local open_time = vim.b.open_time or os.date("%H:%M:%S")
+            vim.b.open_time = open_time -- 确保时间在 terminal 打开后固定
+            return string.format("%s (Opened at %s)", term_title, open_time)
+          end,
+          -- title = "%{:pos}: %{b:term_title}",
+          filter = function(_buf, win)
+            return vim.w[win].snacks_win
+              and vim.w[win].snacks_win.position == pos
+              and vim.w[win].snacks_win.relative == "editor"
+              and not vim.w[win].trouble_preview
+          end,
+        })
+      end
+
+      if LazyVim.has("neo-tree.nvim") then
+        -- opts["left"] = {  // 直接写会覆盖掉上面的内容
+        -- Neo-tree filesystem always takes half the screen height
+        opts["left"] = opts["left"] or {}
+        vim.list_extend(opts["left"], {
+          {
+            title = "FileTree",
+            ft = "neo-tree",
+            filter = function(buf)
+              return vim.b[buf].neo_tree_source == "filesystem"
+            end,
+            size = { height = 0.3 },
+          },
+          -- {
+          --   title = "Git Status",
+          --   ft = "neo-tree",
+          --   filter = function(buf)
+          --     return vim.b[buf].neo_tree_source == "git_status"
+          --   end,
+          --   pinned = true,
+          --   collapsed = true, -- show window as closed/collapsed on start
+          --   open = "Neotree position=right git_status",
+          -- },
+          -- {
+          --   title = "Buffers",
+          --   ft = "neo-tree",
+          --   filter = function(buf)
+          --     return vim.b[buf].neo_tree_source == "buffers"
+          --   end,
+          --   pinned = true,
+          --   collapsed = true, -- show window as closed/collapsed on start
+          --   open = "Neotree position=top buffers",
+          -- },
+          -- {
+          --   title = function()
+          --     local buf_name = vim.api.nvim_buf_get_name(0) or "[No Name]"
+          --     return vim.fn.fnamemodify(buf_name, ":t")
+          --   end,
+          --   ft = "Outline",
+          --   pinned = true,
+          --   open = "SymbolsOutlineOpen",
+          -- },
+        })
+      end
+    end,
+  },
 }

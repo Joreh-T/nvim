@@ -38,15 +38,17 @@ return {
   { map("n", "<S-u>", "<C-r>", { noremap = true, silent = true }) },
   { map("n", "<leader>r", "<cmd>LspRestart<CR>", { noremap = true, silent = false, desc = "Restart LSP" }) },
   { map("n", "<CR>", "o<esc>", { noremap = true, silent = true }) },
--- open/close terminal
-  {
-    map("n", "<a-`>", function()
-      Snacks.terminal(nil, { cwd = LazyVim.root() })
-      vim.cmd("resize " .. math.floor(vim.api.nvim_win_get_height(0) / 1.5)) -- resize the terminal window height
-    end, { desc = "Open Terminal (Root Dir)" }),
-  },
-   -- { map("t", "<a-`>", "<cmd>close<cr>", { desc = "Hide Terminal" }) },
+-- open/close terminal, if have edgy then resize by edgy.nvim
+  { map("n", "<a-`>", function() Snacks.terminal(nil, { cwd = LazyVim.root() }) end, { desc = "Open Terminal (Root Dir)" }) },
   { map("t", "<a-`>", close_terminal_and_focus_largest, { desc = "Hide Terminal and Focus Largest Window" }) },
+  -- resize by custom
+  -- {
+  --   map("n", "<a-`>", function()
+  --     Snacks.terminal(nil, { cwd = LazyVim.root() })
+  --     vim.cmd("resize " .. math.floor(vim.api.nvim_win_get_height(0) / 1.5)) -- resize the terminal window height
+  --   end, { desc = "Open Terminal (Root Dir)" }),
+  -- },
+   -- { map("t", "<a-`>", "<cmd>close<cr>", { desc = "Hide Terminal" }) },
 -- buffer motion
   { map("n", "<leader>bh", "<cmd>bprevious<cr>", { desc = "Prev Buffer" }) },
   { map("n", "<leader>bl", "<cmd>bnext<cr>", { desc = "Next Buffer" }) },
