@@ -39,7 +39,7 @@ vim.g.autoformat = false
 ---------------------------------------------------------------------
 ---
 vim.o.virtualedit = "onemore" -- 设置 virtualedit, 光标上下移动不会默认到行尾
-vim.o.undofile = false -- 关闭保存文件的所有更改历史, 避免undo一下回到第一次打开的时候
+vim.o.undofile = true -- 保存文件的所有更改历史
 vim.o.scrolloff = 7 -- 保证上下各有 n 行显示空间
 
 --
