@@ -32,62 +32,58 @@ end
 local map = vim.keymap.set
 local del = vim.keymap.del
 
-return {
-  -----------------------------------------------------------
-  { map("n", "<C-i>", "<C-i>", { noremap = true, silent = true }) },
-  { map("n", "<C-o>", "<C-o>", { noremap = true, silent = true }) },
-  { map("n", "<leader>sx", require("telescope.builtin").resume, { noremap = true, silent = true, desc = "Resume" }) },
-  { map("n", "<S-u>", "<C-r>", { noremap = true, silent = true }) },
-  { map("n", "<leader>r", "<cmd>LspRestart<CR>", { noremap = true, silent = false, desc = "Restart LSP" }) },
-  { map("n", "<CR>", "o<esc>", { noremap = true, silent = true }) },
--- open/close terminal, if have edgy then resize by edgy.nvim
-  { map("n", "<a-`>", function() Snacks.terminal(nil, { cwd = LazyVim.root() }) end, { desc = "Open Terminal (Root Dir)" }) },
-  { map("t", "<a-`>", close_terminal_and_focus_largest, { desc = "Hide Terminal and Focus Largest Window" }) },
-  -- resize by custom
-  -- {
-  --   map("n", "<a-`>", function()
-  --     Snacks.terminal(nil, { cwd = LazyVim.root() })
-  --     vim.cmd("resize " .. math.floor(vim.api.nvim_win_get_height(0) / 1.5)) -- resize the terminal window height
-  --   end, { desc = "Open Terminal (Root Dir)" }),
-  -- },
-   -- { map("t", "<a-`>", "<cmd>close<cr>", { desc = "Hide Terminal" }) },
+-----------------------------------------------------------
+map("n", "<C-i>", "<C-i>", { noremap = true, silent = true })
+map("n", "<C-o>", "<C-o>", { noremap = true, silent = true })
+map("n", "<leader>sx", require("telescope.builtin").resume, { noremap = true, silent = true, desc = "Resume" })
+map("n", "<S-u>", "<C-r>", { noremap = true, silent = true })
+map("n", "<leader>r", "<cmd>LspRestart<CR>", { noremap = true, silent = false, desc = "Restart LSP" })
+map("n", "<CR>", "o<esc>", { noremap = true, silent = true })
+--pen/close terminal, if have edgy then resize by edgy.nvim
+map("n", "<a-`>", function()
+  Snacks.terminal(nil, { cwd = LazyVim.root() })
+end, { desc = "Open Terminal (Root Dir)" })
+map("t", "<a-`>", close_terminal_and_focus_largest, { desc = "Hide Terminal and Focus Largest Window" })
+-- resize by custom
+-- {
+--   map("n", "<a-`>", function()
+--     Snacks.terminal(nil, { cwd = LazyVim.root() })
+--     vim.cmd("resize " .. math.floor(vim.api.nvim_win_get_height(0) / 1.5)) -- resize the terminal window height
+--   end, { desc = "Open Terminal (Root Dir)" }),
+-- },
+-- { map("t", "<a-`>", "<cmd>close<cr>", { desc = "Hide Terminal" }) },
 -- buffer motion
-  { map("n", "<leader>bh", "<cmd>bprevious<cr>", { desc = "Prev Buffer" }) },
-  { map("n", "<leader>bl", "<cmd>bnext<cr>", { desc = "Next Buffer" }) },
-  { map("n", "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Search In Curren Buffer" }) },
+map("n", "<leader>bh", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
+map("n", "<leader>bl", "<cmd>bnext<cr>", { desc = "Next Buffer" })
+map("n", "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Search In Curren Buffer" })
 
-  {
-    map("n", "<leader>fr", function()
-      require("telescope").extensions["recent-files"].recent_files({})
-    end, { noremap = true, silent = true, desc = "Recent Files" }),
-  },
-  {
-    map("n", "<leader><leader>", function()
-      require("telescope").extensions["recent-files"].recent_files({})
-    end, { noremap = true, silent = true, desc = "Recent Files" }),
-  },
+map("n", "<leader>fr", function()
+  require("telescope").extensions["recent-files"].recent_files({})
+end, { noremap = true, silent = true, desc = "Recent Files" })
+map("n", "<leader><leader>", function()
+  require("telescope").extensions["recent-files"].recent_files({})
+end, { noremap = true, silent = true, desc = "Recent Files" })
 
-  { del("n", "<leader>|") }, -- del keymap: map("<leader>|", "<C-W>v", { desc = "Split Window Right" }) },
-  { map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true }) },
-  { map("n", "<leader>\\", "<C-W>v", { desc = "Split Window Right", remap = false }) },
-  -----------------------------------------------------------
-  { map({ "n", "v" }, "<S-h>", "^", { noremap = true, silent = true }) },
-  { map({ "n", "v" }, "<S-l>", "$", { noremap = true, silent = true }) },
+del("n", "<leader>|") -- del keymap: map("<leader>|", "<C-W>v", { desc = "Split Window Right" }) },
+map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
+map("n", "<leader>\\", "<C-W>v", { desc = "Split Window Right", remap = false })
+-----------------------------------------------------------
+map({ "n", "v" }, "<S-h>", "^", { noremap = true, silent = true })
+map({ "n", "v" }, "<S-l>", "$", { noremap = true, silent = true })
 
-  -----------------------------------------------------------
-  { map("i", "jk", "<esc>", { noremap = true, silent = true }) },
+-----------------------------------------------------------
+map("i", "jk", "<esc>", { noremap = true, silent = true })
 
-  -----------------------------------------------------------
-  { map("v", "jkl", "<esc>", { noremap = true, silent = true }) },
-  -- diagnostic 浮动窗口显示diagnostic内容
-  {
-    map("n", "gh", function()
-      vim.diagnostic.open_float(nil, {
-        border = "rounded", -- You can choose "single", "double", "rounded", or "solid"
-      })
-    end, { noremap = true, silent = true, desc = "Hover diagnostic" }),
-  },
-  --   {map("n", "gk", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true, silent = true })},
-  --   {map("n", "gj", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = true })}
-  --   { "K", function() return vim.lsp.buf.hover() end, desc = "Hover" },
-}
+-----------------------------------------------------------
+map("v", "jkl", "<esc>", { noremap = true, silent = true })
+-- diagnostic 浮动窗口显示diagnostic内容
+
+map("n", "gh", function()
+  vim.diagnostic.open_float(nil, {
+    border = "rounded", -- You can choose "single", "double", "rounded", or "solid"
+  })
+end, { noremap = true, silent = true, desc = "Hover diagnostic" })
+
+--   {map("n", "gk", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true, silent = true })},
+--   {map("n", "gj", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = true })}
+--   { "K", function() return vim.lsp.buf.hover() end, desc = "Hover" },
