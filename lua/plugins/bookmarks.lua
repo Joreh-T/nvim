@@ -64,6 +64,7 @@ return {
       -- •%p: AM/PM indicator
     })
     require("telescope").load_extension("bookmarks")
+    -- vim.api.nvim_set_keymap("n", "<C-i>", "<C-i>", { noremap = true, silent = true })
     --INFO_N: vim.api.nvim_set_hl(0, "CustomBorder", { fg = "#56b6c2"} )
   end,
 }

@@ -34,6 +34,8 @@ local del = vim.keymap.del
 
 return {
   -----------------------------------------------------------
+  { map("n", "<C-i>", "<C-i>", { noremap = true, silent = true }) },
+  { map("n", "<C-o>", "<C-o>", { noremap = true, silent = true }) },
   { map("n", "<leader>sx", require("telescope.builtin").resume, { noremap = true, silent = true, desc = "Resume" }) },
   { map("n", "<S-u>", "<C-r>", { noremap = true, silent = true }) },
   { map("n", "<leader>r", "<cmd>LspRestart<CR>", { noremap = true, silent = false, desc = "Restart LSP" }) },
