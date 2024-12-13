@@ -19,14 +19,14 @@ if os == 'Windows_NT' then
 end
 
 vim.opt.list = true -- 显示不可见字符
+vim.opt.listchars = { space = "·", tab = ">-", eol = "↲"}
 vim.opt.tabstop = 4 -- 设置 tab 键的宽度为 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4 -- 设置自动缩进时的宽度为 4
 vim.opt.copyindent = true
 vim.opt.expandtab = true -- 插入tab 转换为空格
-vim.opt.listchars = { space = "·", tab = ">-", eol = "↲"}
 vim.opt.smartindent = true
-vim.opt.autoindent = true
+-- vim.opt.autoindent = true
 vim.opt.conceallevel = 0 -- 显示隐藏字符
 vim.opt.clipboard = "unnamedplus" --使用系统剪切板替换nvim剪切板 
 vim.opt.relativenumber = true -- 相对行号

@@ -284,50 +284,50 @@ return {
         })
       end
 
-      if LazyVim.has("neo-tree.nvim") then
-        -- opts["left"] = {  // 直接写会覆盖掉上面的内容
-        -- Neo-tree filesystem always takes half the screen height
-        opts["left"] = opts["left"] or {}
-        vim.list_extend(opts["left"], {
-          {
-            title = "FileTree",
-            ft = "neo-tree",
-            filter = function(buf)
-              return vim.b[buf].neo_tree_source == "filesystem"
-            end,
-            size = { height = 0.3 },
-          },
-          -- {
-          --   title = "Git Status",
-          --   ft = "neo-tree",
-          --   filter = function(buf)
-          --     return vim.b[buf].neo_tree_source == "git_status"
-          --   end,
-          --   pinned = true,
-          --   collapsed = true, -- show window as closed/collapsed on start
-          --   open = "Neotree position=right git_status",
-          -- },
-          -- {
-          --   title = "Buffers",
-          --   ft = "neo-tree",
-          --   filter = function(buf)
-          --     return vim.b[buf].neo_tree_source == "buffers"
-          --   end,
-          --   pinned = true,
-          --   collapsed = true, -- show window as closed/collapsed on start
-          --   open = "Neotree position=top buffers",
-          -- },
-          -- {
-          --   title = function()
-          --     local buf_name = vim.api.nvim_buf_get_name(0) or "[No Name]"
-          --     return vim.fn.fnamemodify(buf_name, ":t")
-          --   end,
-          --   ft = "Outline",
-          --   pinned = true,
-          --   open = "SymbolsOutlineOpen",
-          -- },
-        })
-      end
+      -- if LazyVim.has("neo-tree.nvim") then
+      --   -- opts["left"] = {  // 直接写会覆盖掉上面的内容
+      --   -- Neo-tree filesystem always takes half the screen height
+      --   opts["left"] = opts["left"] or {}
+      --   vim.list_extend(opts["left"], {
+      --     {
+      --       title = "FileTree",
+      --       ft = "neo-tree",
+      --       filter = function(buf)
+      --         return vim.b[buf].neo_tree_source == "filesystem"
+      --       end,
+      --       size = { height = 0.3 },
+      --     },
+      --     -- {
+      --     --   title = "Git Status",
+      --     --   ft = "neo-tree",
+      --     --   filter = function(buf)
+      --     --     return vim.b[buf].neo_tree_source == "git_status"
+      --     --   end,
+      --     --   pinned = true,
+      --     --   collapsed = true, -- show window as closed/collapsed on start
+      --     --   open = "Neotree position=right git_status",
+      --     -- },
+      --     -- {
+      --     --   title = "Buffers",
+      --     --   ft = "neo-tree",
+      --     --   filter = function(buf)
+      --     --     return vim.b[buf].neo_tree_source == "buffers"
+      --     --   end,
+      --     --   pinned = true,
+      --     --   collapsed = true, -- show window as closed/collapsed on start
+      --     --   open = "Neotree position=top buffers",
+      --     -- },
+      --     -- {
+      --     --   title = function()
+      --     --     local buf_name = vim.api.nvim_buf_get_name(0) or "[No Name]"
+      --     --     return vim.fn.fnamemodify(buf_name, ":t")
+      --     --   end,
+      --     --   ft = "Outline",
+      --     --   pinned = true,
+      --     --   open = "SymbolsOutlineOpen",
+      --     -- },
+      --   })
+      -- end
     end,
   },
 }

@@ -4,8 +4,8 @@
 
 local function close_terminal_and_focus_largest()
   -- 关闭当前窗口
-  -- vim.cmd("close")
-  Snacks.terminal(nil, { cwd = LazyVim.root() })
+  vim.cmd("close")
+  -- Snacks.terminal(nil, { cwd = LazyVim.root() })
 
   -- 查找剩余窗口中面积最大的窗口
   local max_area = 0
