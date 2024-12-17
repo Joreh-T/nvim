@@ -40,10 +40,14 @@ map("n", "<S-u>", "<C-r>", { noremap = true, silent = true })
 map("n", "<leader>r", "<cmd>LspRestart<CR>", { noremap = true, silent = false, desc = "Restart LSP" })
 map("n", "<CR>", "o<esc>", { noremap = true, silent = true })
 --pen/close terminal, if have edgy then resize by edgy.nvim
-map("n", "<a-`>", function()
-  Snacks.terminal(nil, { cwd = LazyVim.root() })
-end, { desc = "Open Terminal (Root Dir)" })
+-- map("n", "<a-`>", function()
+--   Snacks.terminal(nil, { cwd = LazyVim.root() })
+-- end, { desc = "Open Terminal (Root Dir)" })
+map("n", "<a-`>", function() Snacks.terminal() end, { desc = "Terminal (cwd)" })
 map("t", "<a-`>", close_terminal_and_focus_largest, { desc = "Hide Terminal and Focus Largest Window" })
+map("n", "<leader>ft", function() Snacks.terminal() end, { desc = "Terminal (cwd)" })
+map("n", "<leader>fT", function() Snacks.terminal(nil, { cwd = LazyVim.root() }) end, { desc = "Terminal (Root Dir)" })
+
 -- resize by custom
 -- {
 --   map("n", "<a-`>", function()
@@ -57,12 +61,12 @@ map("n", "<leader>bh", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 map("n", "<leader>bl", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 map("n", "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Search In Curren Buffer" })
 
-map("n", "<leader>fr", function()
-  require("telescope").extensions["recent-files"].recent_files({})
-end, { noremap = true, silent = true, desc = "Recent Files" })
-map("n", "<leader><leader>", function()
-  require("telescope").extensions["recent-files"].recent_files({})
-end, { noremap = true, silent = true, desc = "Recent Files" })
+-- map("n", "<leader>fr", function()
+--   require("telescope").extensions["recent-files"].recent_files({})
+-- end, { noremap = true, silent = true, desc = "Recent Files" })
+-- map("n", "<leader><leader>", function()
+--   require("telescope").extensions["recent-files"].recent_files({})
+-- end, { noremap = true, silent = true, desc = "Recent Files" })
 
 del("n", "<leader>|") -- del keymap: map("<leader>|", "<C-W>v", { desc = "Split Window Right" }) },
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })

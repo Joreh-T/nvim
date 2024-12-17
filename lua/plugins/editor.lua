@@ -17,4 +17,15 @@ return {
       end
     end,
   },
+  {
+    "ibhagwan/fzf-lua",
+    keys = {
+      { "<leader>fF", LazyVim.pick("files"), desc = "Find Files (Root Dir)" },
+      { "<leader>ff", LazyVim.pick("files", { root = false }), desc = "Find Files (cwd)" },
+      -- { "<leader>fg", "<cmd>FzfLua git_files<cr>", desc = "Find Files (git-files)" },
+      { "<leader>fR", "<cmd>FzfLua oldfiles<cr>", desc = "Recent" },
+      { "<leader>fr", LazyVim.pick("oldfiles", { cwd = vim.uv.cwd() }), desc = "Recent (cwd)" },
+      { "<leader><leader>", LazyVim.pick("oldfiles", { cwd = vim.uv.cwd() }), desc = "Find Recent Files (cwd)" },
+    },
+  },
 }
