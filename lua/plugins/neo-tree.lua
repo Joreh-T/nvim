@@ -1,6 +1,10 @@
 return {
   {
     "nvim-neo-tree/neo-tree.nvim",
+    keys = {
+      { "<leader>E", "<leader>fe", desc = "Explorer NeoTree (Root Dir)", remap = true },
+      { "<leader>e", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
+    },
     opts = {
       window = {
         width = 30, -- 设置窗口宽度为 30 列
@@ -42,20 +46,20 @@ return {
           -- highlight = "NeoTreeFileIcon", -- 为文件图标定义高亮
         },
         git_status = {
-            symbols = {
-              -- Change type
-              added     = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
-              modified  = "", -- or "", but this is redundant info if you use git_status_colors on the name
-              deleted   = "󰗨",-- this can only be used in the git_status source
-              renamed   = "󰁕",-- this can only be used in the git_status source
-              -- Status type
-              untracked = "",
-              ignored   = "",
-              unstaged  = "",
-              staged    = "",
-              conflict  = "",
-            }
+          symbols = {
+            -- Change type
+            added = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
+            modified = "", -- or "", but this is redundant info if you use git_status_colors on the name
+            deleted = "󰗨", -- this can only be used in the git_status source
+            renamed = "󰁕", -- this can only be used in the git_status source
+            -- Status type
+            untracked = "",
+            ignored = "",
+            unstaged = "",
+            staged = "",
+            conflict = "",
           },
+        },
       },
       -- 自定义高亮颜色
       -- config = function()
