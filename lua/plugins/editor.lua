@@ -17,4 +17,26 @@ return {
       end
     end,
   },
+  {
+    "ibhagwan/fzf-lua",
+    keys = {
+      { "<leader>/", LazyVim.pick("live_grep", { root = false }), desc = "Grep (cwd)" },
+      { "<leader>sg", LazyVim.pick("live_grep", { root = false }), desc = "Grep (cwd)" },
+      { "<leader>sG", LazyVim.pick("live_grep"), desc = "Grep (Root Dir)" },
+    },
+
+    opts = function(_, opts)
+      opts.winopts = {
+        width = 0.8,
+        height = 0.8,
+        row = 0.5,
+        col = 0.5,
+        preview = {
+          layout = "vertical", -- 将预览窗口布局改为垂直分布
+          vertical = "down:55%", -- 预览窗口在layout中的高度位置,比例
+          scrollchars = { "┃", "" },
+        },
+      }
+    end,
+  },
 }
