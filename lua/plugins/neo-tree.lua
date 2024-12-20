@@ -7,7 +7,10 @@ return {
     },
     opts = {
       window = {
-        width = 30, -- 设置窗口宽度为 30 列
+        width = function()
+          local total_width = vim.o.columns -- 获取当前窗口总宽度
+          return math.max(33, math.floor(total_width * 0.20)) -- 宽度为总宽度的20%，最小为20列
+        end,
         title = "", -- 隐藏窗口标题
       },
       filesystem = {
