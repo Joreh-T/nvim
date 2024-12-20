@@ -74,7 +74,7 @@ map("n", "<leader>\\", "<C-W>v", { desc = "Split Window Right", remap = false })
 -----------------------------------------------------------
 map({ "n", "v" }, "<S-h>", "^", { noremap = true, silent = true })
 map('n', '<S-l>', '$', { noremap = true, silent = true })
-map('v', '<S-l>', "v$", { noremap = true, silent = true })
+map('v', '<S-l>', "$h", { noremap = true, silent = true })
 -- map({ "n", "v" }, "<S-l>", "$", { noremap = true, silent = true }) --这俩放一起，v模式下会选中换行符
 
 -----------------------------------------------------------
