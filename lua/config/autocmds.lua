@@ -1,15 +1,54 @@
 -- Autocmds are automatically loaded on the VeryLazy event
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
-vim.api.nvim_create_autocmd("VimResized", {
-  callback = function()
-    -- 检查 NeoTree 是否已经打开
-    local neotree_is_open = vim.fn.bufexists("NvimTree_1") == 1 or vim.fn.bufexists("neo-tree filesystem [1]") == 1
-    if neotree_is_open then
-      -- 重新加载 NeoTree，确保宽度动态更新
-      vim.cmd("Neotree close")
-      vim.cmd("Neotree show")
-    end
-  end,
-})
 
+-- vim.api.nvim_create_autocmd("VimResized", {
+--   callback = function()
+--     -- 检查 NeoTree 是否已经打开
+--     local neotree_is_open = vim.fn.bufexists("NvimTree_1") == 1 or vim.fn.bufexists("neo-tree filesystem [1]") == 1
+--     if neotree_is_open then
+--       -- 使用快捷键的方式来切换 NeoTree
+--       local ok, neotree_cmd = pcall(function()
+--         return require("neo-tree.command").execute
+--       end)
+--       if ok then
+--         neotree_cmd({ toggle = true, dir = vim.uv.cwd() })
+--         neotree_cmd({ toggle = true, dir = vim.uv.cwd() })
+--         vim.opt.list = false
+--         vim.opt.listchars = "" -- 清空 listchars 配置
+--       else
+--         -- 如果命令失败，可以选择使用 vim.cmd 来关闭和重新打开 NeoTree
+--         vim.cmd("Neotree close")
+--         vim.cmd("Neotree show")
+--       end
+--     end
+--   end,
+-- })
+--
+--
+--
+-- vim.api.nvim_create_autocmd("BufWinEnter", {
+--   pattern = "*", -- 对所有窗口应用该事件
+--   callback = function()
+--     -- 检查是否是 NeoTree 窗口
+--     if vim.bo.filetype == "neo-tree" then
+--       -- 禁用不可见字符显示
+--       vim.opt_local.list = false
+--       vim.opt_local.listchars = "" -- 清空 listchars 配置
+--     else
+--       -- 恢复正常窗口的设置（如果需要的话）
+--       local total_lines = vim.fn.line("$")
+--       for i = 1, total_lines do
+--         local line = vim.fn.getline(i)
+--         -- 如果是空行，禁用不可见字符
+--         if line == "" then
+--           vim.opt_local.list = false
+--           vim.opt_local.listchars = "" -- 清空 listchars 配置
+--         else
+--           vim.opt_local.list = true
+--           vim.opt_local.listchars = { space = "·", tab = ">-", eol = "↲" }
+--         end
+--       end
+--     end
+--   end,
+-- })
