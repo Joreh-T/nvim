@@ -2,15 +2,15 @@ return {
   "hedyhli/outline.nvim",
   lazy = true,
   cmd = { "Outline", "OutlineOpen" },
-  keys = { -- Example mapping to toggle outline
+  keys = {
     { "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
   },
   opts = {
     outline_window = {
       position = "right",
       split_command = nil,
-      width = 15,
-      relative_width = true,
+      width = 18, -- 设置默认宽度为最小值
+      -- relative_width = true,
       wrap = false,
       focus_on_open = true,
       auto_close = false,
@@ -76,4 +76,34 @@ return {
       },
     },
   },
+  config = function(_, opts)
+    -- 初始化 outline.nvim 配置
+    require("outline").setup(opts)
+
+    -- 动态调整宽度逻辑
+    vim.api.nvim_create_autocmd("VimResized", {
+      callback = function()
+        local outline_buf = nil
+
+        -- 找到 outline 缓冲区和窗口
+        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+          if vim.bo[buf].filetype == "Outline" then
+            outline_buf = buf
+            break
+          end
+        end
+
+        if outline_buf then
+          for _, win in ipairs(vim.api.nvim_list_wins()) do
+            if vim.api.nvim_win_get_buf(win) == outline_buf then
+              -- 动态调整窗口宽度
+              local total_width = vim.o.columns
+              local new_width = math.max(18, math.floor(total_width * 0.18))
+              vim.api.nvim_win_set_width(win, new_width)
+            end
+          end
+        end
+      end,
+    })
+  end,
 }
