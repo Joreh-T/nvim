@@ -104,27 +104,30 @@ return {
       ["<C-y>"] = { "select_and_accept" },
     },
 
-    providers = {
-      lsp = {
-        name = "LSP",
-        module = "blink.cmp.sources.lsp",
+  --   sources = {
+  --     providers = {
+  --       lsp = {
+  --         name = "LSP",
+  --         module = "blink.cmp.sources.lsp",
+  --
+  --         --- *All* providers have the following options available
+  --         --- NOTE: All of these options may be functions to get dynamic behavior
 
-        --- *All* providers have the following options available
-        --- NOTE: All of these options may be functions to get dynamic behavior
-        --- See the type definitions for more information.
-        enabled = true, -- Whether or not to enable the provider
-        async = false, -- Whether we should wait for the provider to return before showing the completions
-        timeout_ms = 300, -- How long to wait for the provider to return before showing completions and treating it as asynchronous
-        transform_items = nil, -- Function to transform the items before they're returned
-        should_show_items = true, -- Whether or not to show the items
-        max_items = nil, -- Maximum number of items to display in the menu
-        min_keyword_length = 0, -- Minimum number of characters in the keyword to trigger the provider
-        -- If this provider returns 0 items, it will fallback to these providers.
-        -- If multiple providers falback to the same provider, all of the providers must return 0 items for it to fallback
-        fallbacks = { "buffer" },
-        score_offset = 0, -- Boost/penalize the score of the items
-        override = nil, -- Override the source's functions
-      },
-    },
+  --         --- See the type definitions for more information.
+  --         enabled = true, -- Whether or not to enable the provider
+  --         async = false, -- Whether we should wait for the provider to return before showing the completions
+  --         timeout_ms = 30000, -- How long to wait for the provider to return before showing completions and treating it as asynchronous
+  --         transform_items = nil, -- Function to transform the items before they're returned
+  --         should_show_items = true, -- Whether or not to show the items
+  --         max_items = nil, -- Maximum number of items to display in the menu
+  --         min_keyword_length = 0, -- Minimum number of characters in the keyword to trigger the provider
+  --         -- If this provider returns 0 items, it will fallback to these providers.
+  --         -- If multiple providers falback to the same provider, all of the providers must return 0 items for it to fallback
+  --         fallbacks = { "buffer" },
+  --         score_offset = 0, -- Boost/penalize the score of the items
+  --         override = nil, -- Override the source's functions
+  --       },
+  --     },
+  --   },
   },
 }
