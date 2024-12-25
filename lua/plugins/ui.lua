@@ -159,13 +159,21 @@ return {
             height = 8,
             padding = 3,
           },
+          -- 动态判断窗口宽度来决定是否添加终端面板
           {
             pane = 2,
             section = "terminal",
-            cmd = "pokemon-colorscripts -n pikachu --no-title; sleep .2", -- https://github.com/gricardo87/pokemon-colorscripts.git
+            enabled = function()
+              -- 获取当前窗口的列数（宽度）
+              local width = vim.o.columns
+
+              -- 判断窗口宽度大于一定值时才显示这个面板
+              return width >= 120
+            end,
+            cmd = "pokemon-colorscripts -n pikachu --no-title; sleep .2", -- 运行终端命令
             random = 10,
             padding = 0,
-            indent = 2,
+            indent = 6,
             height = 12,
           },
           { section = "keys", gap = 1, padding = 1 },

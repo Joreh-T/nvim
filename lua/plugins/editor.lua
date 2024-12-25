@@ -114,4 +114,17 @@ return {
       },
     },
   },
+
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    config = function(_, opts)
+      local custom_opts = vim.tbl_deep_extend("force", opts, {
+        messages = {
+          view_search = false, -- 关闭搜索virtual text
+        },
+      })
+      require("noice").setup(custom_opts)
+    end,
+  },
 }
