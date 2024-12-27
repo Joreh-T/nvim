@@ -1,28 +1,25 @@
 return {
   "crusj/bookmarks.nvim",
-  -- keys = {
-  --   { "<tab><tab>", mode = { "n" } },
-  -- },
   branch = "main",
   dependencies = { "kyazdani42/nvim-web-devicons" },
   config = function()
     require("bookmarks").setup({
 
       -- default keymap
-      -- keymap = {
-      --   toggle = "<tab><tab>", -- Toggle bookmarks(global keymap)
-      --   close = "q", -- close bookmarks (buf keymap)
-      --   add = "\\z", -- Add bookmarks(global keymap)
-      --   add_global = "\\g", -- Add global bookmarks(global keymap), global bookmarks will appear in all projects. Identified with the symbol '󰯾'
-      --   jump = "<CR>", -- Jump from bookmarks(buf keymap)
-      --   delete = "dd", -- Delete bookmarks(buf keymap)
-      --   order = "<space><space>", -- Order bookmarks by frequency or updated_time(buf keymap)
-      --   delete_on_virt = "\\dd", -- Delete bookmark at virt text line(global keymap)
-      --   show_desc = "\\sd", -- show bookmark desc(global keymap)
-      --   focus_tags = "<c-j>", -- focus tags window
-      --   focus_bookmarks = "<c-k>", -- focus bookmarks window
-      --   toogle_focus = "<S-Tab>", -- toggle window focus (tags-window <-> bookmarks-window)
-      -- },
+      keymap = {
+        toggle = "<leader>mp", -- Toggle bookmarks(global keymap)
+        close = "q", -- close bookmarks (buf keymap)
+        add = "<leader>ma", -- Add bookmarks(global keymap)
+        add_global = "<leader>mA", -- Add global bookmarks(global keymap), global bookmarks will appear in all projects. Identified with the symbol '󰯾'
+        jump = "<CR>", -- Jump from bookmarks(buf keymap)
+        delete = "dd", -- Delete bookmarks(buf keymap)
+        order = "<space><space>", -- Order bookmarks by frequency or updated_time(buf keymap)
+        delete_on_virt = "<leader>md", -- Delete bookmark at virt text line(global keymap)
+        show_desc = "<leader>ms", -- show bookmark desc(global keymap)
+        focus_tags = "<c-j>", -- focus tags window
+        focus_bookmarks = "<c-k>", -- focus bookmarks window
+        toogle_focus = "<S-Tab>", -- toggle window focus (tags-window <-> bookmarks-window)
+      },
       width = 0.8, -- Bookmarks window width:  (0, 1]
       height = 0.7, -- Bookmarks window height: (0, 1]
       preview_ratio = 0.42, -- Bookmarks preview window ratio (0, 1]
