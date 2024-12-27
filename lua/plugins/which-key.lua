@@ -29,7 +29,21 @@ return {
           desc = "Yank absolute path", -- 描述
         },
       },
+      {
+        { "<leader>m", group = "Bookmarks", icon = { icon = "", color = "yellow" } },
+      },
+      {
+        { "<leader>i", group = "Get Icons", icon = { icon = "", color = "green" } },
+      },
+      {
+        { "<leader>K", group = "Keyword Manual", icon = { icon = "󰷈", color = "" } },
+      },
+      {
+        { "<leader>r", group = "Restart LSP", icon = { icon = "", color = "red" } },
+      },
+      {
+        { "<leader>a", group = "Add cursors to all the cword", icon = { icon = "󰆾", color = "yellow" } },
+      },
     },
   },
 }
-

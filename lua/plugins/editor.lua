@@ -46,72 +46,70 @@ return {
       }
     end,
   },
+  -- {
+  --   -- 光标动画
+  --   "sphamba/smear-cursor.nvim",
+  --   opts = {
+  --     -- cursor_color = "#ff8800",
+  --     stiffness = 0.5,
+  --     trailing_stiffness = 0.4,
+  --     -- trailing_exponent = 1,
+  --     -- distance_stop_animating = 0.5,
+  --     -- gamma = 1,
+  --     --  -- Smear cursor when switching buffers or windows.
+  --     smear_between_buffers = true,
+  --
+  --     -- Smear cursor when moving within line or to neighbor lines.
+  --     smear_between_neighbor_lines = false,
+  --
+  --     -- Draw the smear in buffer space instead of screen space when scrolling
+  --     scroll_buffer_space = true,
+  --
+  --     -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
+  --     -- Smears will blend better on all backgrounds.
+  --     legacy_computing_symbols_support = false,
+  --   },
+  -- },
   {
-    -- 光标动画
-    "sphamba/smear-cursor.nvim",
-    opts = {
-      -- cursor_color = "#ff8800",
-      stiffness = 0.5,
-      trailing_stiffness = 0.4,
-      -- trailing_exponent = 1,
-      -- distance_stop_animating = 0.5,
-      -- gamma = 1,
-      --  -- Smear cursor when switching buffers or windows.
-      smear_between_buffers = true,
+    "brenton-leighton/multiple-cursors.nvim",
+    version = "*", -- Use the latest tagged version
+    opts = {}, -- This causes the plugin setup function to be called
+    keys = {
+      -- { "<C-j>", "<Cmd>MultipleCursorsAddDown<CR>", mode = { "n", "x" }, desc = "Add cursor and move down" },
+      -- { "<C-k>", "<Cmd>MultipleCursorsAddUp<CR>", mode = { "n", "x" }, desc = "Add cursor and move up" },
 
-      -- Smear cursor when moving within line or to neighbor lines.
-      smear_between_neighbor_lines = false,
+      { "<A-Up>", "<Cmd>MultipleCursorsAddUp<CR>", mode = { "n", "i", "x" }, desc = "Add cursor and move up" },
+      { "<A-Down>", "<Cmd>MultipleCursorsAddDown<CR>", mode = { "n", "i", "x" }, desc = "Add cursor and move down" },
 
-      -- Draw the smear in buffer space instead of screen space when scrolling
-      scroll_buffer_space = true,
-
-      -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
-      -- Smears will blend better on all backgrounds.
-      legacy_computing_symbols_support = false,
-    },
-  },
-  {
-    {
-      "brenton-leighton/multiple-cursors.nvim",
-      version = "*", -- Use the latest tagged version
-      opts = {}, -- This causes the plugin setup function to be called
-      keys = {
-        -- { "<C-j>", "<Cmd>MultipleCursorsAddDown<CR>", mode = { "n", "x" }, desc = "Add cursor and move down" },
-        -- { "<C-k>", "<Cmd>MultipleCursorsAddUp<CR>", mode = { "n", "x" }, desc = "Add cursor and move up" },
-
-        { "<A-Up>", "<Cmd>MultipleCursorsAddUp<CR>", mode = { "n", "i", "x" }, desc = "Add cursor and move up" },
-        { "<A-Down>", "<Cmd>MultipleCursorsAddDown<CR>", mode = { "n", "i", "x" }, desc = "Add cursor and move down" },
-
-        {
-          "<C-LeftMouse>",
-          "<Cmd>MultipleCursorsMouseAddDelete<CR>",
-          mode = { "n", "i" },
-          desc = "Add or remove cursor",
-        },
-
-        {
-          "<Leader>a",
-          "<Cmd>MultipleCursorsAddMatches<CR>",
-          mode = { "n", "x" },
-          desc = "Add cursors to all the cword",
-        },
-        -- {
-        --   "<Leader>A",
-        --   "<Cmd>MultipleCursorsAddMatchesV<CR>",
-        --   mode = { "n", "x" },
-        --   desc = "Add cursors to cword in previous area",
-        -- },
-
-        {
-          "<A-j>",
-          "<Cmd>MultipleCursorsAddJumpNextMatch<CR>",
-          mode = { "n", "x" },
-          desc = "Add cursor and jump to next cword",
-        },
-        -- { "<Leader>D", "<Cmd>MultipleCursorsJumpNextMatch<CR>", mode = { "n", "x" }, desc = "Jump to next cword" },
-
-        -- { "<Leader>l", "<Cmd>MultipleCursorsLock<CR>", mode = { "n", "x" }, desc = "Lock virtual cursors" },
+      {
+        "<C-LeftMouse>",
+        "<Cmd>MultipleCursorsMouseAddDelete<CR>",
+        mode = { "n", "i" },
+        desc = "Add or remove cursor",
       },
+
+      {
+        "<Leader>a",
+        "<Cmd>MultipleCursorsAddMatches<CR>",
+        mode = { "n", "x" },
+        desc = "Add cursors to all the cword",
+      },
+      -- {
+      --   "<Leader>A",
+      --   "<Cmd>MultipleCursorsAddMatchesV<CR>",
+      --   mode = { "n", "x" },
+      --   desc = "Add cursors to cword in previous area",
+      -- },
+
+      {
+        "<A-j>",
+        "<Cmd>MultipleCursorsAddJumpNextMatch<CR>",
+        mode = { "n", "x" },
+        desc = "Add cursor and jump to next cword",
+      },
+      -- { "<Leader>D", "<Cmd>MultipleCursorsJumpNextMatch<CR>", mode = { "n", "x" }, desc = "Jump to next cword" },
+
+      -- { "<Leader>l", "<Cmd>MultipleCursorsLock<CR>", mode = { "n", "x" }, desc = "Lock virtual cursors" },
     },
   },
 
