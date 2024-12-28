@@ -7,7 +7,7 @@ return {
 
       -- default keymap
       keymap = {
-        toggle = "<leader>mp", -- Toggle bookmarks(global keymap)
+        toggle = "<leader>mt", -- Toggle bookmarks(global keymap)
         close = "q", -- close bookmarks (buf keymap)
         add = "<leader>ma", -- Add bookmarks(global keymap)
         add_global = "<leader>mA", -- Add global bookmarks(global keymap), global bookmarks will appear in all projects. Identified with the symbol '󰯾'

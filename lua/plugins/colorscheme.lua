@@ -14,7 +14,7 @@ return {
     opts = {
       style = onedark_style, -- dark, darker, cool, deep, warm, warmer, light
       --   transparent = false,     -- 是否启用透明背景
-      term_colors = true, -- 是否调整终端颜色
+      term_colors = false, -- 是否调整终端颜色
       ending_tildes = true, -- 是否显示缓冲区末尾的波浪符
 
       colors = {
@@ -28,7 +28,7 @@ return {
         git_untracked_color = "#72cce8",
         var_color_2 = "#C6C2C2",
         var_color_3 = "#E4E3E1",
-        purple = "#B98ED2",
+        purple = "#cf86d1",
         pink = "#e06c75",
 
         local_white = "#C2C7E5",
@@ -41,16 +41,19 @@ return {
       },
 
       highlights = {
-        TelescopeBorder = { fg = local_colors[onedark_style].cyan },
+        TelescopeBorder = { fg = local_colors[onedark_style].green },
         DiagnosticHint = { fg = "$keyword_color" },
 
         Directory = { fg = "$dir_color" },
         Delimiter = { fg = "$delimiter_color" },
-        NeoTreeGitUntracked = { fg = "$git_untracked_color" },
+        NeoTreeGitUntracked = { fg = local_colors[onedark_style].green },
         NeoTreeGitConflict = { fg = local_colors[onedark_style].yellow, fmt = "bold,italic" },
 
         Title = { fg = local_colors[onedark_style].green },
         Special = { fg = "#e6756e" },
+
+        DiagnosticInfo = { fg = local_colors[onedark_style].green },
+        FloatBorder = { fg = local_colors[onedark_style].green },
         -- ["@tag.delimiter"] = colors.Purple, -- "<", ">"
         ["@function"] = { fg = local_colors[onedark_style].green },
         ["@lsp.typemod.method.defaultLibrary"] = { fg = local_colors[onedark_style].blue },
@@ -66,8 +69,8 @@ return {
 
         ["@variable"] = { fg = "$var_color_2" },
         ["@lsp.type.variable"] = { fg = "$var_color_2" },
-        ["@variable.parameter"] = {fg = "$purple"},
-        ["@lsp.type.parameter"] = {fg = "$purple"},
+        ["@variable.parameter"] = { fg = "$purple" },
+        ["@lsp.type.parameter"] = { fg = "$purple" },
         -- ["@variable.builtin"] = {fg = "$pink"},
 
         ["@string"] = { fg = "$string_color_3" },
