@@ -125,4 +125,13 @@ return {
       require("noice").setup(custom_opts)
     end,
   },
+  {
+    -- 在editor中显示16进制颜色
+    'norcalli/nvim-colorizer.lua',
+    config = function()
+    require("colorizer").setup()
+    end
+  }
+
+
 }
