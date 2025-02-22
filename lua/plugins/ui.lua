@@ -126,6 +126,35 @@ return {
   --     },
   --   },
   --
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    config = function()
+      local rainbow_delimiters = require("rainbow-delimiters")
+      -- 设置 rainbow-delimiters 插件的配置
+      vim.g.rainbow_delimiters = {
+        strategy = {
+          [""] = rainbow_delimiters.strategy["global"],
+          vim = rainbow_delimiters.strategy["local"],
+        },
+        query = {
+          [""] = "rainbow-delimiters",
+          lua = "rainbow-blocks",
+        },
+        priority = {
+          [""] = 110,
+          lua = 210,
+        },
+        highlight = {
+          "RainbowDelimiterYellow",
+          "RainbowDelimiterBlue",
+          "RainbowDelimiterOrange",
+          "RainbowDelimiterGreen",
+          "RainbowDelimiterViolet",
+          "RainbowDelimiterCyan",
+        },
+      }
+    end,
+  },
 
   { "MunifTanjim/nui.nvim", lazy = true },
 
@@ -212,6 +241,42 @@ return {
             indent = 3,
           },
           -- { section = "startup" },
+        },
+      },
+      indent = {
+        indent = {
+          priority = 1,
+          enabled = true, -- enable indent guides
+          char = "│",
+          only_scope = false, -- only show indent guides of the scope
+          only_current = false, -- only show indent guides in the current window
+          -- hl = "SnacksIndent", ---@type string|string[] hl groups for indent guides
+          -- can be a list of hl groups to cycle through
+          -- hl = {
+          --     "SnacksIndent1",
+          --     "SnacksIndent2",
+          --     "SnacksIndent3",
+          --     "SnacksIndent4",
+          --     "SnacksIndent5",
+          --     "SnacksIndent6",
+          --     "SnacksIndent7",
+          --     "SnacksIndent8",
+          -- },
+        },
+        scope = {
+          enabled = true, -- enable highlighting the current scope
+          priority = 200,
+          char = "│",
+          underline = false, -- underline the start of the scope
+          only_current = false, -- only show scope in the current window
+          hl = {
+            "RainbowDelimiterYellow",
+            "RainbowDelimiterBlue",
+            "RainbowDelimiterOrange",
+            "RainbowDelimiterGreen",
+            "RainbowDelimiterViolet",
+            "RainbowDelimiterCyan",
+          },
         },
       },
     },
