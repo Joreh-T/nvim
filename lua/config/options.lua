@@ -38,6 +38,7 @@ vim.g.python3_host_prog = "/usr/bin/python3"
 vim.g.autoformat = false
 vim.o.wrap = true
 
+vim.g.snacks_animate = false -- 暂时关闭动画， 会导致V模式下向下选择时光标异常
 ---------------------------------------------------------------------
 ---
 vim.o.virtualedit = "onemore" -- 设置 virtualedit, 光标上下移动不会默认到行尾
