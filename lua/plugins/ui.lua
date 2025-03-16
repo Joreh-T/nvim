@@ -287,9 +287,8 @@ return {
       styles = {
         split = {
           position = "bottom",
-          -- height = 0.2,
-          height = math.floor(vim.o.lines * 0.20),
-          width = 0.4,
+          height = math.floor(vim.o.lines * 0.19),
+          -- width = 0.4,
         },
       },
     },
@@ -333,6 +332,12 @@ return {
 
       -- 基础配置
       local base_opts = {
+        options = {
+          left = { size = 25 },
+          bottom = { size = 50 },
+          right = { size = 25 },
+          top = { size = 10 },
+        },
         animate = { enabled = false },
         wo = {
           winbar = false,
@@ -381,6 +386,7 @@ return {
       local neo_tree_spec = {
         title = "FileTree",
         ft = "neo-tree",
+        size = { width = math.max(base_opts.options.left.size, math.floor(vim.o.columns * 0.18)) },
         filter = function(buf)
           return vim.b[buf].neo_tree_source == "filesystem"
         end,
@@ -391,12 +397,14 @@ return {
       table.insert(opts.right, {
         title = "Outline",
         ft = "Outline",
+        size = { width = math.max(base_opts.options.right.size, math.floor(vim.o.columns * 0.17)) },
         pinned = true,
         open = "Outline",
       })
 
       -- 合并配置
       return vim.tbl_deep_extend("force", opts or {}, {
+        options = base_opts.options,
         animate = base_opts.animate,
         wo = base_opts.wo,
         icons = base_opts.icons,
