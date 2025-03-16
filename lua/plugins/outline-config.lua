@@ -6,6 +6,10 @@ return {
     { "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
   },
   opts = {
+    keymaps = {
+      up_and_jump = "<up>",
+      down_and_jump = "<down>",
+    },
     outline_window = {
       position = "right",
       split_command = nil,
