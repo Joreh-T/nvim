@@ -13,7 +13,7 @@ return {
           endpoint = "https://api.deepseek.com/v1",
           model = "deepseek-chat",
           timeout = 30000,
-          max_tokens = 2048,
+          max_tokens = 4096,
         },
       },
       windows = {
@@ -45,8 +45,14 @@ return {
       },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    build = "make",
-    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+    build = (function()
+      local sysname = vim.loop.os_uname().sysname
+      if sysname == "Windows_NT" then
+        return "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
+      else
+        return "make"
+      end
+    end)(),
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "stevearc/dressing.nvim",
