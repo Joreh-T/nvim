@@ -338,9 +338,26 @@ return {
           right = { size = 25 },
           top = { size = 10 },
         },
-        animate = { enabled = false },
+        animate = {
+          enabled = false,
+          fps = 60, -- frames per second
+          cps = 200, -- cells per second
+          -- on_begin = function()
+          --   vim.g.minianimate_disable = true
+          -- end,
+          -- on_end = function()
+          --   vim.g.minianimate_disable = false
+          -- end,
+          -- Spinner for pinned views that are loading.
+          -- if you have noice.nvim installed, you can use any spinner from it, like:
+          -- spinner = require("noice.util.spinners").spinners.circleFull,
+          -- spinner = {
+          --   frames = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+          --   interval = 80,
+          -- },
+        },
         wo = {
-          winbar = false,
+          winbar = true,
           winhighlight = "WinBar:EdgyWinBarNC,WinBarNC:EdgyWinBarNC",
         },
         icons = {
@@ -390,17 +407,40 @@ return {
         filter = function(buf)
           return vim.b[buf].neo_tree_source == "filesystem"
         end,
+        pinned = true,
       }
 
       -- Outline 配置
-      opts.right = opts.right or {}
-      table.insert(opts.right, {
+      -- opts.right = opts.right or {}
+      -- table.insert(opts.right, {
+      --   title = "Outline",
+      --   ft = "Outline",
+      --   size = { width = math.max(base_opts.options.right.size, math.floor(vim.o.columns * 0.17)) },
+      --   pinned = true,
+      --   open = "Outline",
+      -- })
+
+      local outline_spec = {
         title = "Outline",
         ft = "Outline",
-        size = { width = math.max(base_opts.options.right.size, math.floor(vim.o.columns * 0.17)) },
-        pinned = true,
-        open = "Outline",
-      })
+        size = { width = math.max(base_opts.options.right.size, math.floor(vim.o.columns * 0.17)), height = 0.4},
+        -- pinned = true,
+        -- open = "Outline",
+      }
+
+      local left = {}
+
+      if LazyVim.has("neo-tree.nvim") then
+        table.insert(left, neo_tree_spec)
+      end
+
+      if LazyVim.has("outline.nvim") then
+        table.insert(left, outline_spec)
+      end
+
+      if vim.tbl_isempty(left) then
+        left = nil
+      end
 
       -- 合并配置
       return vim.tbl_deep_extend("force", opts or {}, {
@@ -409,7 +449,7 @@ return {
         wo = base_opts.wo,
         icons = base_opts.icons,
         keys = base_opts.keys,
-        left = LazyVim.has("neo-tree.nvim") and { neo_tree_spec } or nil,
+        left = left,
         positions = {
           top = { terminal_spec("top") },
           bottom = { terminal_spec("bottom") },
