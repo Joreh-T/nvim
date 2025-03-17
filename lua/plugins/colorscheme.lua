@@ -142,7 +142,8 @@ return {
     "Joreh-T/placeholder_highlighter.nvim",
     config = function()
       require("placeholder_highlighter").setup({
-        fg = "#F6D5A4",
+        -- fg = "#F6D5A4",
+        fg = "#e06c75",
         bold = true,
       })
     end,
@@ -152,7 +153,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "onedark",
+      colorscheme = "sonokai",
       -- colorscheme = "one_monokai",
     },
   },
