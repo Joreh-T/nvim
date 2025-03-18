@@ -1,7 +1,7 @@
 return {
   "crusj/bookmarks.nvim",
   branch = "main",
-  dependencies = { "kyazdani42/nvim-web-devicons" },
+  dependencies = { "kyazdani42/nvim-web-devicons", "nvim-telescope/telescope.nvim"},
   config = function()
     require("bookmarks").setup({
 
@@ -27,7 +27,8 @@ return {
       fix_enable = false, -- If true, when saving the current file, if the bookmark line number of the current file changes, try to fix it.
 
       virt_text = "", -- Show virt text at the end of bookmarked lines, if it is empty, use the description of bookmarks instead.
-      sign_icon = "📑", -- if it is not empty, show icon in signColumn.
+      -- sign_icon = "🚥", -- if it is not empty, show icon in signColumn.
+
       virt_pattern = {
         "*.go",
         "*.lua",

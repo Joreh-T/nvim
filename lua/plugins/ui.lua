@@ -287,7 +287,7 @@ return {
       styles = {
         split = {
           position = "bottom",
-          height = math.floor(vim.o.lines * 0.19),
+          height = math.floor(vim.o.lines * 0.21),
           -- width = 0.4,
         },
       },
