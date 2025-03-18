@@ -64,7 +64,7 @@ local function open_terminal_rezise_height()
         -- 切换到终端窗口进行操作
         vim.api.nvim_set_current_win(term_win)
         -- 计算并设置高度（至少保留 5 行高度）
-        local new_height = math.max(5, math.floor(ui_height * 0.2))
+        local new_height = math.max(5, math.floor(ui_height * 0.21))
         vim.api.nvim_win_set_height(term_win, new_height)
         -- 锁定窗口高度（可选）
         -- vim.wo[term_win].winfixheight = true
@@ -79,7 +79,6 @@ local del = vim.keymap.del
 -----------------------------------------------------------
 map("n", "<C-i>", "<C-i>", { noremap = true, silent = true })
 map("n", "<C-o>", "<C-o>", { noremap = true, silent = true })
-map("n", "<leader>sx", require("telescope.builtin").resume, { noremap = true, silent = true, desc = "Resume" })
 map("n", "<S-u>", "<C-r>", { noremap = true, silent = true })
 map("n", "<leader>r", "<cmd>LspRestart<CR>", { noremap = true, silent = false, desc = "Restart LSP" })
 map("n", "<CR>", "o<esc>", { noremap = true, silent = true })
@@ -99,7 +98,6 @@ map("n", "<leader>fT", function() Snacks.terminal(nil, { cwd = LazyVim.root() })
 -- buffer motion
 map("n", "<leader>bh", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 map("n", "<leader>bl", "<cmd>bnext<cr>", { desc = "Next Buffer" })
-map("n", "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Search In Curren Buffer" })
 
 -- map("n", "<leader>fr", function()
 --   require("telescope").extensions["recent-files"].recent_files({})
