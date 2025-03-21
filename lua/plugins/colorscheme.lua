@@ -132,12 +132,12 @@ return {
   --   priority = disable, -- defautl 50, make it higher to fast load
   -- },
   {
-    "sainnhe/sonokai",
+    -- "sainnhe/sonokai",
+    "Joreh-T/sonokai",
     lazy = false,
     priority = enable,
   },
 
-  -- 格式化占位符颜色跟随主题style
   {
     "Joreh-T/placeholder_highlighter.nvim",
     config = function()
