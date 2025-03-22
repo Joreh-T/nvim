@@ -299,13 +299,15 @@ return {
     event = "VeryLazy",
     opts = {
       options = {
-
         offsets = {
           {
             filetype = "neo-tree",
-            text = "", -- Set the text to empty
-            highlight = "Directory",
+            text = " FileTree",
+            highlight = "Green",
             text_align = "left",
+          },
+          {
+            filetype = "snacks_layout_box",
           },
         },
       },
@@ -361,8 +363,8 @@ return {
           winhighlight = "WinBar:EdgyWinBarNC,WinBarNC:EdgyWinBarNC",
         },
         icons = {
-          closed = " ",
-          open = " ",
+          closed = "",
+          open = "",
         },
         keys = {
           ["<c-Right>"] = function(win)
@@ -403,11 +405,14 @@ return {
       local neo_tree_spec = {
         title = "FileTree",
         ft = "neo-tree",
+        wo = {
+          winbar = false,
+        },
         size = { width = math.max(base_opts.options.left.size, math.floor(vim.o.columns * 0.18)) },
         filter = function(buf)
           return vim.b[buf].neo_tree_source == "filesystem"
         end,
-        pinned = true,
+        pinned = false,
       }
 
       -- Outline 配置
