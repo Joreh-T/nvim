@@ -121,21 +121,21 @@ return {
         messages = {
           view_search = false, -- 关闭搜索virtual text
         },
-        views = {
-          cmdline_popup = {
-            position = { row = "20%", col = "50%" },
-            size = { width = "auto", height = "auto" },
-            -- border = {
-            --   style = "rounded",
-            -- },
-            -- win_options = {
-            --   winhighlight = {
-            --     Normal = "NoiceCmdlinePopup",
-            --     FloatBorder = "NoiceCmdlinePopupBorder",
-            --   },
-            -- },
-          },
-        },
+        -- views = {
+        --   cmdline_popup = {
+        --     position = { row = "20%", col = "50%" },
+        --     size = { width = "auto", height = "auto" },
+        --     -- border = {
+        --     --   style = "rounded",
+        --     -- },
+        --     -- win_options = {
+        --     --   winhighlight = {
+        --     --     Normal = "NoiceCmdlinePopup",
+        --     --     FloatBorder = "NoiceCmdlinePopupBorder",
+        --     --   },
+        --     -- },
+        --   },
+        -- },
       })
       require("noice").setup(custom_opts)
     end,
