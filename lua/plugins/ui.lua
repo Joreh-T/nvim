@@ -408,7 +408,7 @@ return {
         wo = {
           winbar = false,
         },
-        size = { width = math.max(base_opts.options.left.size, math.floor(vim.o.columns * 0.18)) },
+        size = { width = math.max(base_opts.options.left.size, math.floor(vim.o.columns * 0.19)) },
         filter = function(buf)
           return vim.b[buf].neo_tree_source == "filesystem"
         end,
