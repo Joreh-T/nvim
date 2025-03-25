@@ -5,10 +5,31 @@
 ------------------ Avante------------------
 local group = vim.api.nvim_create_augroup("AvanteAutoToggle", { clear = true })
 
+local function focus_largest_window()
+  local max_area = 0
+  local target_win = nil
+
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    local config = vim.api.nvim_win_get_config(win)
+    if not config.relative or config.relative == "" then
+      local width = vim.api.nvim_win_get_width(win)
+      local height = vim.api.nvim_win_get_height(win)
+      local area = width * height
+      if area > max_area then
+        max_area = area
+        target_win = win
+      end
+    end
+  end
+
+  if target_win then
+    vim.api.nvim_set_current_win(target_win)
+  end
+end
 -- 定义需要监视的文件类型列表
 local target_filetypes = {
   "snacks_terminal",
-  -- "Outline",
+  "Outline",
   -- "neo-tree"
 }
 
@@ -16,7 +37,6 @@ local target_filetypes = {
 local function has_avante_window()
   for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
     local buf = vim.api.nvim_win_get_buf(win)
-    -- 使用 vim.bo 替代废弃的 nvim_buf_get_option
     if vim.bo[buf].filetype:match("^Avante") then
       return true
     end
@@ -38,7 +58,11 @@ local debounce_toggle = (function()
     -- 立即执行操作
     if has_avante_window() then
       vim.cmd("AvanteToggle")
-      -- print("[Avante] Toggled immediately for " .. ft)
+      vim.cmd("AvanteToggle")
+      focus_largest_window()
+      vim.defer_fn(function()
+        vim.cmd("stopinsert")
+      end, 320)
     end
 
     -- 启动冷却计时器
@@ -79,6 +103,9 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   end,
 })
 ------------------ Avante------------------
+
+
+
 -- vim.api.nvim_create_autocmd("VimResized", {
 --   callback = function()
 --     -- 检查 NeoTree 是否已经打开
