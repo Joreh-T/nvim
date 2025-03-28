@@ -82,18 +82,18 @@ return {
       { "<A-Down>", "<Cmd>MultipleCursorsAddDown<CR>", mode = { "n", "i", "x" }, desc = "Add cursor and move down" },
 
       {
-        "<C-LeftMouse>",
+        "<A-LeftMouse>",
         "<Cmd>MultipleCursorsMouseAddDelete<CR>",
         mode = { "n", "i" },
         desc = "Add or remove cursor",
       },
 
-      {
-        "<Leader>a",
-        "<Cmd>MultipleCursorsAddMatches<CR>",
-        mode = { "n", "x" },
-        desc = "Add cursors to all the cword",
-      },
+      -- {
+      --   "<Leader>a",
+      --   "<Cmd>MultipleCursorsAddMatches<CR>",
+      --   mode = { "n", "x" },
+      --   desc = "Add cursors to all the cword",
+      -- },
       -- {
       --   "<Leader>A",
       --   "<Cmd>MultipleCursorsAddMatchesV<CR>",
@@ -121,7 +121,7 @@ return {
         messages = {
           view_search = false, -- 关闭搜索virtual text
         },
-        -- views = {
+        --  views = {
         --   cmdline_popup = {
         --     position = { row = "20%", col = "50%" },
         --     size = { width = "auto", height = "auto" },
@@ -159,7 +159,7 @@ return {
           -- require('hover.providers.jira')
           -- require('hover.providers.dap')
           -- require('hover.providers.fold_preview')
-          -- require('hover.providers.diagnostic')
+          require('hover.providers.diagnostic')
           -- require('hover.providers.man')
           -- require('hover.providers.dictionary')
         end,
