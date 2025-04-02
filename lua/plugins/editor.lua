@@ -149,6 +149,7 @@ return {
   },
   {
     "lewis6991/hover.nvim",
+    pin = true,
     config = function()
       require("hover").setup({
         init = function()
