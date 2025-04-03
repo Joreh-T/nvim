@@ -2,6 +2,17 @@
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
 
+-- Disable spelling check.
+vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell") 
+
+-- Treat "*.jsp" files as HTML files.
+vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+  pattern = {"*.jsp"},
+  callback = function()
+    vim.bo.filetype = "html"
+  end,
+})
+
 ------------------ Avante------------------
 local group = vim.api.nvim_create_augroup("AvanteAutoToggle", { clear = true })
 
@@ -102,7 +113,7 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
     end
   end,
 })
------------------- Avante------------------
+------------------ End Of Avante------------------
 
 
 
