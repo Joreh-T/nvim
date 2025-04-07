@@ -43,14 +43,14 @@ return {
         update_in_insert = false, -- 插入模式下不进行诊断
         severity_sort = true, -- 诊断信息按严重性排序。通常，错误会排在最前面，警告排在其次，信息和提示排在最后。
         -- signs = false,
-        signs = {
-          text = {
-            [vim.diagnostic.severity.ERROR] = "",
-            [vim.diagnostic.severity.WARN] = "",
-            [vim.diagnostic.severity.HINT] = "",
-            [vim.diagnostic.severity.INFO] = "",
-          },
-        },
+        -- signs = {
+        --   text = {
+        --     [vim.diagnostic.severity.ERROR] = "",
+        --     [vim.diagnostic.severity.WARN] = "",
+        --     [vim.diagnostic.severity.HINT] = "",
+        --     [vim.diagnostic.severity.INFO] = "",
+        --   },
+        -- },
       },
 
       -- 禁用 CodeLens
@@ -78,7 +78,7 @@ return {
         width = "block",
         right_pad = 5,
         -- left_pad = 5,
-        border = true,
+        border = false,
         border_virtual = true,
         border_prefix = true,
         -- Used above heading for border.
