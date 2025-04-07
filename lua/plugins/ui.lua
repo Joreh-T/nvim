@@ -146,11 +146,11 @@ return {
         },
         highlight = {
           "RainbowDelimiterYellow",
-          "RainbowDelimiterBlue",
           "RainbowDelimiterOrange",
           "RainbowDelimiterGreen",
+          "RainbowDelimiterBlue",
           "RainbowDelimiterViolet",
-          "RainbowDelimiterCyan",
+          "RainbowDelimiterCyan"
         },
       }
     end,
@@ -276,9 +276,9 @@ return {
           only_current = false, -- only show scope in the current window
           hl = {
             "RainbowDelimiterYellow",
-            "RainbowDelimiterBlue",
             "RainbowDelimiterOrange",
             "RainbowDelimiterGreen",
+            "RainbowDelimiterBlue",
             "RainbowDelimiterViolet",
             "RainbowDelimiterCyan",
           },

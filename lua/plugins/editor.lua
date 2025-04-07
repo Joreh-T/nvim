@@ -188,4 +188,8 @@ return {
       vim.o.mousemoveevent = true
     end,
   },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    lazy = false,
+  }
 }

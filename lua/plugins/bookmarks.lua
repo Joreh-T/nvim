@@ -4,6 +4,7 @@ return {
   dependencies = { "kyazdani42/nvim-web-devicons", "nvim-telescope/telescope.nvim"},
   config = function()
     require("bookmarks").setup({
+    vim.api.nvim_set_hl(0, "bookmarks_virt_text_hl", {fg = "#879FA7", bg = "#21242C" }),
 
       -- default keymap
       keymap = {
