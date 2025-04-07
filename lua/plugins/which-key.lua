@@ -42,7 +42,7 @@ return {
         { "<leader>r", group = "Restart LSP", icon = { icon = "", color = "red" } },
       },
       {
-        { "<leader>a", group = "Add cursors to all the cword", icon = { icon = "󰆾", color = "yellow" } },
+        { "<leader>a", group = "Avante", icon = { icon = "󰆾", color = "yellow" } },
       },
     },
   },

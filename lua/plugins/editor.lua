@@ -87,6 +87,8 @@ return {
         mode = { "n", "i" },
         desc = "Add or remove cursor",
       },
+      {"<Leader>a", false},
+      {"<Leader>A", false},
 
       -- {
       --   "<Leader>a",
