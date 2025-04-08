@@ -2,8 +2,8 @@ return {
   {
     "yetone/avante.nvim",
     event = "VeryLazy",
-    lazy = false,
-    -- version = "v0.0.23", -- set this if you want to always pull the latest change
+    -- lazy = false,
+    -- version = "v0.0.23",
     opts = {
       provider = "deepseek",
       vendors = {
@@ -11,7 +11,7 @@ return {
           __inherited_from = "openai",
           api_key_name = "DEEPSEEK_API_KEY",
           endpoint = "https://api.deepseek.com/v1",
-          model = "deepseek-chat",
+          model = "deepseek-coder",
           timeout = 30000,
           max_tokens = 4096,
         },
@@ -20,7 +20,7 @@ return {
         ---@alias AvantePosition "right" | "left" | "top" | "bottom" | "smart"
         position = "right",
         wrap = true, -- similar to vim.o.wrap
-        width = 20, -- default % based on available width in vertical layout
+        width = 22, -- default % based on available width in vertical layout
         height = 100, -- default % based on available height in horizontal layout
         sidebar_header = {
           enabled = true, -- true, false to enable/disable the header
