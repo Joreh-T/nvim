@@ -6,16 +6,19 @@ return {
       { "<leader>e", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
     },
     opts = function(_, opts)
-          vim.diagnostic.config({
-        signs = {
-          text = {
-            [vim.diagnostic.severity.ERROR] = '',
-            [vim.diagnostic.severity.WARN] = '',
-            [vim.diagnostic.severity.INFO] = '',
-            [vim.diagnostic.severity.HINT] = '󰌵',
-          },
-        }
-      })
+      -- vim.diagnostic.config({
+      --   signs = {
+      --     text = {
+      --       [vim.diagnostic.severity.ERROR] = '',
+      --       [vim.diagnostic.severity.WARN] = '',
+      --       [vim.diagnostic.severity.INFO] = '',
+      --       [vim.diagnostic.severity.HINT] = '󰌵',
+      --     },
+      --   }
+      -- })
+     opts.default_component_configs.diagnostics = {
+        enabled = false, -- 禁用诊断图标
+      }
       -- 修改窗口宽度
       opts.window = opts.window or {}
       opts.window.width = function()

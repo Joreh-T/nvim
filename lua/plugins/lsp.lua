@@ -5,11 +5,8 @@ return {
       "mason.nvim",
       { "williamboman/mason-lspconfig.nvim", config = function() end },
     },
-    opts = {
-      -- 在 opts 中配置 clangd
-      servers = {
-        clangd = {
-          -- 运行命令
+    opts = function(_, opts)
+      opts.servers.clangd = vim.tbl_deep_extend("force", opts.servers.clangd or {}, {
           cmd = {
             "clangd",
             "--background-index",
@@ -19,7 +16,7 @@ return {
             "--completion-style=detailed",
             "--function-arg-placeholders=false",
           },
-          filetypes = { "c", "cpp", "objc", "objcpp" }, -- 支持的文件类型
+          filetypes = { "c", "cpp", "objc", "objcpp" },
           root_dir = require("lspconfig").util.root_pattern("compile_commands.json", "compile_flags.txt", ".clangd"), -- 根目录
           settings = {
             clangd = {
@@ -32,32 +29,26 @@ return {
               },
             },
           },
-          on_attach = function(client, bufnr) end,
+        })
+
+      opts.diagnostics.virtual_text = false
+      opts.diagnostics.signs = {
+        text = {
+          [vim.diagnostic.severity.ERROR] = "😡",
+          [vim.diagnostic.severity.WARN] = "😟",
+          [vim.diagnostic.severity.INFO] = "🙂",
+          [vim.diagnostic.severity.HINT] = "🤔",
+
+          -- [vim.diagnostic.severity.ERROR] = '',
+          -- [vim.diagnostic.severity.WARN] = '',
+          -- [vim.diagnostic.severity.INFO] = '',
+          -- [vim.diagnostic.severity.HINT] = '󰌵',
         },
-      },
+      }
 
-      -- 诊断配置
-      diagnostics = {
-        virtual_text = false, -- 禁用虚拟文本
-        underline = true,
-        update_in_insert = false, -- 插入模式下不进行诊断
-        severity_sort = true, -- 诊断信息按严重性排序。通常，错误会排在最前面，警告排在其次，信息和提示排在最后。
-        -- signs = false,
-        -- signs = {
-        --   text = {
-        --     [vim.diagnostic.severity.ERROR] = "",
-        --     [vim.diagnostic.severity.WARN] = "",
-        --     [vim.diagnostic.severity.HINT] = "",
-        --     [vim.diagnostic.severity.INFO] = "",
-        --   },
-        -- },
-      },
-
-      -- 禁用 CodeLens
-      codelens = {
-        enabled = false, -- 禁用 CodeLens
-      },
-    },
+      opts.codelens.enabled = false
+      return opts
+    end,
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
@@ -75,7 +66,7 @@ return {
       heading = {
         enabled = true,
         render_modes = false,
-        width = "block",
+        width = "full",
         right_pad = 5,
         -- left_pad = 5,
         border = false,

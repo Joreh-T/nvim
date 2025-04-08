@@ -14,6 +14,22 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
 })
 
 ------------------ Avante------------------
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "Avante",
+  callback = function()
+    if vim.g.colors_name ~= "sonokai" then
+      return
+    end
+
+    vim.api.nvim_set_hl(0, "AvanteSidebarNormal", { link = "Normal" })
+    vim.api.nvim_set_hl(0, "AvanteSidebarWinSeparator", { link = "WinSeparator" })
+
+    local normal_bg = string.format("#%06x", vim.api.nvim_get_hl(0, { name = "Normal" }).bg or 0)
+    vim.api.nvim_set_hl(0, "AvanteSidebarWinHorizontalSeparator", { bg = normal_bg })
+    vim.api.nvim_set_hl(0, "AvanteReversedThirdTitle", { fg = "#353b45", bg = normal_bg })
+  end,
+})
+
 local group = vim.api.nvim_create_augroup("AvanteAutoToggle", { clear = true })
 
 local function focus_largest_window()
