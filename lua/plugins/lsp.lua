@@ -7,44 +7,60 @@ return {
     },
     opts = function(_, opts)
       opts.servers.clangd = vim.tbl_deep_extend("force", opts.servers.clangd or {}, {
-          cmd = {
-            "clangd",
-            "--background-index",
-            "--clang-tidy",
-            "-j=4",
-            "--header-insertion=never",
-            "--completion-style=detailed",
-            "--function-arg-placeholders=false",
-          },
-          filetypes = { "c", "cpp", "objc", "objcpp" },
-          root_dir = require("lspconfig").util.root_pattern("compile_commands.json", "compile_flags.txt", ".clangd"), -- 根目录
-          settings = {
-            clangd = {
-              usePlaceholders = true,
-              semanticHighlighting = true,
-              clangdFileStatus = true,
-              enableConfig = true,
-              index = {
-                enable = true,
-              },
+        cmd = {
+          "clangd",
+          "--background-index",
+          "--clang-tidy",
+          "-j=4",
+          "--header-insertion=never",
+          "--completion-style=detailed",
+          "--function-arg-placeholders=false",
+        },
+        filetypes = { "c", "cpp", "objc", "objcpp" },
+        root_dir = require("lspconfig").util.root_pattern("compile_commands.json", "compile_flags.txt", ".clangd"), -- 根目录
+        settings = {
+          clangd = {
+            usePlaceholders = true,
+            semanticHighlighting = true,
+            clangdFileStatus = true,
+            enableConfig = true,
+            index = {
+              enable = true,
             },
           },
-        })
+        },
+      })
 
       opts.diagnostics.virtual_text = false
-      opts.diagnostics.signs = {
-        text = {
-          [vim.diagnostic.severity.ERROR] = "😡",
-          [vim.diagnostic.severity.WARN] = "😟",
-          [vim.diagnostic.severity.INFO] = "🙂",
-          [vim.diagnostic.severity.HINT] = "🤔",
+      if vim.g.neovide then
+        opts.diagnostics.signs = {
+          text = {
+            -- [vim.diagnostic.severity.ERROR] = "😡",
+            -- [vim.diagnostic.severity.WARN] = "😟",
+            -- [vim.diagnostic.severity.INFO] = "🙂",
+            -- [vim.diagnostic.severity.HINT] = "🤔",
 
-          -- [vim.diagnostic.severity.ERROR] = '',
-          -- [vim.diagnostic.severity.WARN] = '',
-          -- [vim.diagnostic.severity.INFO] = '',
-          -- [vim.diagnostic.severity.HINT] = '󰌵',
-        },
-      }
+            [vim.diagnostic.severity.ERROR] = "",
+            [vim.diagnostic.severity.WARN] = "",
+            [vim.diagnostic.severity.INFO] = "",
+            [vim.diagnostic.severity.HINT] = "󰌵",
+          },
+        }
+      else
+        opts.diagnostics.signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = "😡",
+            [vim.diagnostic.severity.WARN] = "😟",
+            [vim.diagnostic.severity.INFO] = "🙂",
+            [vim.diagnostic.severity.HINT] = "🤔",
+
+            -- [vim.diagnostic.severity.ERROR] = '',
+            -- [vim.diagnostic.severity.WARN] = '',
+            -- [vim.diagnostic.severity.INFO] = '',
+            -- [vim.diagnostic.severity.HINT] = '󰌵',
+          },
+        }
+      end
 
       opts.codelens.enabled = false
       return opts
