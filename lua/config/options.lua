@@ -84,11 +84,33 @@ if vim.g.neovide then
   -- vim.api.nvim_get_hl(0, {id=vim.api.nvim_get_hl_id_by_name("Normal")}).bg)
   --
   vim.o.guifont = "JetBrainsMono Nerd Font:h14"
-  vim.g.neovide_window_blurred = true
+  vim.g.neovide_ligatures = true -- 启用连字效果
+
   vim.g.neovide_hide_mouse_when_typing = true
   vim.g.neovide_refresh_rate = 60
+  vim.g.neovide_transparency = 0.99
 
-  -- vim.g.neovide_cursor_animation_length = 0.1
-  -- vim.g.neovide_cursor_short_animation_length = 0.01
-  vim.g.neovide_cursor_trail_size = 0.5
+  -- Cursor Animation
+  vim.g.neovide_cursor_animation_length = 0.2 -- 光标移动动画速度
+  vim.g.neovide_cursor_trail_size = 0.3 -- 拖尾长度
+  vim.g.neovide_cursor_antialiasing = true -- 抗锯齿
+  -- ""：禁用粒子。
+  -- "railgun"：光束效果
+  -- "torpedo"：拖尾粒子
+  -- "pixiedust"：闪烁粒子
+  -- "sonicboom"：冲击波效果
+  -- "ripple"：涟漪效果
+  -- "wireframe"：线框效果
+  vim.g.neovide_cursor_vfx_mode = "pixiedust" -- 粒子效果模式
+
+  -- Scroll Animatio
+  vim.g.neovide_scroll_animation_length = 0.3 -- 滚动动画时长（秒）
+  vim.g.neovide_scroll_animation_far = 1.5 -- 远距离滚动时放大动画
+
+  -- Window Effects
+  vim.g.neovide_floating_blur = 10 -- 浮动窗口模糊强度
+  vim.g.neovide_floating_opacity = 0.8 -- 透明度
+  vim.g.neovide_floating_z_height = 10 -- 悬浮高度
+
+  vim.g.neovide_window_blurred = true
 end

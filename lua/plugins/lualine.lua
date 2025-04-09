@@ -35,6 +35,7 @@ return {
             --     padding = { left = 0, right = 1 },
             -- },
         }
+        opts.sections.lualine_z = {}
 
         if vim.g.trouble_lualine and LazyVim.has("trouble.nvim") then
         local trouble = require("trouble")
