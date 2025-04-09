@@ -75,3 +75,20 @@ if vim.fn.has("wsl") == 1 then
     cache_enabled = false,
   }
 end
+
+
+if vim.g.neovide then
+  vim.g.neovide_title_background_color = "#2a2f38"
+  -- string.format(
+  --   "%x",
+  -- vim.api.nvim_get_hl(0, {id=vim.api.nvim_get_hl_id_by_name("Normal")}).bg)
+  --
+  vim.o.guifont = "JetBrainsMono Nerd Font:h14"
+  vim.g.neovide_window_blurred = true
+  vim.g.neovide_hide_mouse_when_typing = true
+  vim.g.neovide_refresh_rate = 60
+
+  -- vim.g.neovide_cursor_animation_length = 0.1
+  -- vim.g.neovide_cursor_short_animation_length = 0.01
+  vim.g.neovide_cursor_trail_size = 0.5
+end
