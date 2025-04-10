@@ -128,6 +128,18 @@ map("n", "gh", function()
   })
 end, { noremap = true, silent = true, desc = "Hover diagnostic" })
 
+-- 复制：Ctrl + c
+map({ "n", "v" }, "<C-c>", '"+y', { noremap = true, desc = "Copy to system clipboard" })
+
+-- 粘贴：Ctrl + v
+map("n", "<C-v>", '"+p', { noremap = true, desc = "Paste from system clipboard" })
+map("i", "<C-v>", '<C-r>+', { noremap = true, desc = "Paste from system clipboard" })
+-- map('c', '<C-v>', '<C-r>+', { noremap = true, silent = true }) -- 这样ui不会马上刷新
+map("c", "<C-v>", function()
+  return vim.fn.getreg("+")
+end, { noremap = true, expr = true, desc = "Paste clipboard in cmdline" })
+
+
 --   {map("n", "gk", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true, silent = true })},
 --   {map("n", "gj", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = true })}
 --   { "K", function() return vim.lsp.buf.hover() end, desc = "Hover" },
