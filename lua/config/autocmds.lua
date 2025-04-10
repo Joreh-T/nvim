@@ -119,21 +119,11 @@ end
 local function restore_cursor_position(ft)
   if cursor_positions.win and vim.api.nvim_win_is_valid(cursor_positions.win) then
     vim.api.nvim_set_current_win(cursor_positions.win)
-    if ft:match("Outline$") then
-      vim.defer_fn(function()
-        vim.api.nvim_win_set_cursor(0, { vim.fn.line("."), 0 })
-      end, 320)
-    else
-      vim.api.nvim_win_set_cursor(cursor_positions.win, cursor_positions.pos)
-    end
+    vim.api.nvim_win_set_cursor(cursor_positions.win, cursor_positions.pos)
 
     -- Restore input mode
     local current_mode = vim.api.nvim_get_mode().mode
-    if ft:match("Outline$") then
-      vim.defer_fn(function()
-        vim.cmd("stopinsert")
-      end, 320)
-    elseif current_mode ~= cursor_positions.mode then
+    if current_mode ~= cursor_positions.mode then
       if cursor_positions.mode == "n" then
         vim.api.nvim_command("stopinsert")
       elseif cursor_positions.mode == "i" then
