@@ -43,6 +43,19 @@ return {
           vertical = "down:55%", -- 预览窗口在layout中的高度位置,比例
           scrollchars = { "┃", "" },
         },
+        on_create = function()
+          -- <C-\><C-n>: Switch from terminal mode to normal mode;
+          -- "+p: Paste from the system clipboard (+ register);
+          -- i: Return to insert mode (fzf is interactive input);
+          -- buffer = true: Only effective for fzf's temporary buffer, does not affect global settings;
+          -- silent = true: Avoid command-line prompts;
+          -- noremap = true: Avoid recursive mappings
+                    --
+          -- '+' register
+          vim.keymap.set("t", "<C-v>", [[<C-\><C-n>"+pi]], { noremap = true, silent = true, buffer = true })
+          -- '*' register
+          -- vim.keymap.set("t", "<C-v>", [[<C-\><C-n>"*pi]], { noremap = true, silent = true, buffer = true })
+        end,
       }
     end,
   },
@@ -87,8 +100,8 @@ return {
         mode = { "n", "i" },
         desc = "Add or remove cursor",
       },
-      {"<Leader>a", false},
-      {"<Leader>A", false},
+      { "<Leader>a", false },
+      { "<Leader>A", false },
 
       -- {
       --   "<Leader>a",
@@ -162,7 +175,7 @@ return {
           -- require('hover.providers.jira')
           -- require('hover.providers.dap')
           -- require('hover.providers.fold_preview')
-          require('hover.providers.diagnostic')
+          require("hover.providers.diagnostic")
           -- require('hover.providers.man')
           -- require('hover.providers.dictionary')
         end,
@@ -193,5 +206,5 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     lazy = false,
-  }
+  },
 }
