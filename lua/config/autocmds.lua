@@ -116,23 +116,33 @@ local function record_cursor_position()
 end
 
 -- Restore the cursor to the recorded window, position, and input mode
-local function restore_cursor_position()
-    if cursor_positions.win and vim.api.nvim_win_is_valid(cursor_positions.win) then
-        vim.api.nvim_set_current_win(cursor_positions.win)
-        vim.api.nvim_win_set_cursor(cursor_positions.win, cursor_positions.pos)
-
-        -- Restore input mode
-        local current_mode = vim.api.nvim_get_mode().mode
-        if current_mode ~= cursor_positions.mode then
-            if cursor_positions.mode == "n" then
-                vim.api.nvim_command("stopinsert")
-            elseif cursor_positions.mode == "i" then
-                vim.api.nvim_command("startinsert")
-            end
-        end
+local function restore_cursor_position(ft)
+  if cursor_positions.win and vim.api.nvim_win_is_valid(cursor_positions.win) then
+    vim.api.nvim_set_current_win(cursor_positions.win)
+    if ft:match("Outline$") then
+      vim.defer_fn(function()
+        vim.api.nvim_win_set_cursor(0, { vim.fn.line("."), 0 })
+      end, 320)
     else
-        vim.notify("No valid recorded cursor position to restore", vim.log.levels.WARN)
+      vim.api.nvim_win_set_cursor(cursor_positions.win, cursor_positions.pos)
     end
+
+    -- Restore input mode
+    local current_mode = vim.api.nvim_get_mode().mode
+    if ft:match("Outline$") then
+      vim.defer_fn(function()
+        vim.cmd("stopinsert")
+      end, 320)
+    elseif current_mode ~= cursor_positions.mode then
+      if cursor_positions.mode == "n" then
+        vim.api.nvim_command("stopinsert")
+      elseif cursor_positions.mode == "i" then
+        vim.api.nvim_command("startinsert")
+      end
+    end
+  else
+    vim.notify("No valid recorded cursor position to restore", vim.log.levels.WARN)
+  end
 end
 
 local function focus_largest_window()
@@ -201,12 +211,7 @@ local debounce_toggle = (function()
     if has_avante_window() then
       vim.cmd("AvanteToggle")
       vim.cmd("AvanteToggle")
-      restore_cursor_position()
-      if ft:match("Outline$") then
-        vim.defer_fn(function()
-        vim.cmd("stopinsert")
-      end, 320)
-      end
+      restore_cursor_position(ft)
       -- focus_largest_window()
       -- vim.defer_fn(function()
       --   vim.cmd("stopinsert")
