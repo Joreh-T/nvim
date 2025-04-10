@@ -91,8 +91,8 @@ if vim.g.neovide then
   vim.g.neovide_transparency = 0.99
 
   -- Cursor Animation
-  vim.g.neovide_cursor_animation_length = 0.2 -- 光标移动动画速度
-  vim.g.neovide_cursor_trail_size = 0.3 -- 拖尾长度
+  vim.g.neovide_cursor_animation_length = 0.15 -- 光标移动动画速度
+  vim.g.neovide_cursor_trail_size = 0.2 -- 拖尾长度
   vim.g.neovide_cursor_antialiasing = true -- 抗锯齿
   -- ""：禁用粒子。
   -- "railgun"：光束效果
