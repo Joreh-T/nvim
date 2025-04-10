@@ -43,6 +43,21 @@ return {
           focus_on_apply = "ours", -- which diff to focus after applying
         },
       },
+      behaviour = {
+        auto_focus_sidebar = true,
+        auto_suggestions = false, -- Experimental stage
+        auto_suggestions_respect_ignore = false,
+        auto_set_highlight_group = true,
+        auto_set_keymaps = true,
+        auto_apply_diff_after_generation = false,
+        jump_result_buffer_on_finish = true,
+        support_paste_from_clipboard = false,
+        minimize_diff = true,
+        enable_token_counting = false,
+        enable_cursor_planning_mode = false,
+        enable_claude_text_editor_tool_mode = false,
+        use_cwd_as_project_root = false,
+      },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = (function()
