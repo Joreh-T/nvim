@@ -14,12 +14,12 @@ vim.api.nvim_create_autocmd("FileType", {
 ---------------------------------------------------------------------
 -- 设置 Neovim 启动时使用 PowerShell
 local os = vim.loop.os_uname().sysname
-if os == 'Windows_NT' then
-  vim.o.shell = 'powershell'
+if os == "Windows_NT" then
+  vim.o.shell = "powershell"
 end
 
 vim.opt.list = true -- 显示不可见字符
-vim.opt.listchars = { space = "·", tab = ">-", eol = "↲"}
+vim.opt.listchars = { space = "·", tab = ">-", eol = "↲" }
 vim.opt.tabstop = 4 -- 设置 tab 键的宽度为 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4 -- 设置自动缩进时的宽度为 4
@@ -28,7 +28,7 @@ vim.opt.expandtab = true -- 插入tab 转换为空格
 vim.opt.smartindent = true
 -- vim.opt.autoindent = true
 vim.opt.conceallevel = 0 -- 显示隐藏字符
-vim.opt.clipboard = "unnamedplus" --使用系统剪切板替换nvim剪切板 
+vim.opt.clipboard = "unnamedplus" --使用系统剪切板替换nvim剪切板
 vim.opt.relativenumber = true -- 相对行号
 vim.opt.number = true
 vim.opt.jumpoptions = "stack"
@@ -76,8 +76,41 @@ if vim.fn.has("wsl") == 1 then
   }
 end
 
-
 if vim.g.neovide then
+  -- Function to parse and compare versions
+  local function is_version_leq(target_version)
+    local version_str = vim.fn.system("neovide --version")
+    local version = version_str:match("Neovide (%d+%.%d+%.%d+)")
+    if not version then
+      return false
+    end
+
+    local target_major, target_minor, target_patch = target_version:match("(%d+)%.(%d+)%.(%d+)")
+    local major, minor, patch = version:match("(%d+)%.(%d+)%.(%d+)")
+
+    if not (major and minor and patch) then
+      return false
+    end
+
+    -- Compare versions numerically
+    if tonumber(major) < tonumber(target_major) then
+      return true
+    elseif tonumber(major) == tonumber(target_major) then
+      if tonumber(minor) < tonumber(target_minor) then
+        return true
+      elseif tonumber(minor) == tonumber(target_minor) then
+        return tonumber(patch) <= tonumber(target_patch)
+      end
+    end
+    return false
+  end
+
+  if is_version_leq("0.15.0") then
+    vim.g.neovide_transparency = 0.99
+  else
+    vim.g.neovide_opacity = 0.98
+  end
+
   vim.g.neovide_title_background_color = "#2a2f38"
   -- string.format(
   --   "%x",
@@ -88,7 +121,6 @@ if vim.g.neovide then
 
   vim.g.neovide_hide_mouse_when_typing = true
   vim.g.neovide_refresh_rate = 60
-  vim.g.neovide_transparency = 0.99
 
   -- Cursor Animation
   vim.g.neovide_cursor_animation_length = 0.15 -- 光标移动动画速度
