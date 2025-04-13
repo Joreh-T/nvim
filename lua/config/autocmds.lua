@@ -248,6 +248,20 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 ------------------ End Of Avante------------------
 
 
+vim.api.nvim_create_autocmd("ModeChanged", {
+  pattern = "*",
+  callback = function()
+    if vim.fn.mode() == "i" then
+      vim.g.neovide_cursor_animation_length = 0.0
+      vim.g.neovide_cursor_vfx_mode = "" -- 粒子效果模式
+      vim.g.neovide_cursor_trail_size = 0 -- 拖尾长度
+    else
+      vim.g.neovide_cursor_animation_length = 0.15 -- 光标移动动画速度
+      vim.g.neovide_cursor_vfx_mode = "pixiedust" -- 粒子效果模式
+      vim.g.neovide_cursor_trail_size = 0.2 -- 拖尾长度
+    end
+  end
+})
 
 -- vim.api.nvim_create_autocmd("VimResized", {
 --   callback = function()
