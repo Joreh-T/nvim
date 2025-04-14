@@ -13,7 +13,7 @@ return {
           endpoint = "https://api.deepseek.com/v1",
           model = "deepseek-coder",
           timeout = 30000,
-          max_tokens = 4096,
+          max_tokens = 8192,
         },
       },
       windows = {

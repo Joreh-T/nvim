@@ -15,7 +15,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- 设置 Neovim 启动时使用 PowerShell
 local os = vim.loop.os_uname().sysname
 if os == "Windows_NT" then
-  vim.o.shell = "powershell"
+  vim.o.shell = "powershell -Nologo"
 end
 
 vim.opt.list = true -- 显示不可见字符
@@ -120,7 +120,7 @@ if vim.g.neovide then
   vim.g.neovide_ligatures = true -- 启用连字效果
 
   vim.g.neovide_hide_mouse_when_typing = true
-  vim.g.neovide_refresh_rate = 60
+  -- vim.g.neovide_refresh_rate = 60
 
   -- Cursor Animation
   vim.g.neovide_cursor_animation_length = 0.15 -- 光标移动动画速度
