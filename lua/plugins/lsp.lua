@@ -62,7 +62,7 @@ return {
         }
       end
 
-      opts.codelens.enabled = false
+      opts.codelens.enabled = true
       return opts
     end,
   },
