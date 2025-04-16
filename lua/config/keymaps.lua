@@ -77,6 +77,8 @@ local map = vim.keymap.set
 local del = vim.keymap.del
 
 -----------------------------------------------------------
+-- 映射 'yw' 为 'viwy' 避免复制多余的空格
+map('n', 'yw', 'viwy', { noremap = true, silent = true })
 map("n", "<C-i>", "<C-i>", { noremap = true, silent = true })
 map("n", "<C-o>", "<C-o>", { noremap = true, silent = true })
 map("n", "<S-u>", "<C-r>", { noremap = true, silent = true })
