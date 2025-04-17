@@ -79,6 +79,8 @@ local del = vim.keymap.del
 -----------------------------------------------------------
 -- 映射 'yw' 为 'viwy' 避免复制多余的空格
 map("n", "yw", "viwy", { noremap = true, silent = true })
+map("n", "<A-j>", "<C-d>", { noremap = true, silent = true, desc = 'Scroll Up Half Page'  })
+map("n", "<A-k>", "<C-u>", { noremap = true, silent = true, desc = 'Scroll Down Half Page' })
 map("n", "<C-i>", "<C-i>", { noremap = true, silent = true })
 map("n", "<C-o>", "<C-o>", { noremap = true, silent = true })
 map("n", "<S-u>", "<C-r>", { noremap = true, silent = true })
@@ -186,7 +188,7 @@ vim.keymap.set("n", "q", function()
     -- 遍历所有窗口
     for _, win in ipairs(vim.api.nvim_list_wins()) do
         local buf = vim.api.nvim_win_get_buf(win)
-        local cur_buf_type = vim.api.nvim_buf_get_option(buf, "filetype")
+        local cur_buf_type = vim.bo[buf].filetype
         if cur_buf_type == "DiffviewFiles" or cur_buf_type == "DiffviewFileHistory" then
             vim.api.nvim_win_call(win, function()
                 vim.cmd("DiffviewClose")
@@ -208,7 +210,7 @@ vim.keymap.set("n", "q", function()
         local ok, buf = pcall(vim.api.nvim_win_get_buf, win)
         if ok then
             -- 检查文件类型
-            local cur_buf_type = vim.api.nvim_buf_get_option(buf, "filetype")
+            local cur_buf_type = vim.bo[buf].filetype
             if cur_buf_type == "DiffviewFiles" or cur_buf_type == "DiffviewFileHistory" then
                 vim.api.nvim_win_call(win, function()
                     vim.cmd("DiffviewClose")
