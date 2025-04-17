@@ -1,4 +1,7 @@
 -- if true then return {} end
+local screen_width = vim.o.columns
+local center_indent = math.floor((screen_width - 78) / 2) -- 尽量让header居中
+
 return {
   {
     "HiPhish/rainbow-delimiters.nvim",
@@ -76,50 +79,55 @@ return {
           {
             section = "header",
             height = 8,
-            padding = 3,
+            padding = 3, -- Spacing from below
+            indent = center_indent, -- Spacing from left
           },
           -- 动态判断窗口宽度来决定是否添加终端面板
+          -- {
+          --   pane = 2,
+          --   section = "terminal",
+          --   enabled = function()
+          --     -- 获取当前窗口的列数（宽度）
+          --     local width = vim.o.columns
+          --
+          --     -- 判断窗口宽度大于一定值时才显示这个面板
+          --     return width >= 120
+          --   end,
+          --   cmd = "pokemon-colorscripts -n pikachu --no-title; sleep .2", -- 运行终端命令
+          --   random = 10,
+          --   padding = 0,
+          --   indent = 6,
+          --   height = 12,
+          -- },
           {
             pane = 2,
-            section = "terminal",
-            enabled = function()
-              -- 获取当前窗口的列数（宽度）
-              local width = vim.o.columns
-
-              -- 判断窗口宽度大于一定值时才显示这个面板
-              return width >= 120
-            end,
-            cmd = "pokemon-colorscripts -n pikachu --no-title; sleep .2", -- 运行终端命令
-            random = 10,
-            padding = 0,
-            indent = 6,
-            height = 12,
+            section = nil,
+            padding = 11,
           },
           { section = "keys", gap = 1, padding = 1 },
           { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
           { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
-          {
-            pane = 2,
-            icon = " ",
-            title = "Git Status",
-            section = "terminal",
-            enabled = function()
-              return Snacks.git.get_root() ~= nil
-            end,
-            cmd = (function()
-              -- 检查 'hub' 是否可用
-              if vim.fn.executable("hub") == 1 then
-                return "hub status --short --branch --renames"
-              else
-                return "git status --short --branch --renames"
-              end
-            end)(), -- 注意这里直接执行函数，将返回值作为结果
-            height = 5,
-            padding = 1,
-            ttl = 5 * 60,
-            indent = 3,
-          },
-          -- { section = "startup" },
+          -- {
+          --   pane = 2,
+          --   icon = " ",
+          --   title = "Git Status",
+          --   section = "terminal",
+          --   enabled = function()
+          --     return Snacks.git.get_root() ~= nil
+          --   end,
+          --   cmd = (function()
+          --     -- 检查 'hub' 是否可用
+          --     if vim.fn.executable("hub") == 1 then
+          --       return "hub status --short --branch --renames"
+          --     else
+          --       return "git status --short --branch --renames"
+          --     end
+          --   end)(), -- 注意这里直接执行函数，将返回值作为结果
+          --   height = 5,
+          --   padding = 1,
+          --   ttl = 5 * 60,
+          --   indent = 3,
+          -- },
         },
       },
       indent = {
