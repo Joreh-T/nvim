@@ -153,7 +153,7 @@ end, { noremap = true, expr = true, desc = "Paste clipboard in cmdline" })
 
 ------------------------- Avante -------------------------
 del({"n", "v"}, "<leader>aa")
-map({"n", "v"}, "<leader>aa", "<ESC>:AvanteFocus<CR>", { noremap = true, silent = true, desc = "ask" })
+map({"n", "v"}, "<leader>aa", "<ESC>:AvanteFocus<CR>i", { noremap = true, silent = true, desc = "ask" })
 ----------------------End Of Avante ----------------------
 
 ------------------------- Git Tools -------------------------
@@ -180,10 +180,10 @@ local function toggle_history_view()
     end
 end
 
-vim.keymap.set("n", "<leader>gd", toggle_diffview, { noremap = true, silent = true, desc = "Toggle Diffview" })
-vim.keymap.set("n", "<leader>gH", toggle_history_view, { noremap = true, silent = true, desc = "Toggle File History" })
+map("n", "<leader>gd", toggle_diffview, { noremap = true, silent = true, desc = "Toggle Diffview" })
+map("n", "<leader>gH", toggle_history_view, { noremap = true, silent = true, desc = "Toggle File History" })
 
-vim.keymap.set("n", "q", function()
+map("n", "q", function()
     local closed_diffview = false
     -- 遍历所有窗口
     for _, win in ipairs(vim.api.nvim_list_wins()) do
@@ -202,7 +202,7 @@ vim.keymap.set("n", "q", function()
     end
 end, { desc = "Close Diffview or fallback to default q" })
 
-vim.keymap.set("n", "q", function()
+map("n", "q", function()
     local closed_diffview = false
     -- 安全遍历所有窗口
     for _, win in ipairs(vim.api.nvim_list_wins()) do
