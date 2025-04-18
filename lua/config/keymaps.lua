@@ -71,6 +71,12 @@ local function open_terminal_rezise_height()
             end
         end
     end)
+    -- 避免有avante窗口时无法自动进入t模式
+    vim.defer_fn(function()
+        if vim.fn.mode() ~= "t" then
+            vim.cmd("startinsert")
+        end
+    end, 100)
 end
 
 local map = vim.keymap.set
@@ -79,8 +85,8 @@ local del = vim.keymap.del
 -----------------------------------------------------------
 -- 映射 'yw' 为 'viwy' 避免复制多余的空格
 map("n", "yw", "viwy", { noremap = true, silent = true })
-map("n", "<A-j>", "<C-d>", { noremap = true, silent = true, desc = 'Scroll Up Half Page'  })
-map("n", "<A-k>", "<C-u>", { noremap = true, silent = true, desc = 'Scroll Down Half Page' })
+map("n", "<A-j>", "<C-d>", { noremap = true, silent = true, desc = "Scroll Up Half Page" })
+map("n", "<A-k>", "<C-u>", { noremap = true, silent = true, desc = "Scroll Down Half Page" })
 map("n", "<C-i>", "<C-i>", { noremap = true, silent = true })
 map("n", "<C-o>", "<C-o>", { noremap = true, silent = true })
 map("n", "<S-u>", "<C-r>", { noremap = true, silent = true })
@@ -152,8 +158,8 @@ end, { noremap = true, expr = true, desc = "Paste clipboard in cmdline" })
 --   { "K", function() return vim.lsp.buf.hover() end, desc = "Hover" },
 
 ------------------------- Avante -------------------------
-del({"n", "v"}, "<leader>aa")
-map({"n", "v"}, "<leader>aa", "<ESC>:AvanteFocus<CR>i", { noremap = true, silent = true, desc = "ask" })
+del({ "n", "v" }, "<leader>aa")
+map({ "n", "v" }, "<leader>aa", "<ESC>:AvanteFocus<CR>i", { noremap = true, silent = true, desc = "ask" })
 ----------------------End Of Avante ----------------------
 
 ------------------------- Git Tools -------------------------
@@ -228,4 +234,22 @@ map("n", "q", function()
     end
 end)
 
+-- lazygit
+if vim.fn.executable("lazygit") == 1 then
+    map("n", "<leader>gg", function()
+        -- 如果avante toggle时开启自动进入insert模式就不用下面的步骤
+        vim.cmd("AvanteToggle")
+        Snacks.lazygit({ cwd = LazyVim.root.git() })
+        vim.defer_fn(function()
+            if vim.fn.mode() ~= "i" then
+                vim.cmd("startinsert")
+            end
+        end, 500)
+    end, { desc = "Lazygit (Root Dir)" })
+
+    map("n", "<leader>gG", function() Snacks.lazygit() end, { desc = "Lazygit (cwd)" })
+    map("n", "<leader>gf", function() Snacks.picker.git_log_file() end, { desc = "Git Current File History" })
+    map("n", "<leader>gl", function() Snacks.picker.git_log({ cwd = LazyVim.root.git() }) end, { desc = "Git Log" })
+    map("n", "<leader>gL", function() Snacks.picker.git_log() end, { desc = "Git Log (cwd)" })
+end
 -------------------------End Of Git Tools -------------------------
