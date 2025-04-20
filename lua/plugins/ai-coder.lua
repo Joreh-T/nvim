@@ -20,7 +20,7 @@ return {
         ---@alias AvantePosition "right" | "left" | "top" | "bottom" | "smart"
         position = "right",
         wrap = true, -- similar to vim.o.wrap
-        width = 22, -- default % based on available width in vertical layout
+        width = 24, -- default % based on available width in vertical layout
         height = 100, -- default % based on available height in horizontal layout
         sidebar_header = {
           enabled = true, -- true, false to enable/disable the header
