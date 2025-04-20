@@ -236,9 +236,12 @@ end)
 
 -- lazygit
 if vim.fn.executable("lazygit") == 1 then
+    local util = require(("config.util"))
     map("n", "<leader>gg", function()
-        -- 如果avante toggle时开启自动进入insert模式就不用下面的步骤
-        vim.cmd("AvanteToggle")
+        -- 如果avante中打开了ask功能自动进入insert模式就不用下面的步骤
+        if util.has_avante_window() then
+            vim.cmd("AvanteToggle")
+        end
         Snacks.lazygit({ cwd = LazyVim.root.git() })
         vim.defer_fn(function()
             if vim.fn.mode() ~= "i" then
