@@ -2,82 +2,7 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
-local function close_terminal_and_focus_largest()
-    -- 关闭当前窗口
-    vim.cmd("close")
-    -- Snacks.terminal(nil, { cwd = LazyVim.root() })
-
-    -- 查找剩余窗口中面积最大的窗口
-    local max_area = 0
-    local target_win = nil
-    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-        local config = vim.api.nvim_win_get_config(win)
-        if not config.relative or config.relative == "" then -- 忽略浮动窗口
-            local width = vim.api.nvim_win_get_width(win)
-            local height = vim.api.nvim_win_get_height(win)
-            local area = width * height
-            if area > max_area then
-                max_area = area
-                target_win = win
-            end
-        end
-    end
-
-    -- 如果找到了目标窗口，则跳转到该窗口
-    if target_win then
-        vim.api.nvim_set_current_win(target_win)
-    end
-end
-
--- Avoid abnormal terminal height when an outline buffer exists in the current window.
-local function open_terminal_rezise_height()
-    -- 保存当前窗口列表用于对比
-    local prev_wins = vim.api.nvim_list_wins()
-
-    local has_outline = false
-    for _, win in ipairs(prev_wins) do
-        local buf = vim.api.nvim_win_get_buf(win)
-        if vim.bo[buf].filetype:match("Outline") then
-            has_outline = true
-            break
-        end
-    end
-
-    Snacks.terminal()
-
-    -- 异步处理窗口尺寸调整
-    vim.schedule(function()
-        if has_outline then
-            -- 获取新创建的终端窗口
-            local new_wins = vim.api.nvim_list_wins()
-            local term_win = nil
-            for _, win in ipairs(new_wins) do
-                if not vim.tbl_contains(prev_wins, win) then
-                    term_win = win
-                    break
-                end
-            end
-
-            local ui_height = vim.api.nvim_list_uis()[1].height
-
-            if term_win then
-                -- 切换到终端窗口进行操作
-                vim.api.nvim_set_current_win(term_win)
-                -- 计算并设置高度（至少保留 5 行高度）
-                local new_height = math.max(5, math.floor(ui_height * 0.21))
-                vim.api.nvim_win_set_height(term_win, new_height)
-                -- 锁定窗口高度（可选）
-                -- vim.wo[term_win].winfixheight = true
-            end
-        end
-    end)
-    -- 避免有avante窗口时无法自动进入t模式
-    vim.defer_fn(function()
-        if vim.fn.mode() ~= "t" then
-            vim.cmd("startinsert")
-        end
-    end, 100)
-end
+local utils = require("config.utils")
 
 local map = vim.keymap.set
 local del = vim.keymap.del
@@ -99,8 +24,8 @@ map("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
 -- map("n", "<a-`>", function() Snacks.terminal(nil, { cwd = LazyVim.root() }) end, { desc = "Open Terminal (Root Dir)" })
 -- { map("t", "<a-`>", "<cmd>close<cr>", { desc = "Hide Terminal" }) },
 --
-map("n", "<a-`>", open_terminal_rezise_height, { desc = "Terminal (cwd)" })
-map("t", "<a-`>", close_terminal_and_focus_largest, { desc = "Hide Terminal and Focus Largest Window" })
+map("n", "<a-`>", utils.open_terminal_rezise_height, { desc = "Terminal (cwd)" })
+map("t", "<a-`>", utils.close_terminal_and_focus_largest, { desc = "Hide Terminal and Focus Largest Window" })
 
 map("n", "<leader>ft", function()
     Snacks.terminal()
@@ -187,25 +112,6 @@ map("n", "<leader>gH", toggle_history_view, { noremap = true, silent = true, des
 
 map("n", "q", function()
     local closed_diffview = false
-    -- 遍历所有窗口
-    for _, win in ipairs(vim.api.nvim_list_wins()) do
-        local buf = vim.api.nvim_win_get_buf(win)
-        local cur_buf_type = vim.bo[buf].filetype
-        if cur_buf_type == "DiffviewFiles" or cur_buf_type == "DiffviewFileHistory" then
-            vim.api.nvim_win_call(win, function()
-                vim.cmd("DiffviewClose")
-            end)
-            closed_diffview = true
-        end
-    end
-    -- 如果没有关闭任何 Diffview，执行默认 q 行为
-    if not closed_diffview then
-        vim.api.nvim_feedkeys("q", "n", false)
-    end
-end, { desc = "Close Diffview or fallback to default q" })
-
-map("n", "q", function()
-    local closed_diffview = false
     -- 安全遍历所有窗口
     for _, win in ipairs(vim.api.nvim_list_wins()) do
         -- 检查窗口是否有效
@@ -218,7 +124,6 @@ map("n", "q", function()
                     vim.cmd("DiffviewClose")
                 end)
                 closed_diffview = true
-
                 diffview_open = false
                 diffviewFileHistory_open = false
             end
