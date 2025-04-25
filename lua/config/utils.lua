@@ -208,9 +208,10 @@ end)()
 ------------------------ End Of Avante ------------------------
 
 ------------------------ Neo-tree ------------------------
-local neotree_refresh_timer = nil
-local neotree_refresh_interval = 2000 --ms
+-- local neotree_refresh_timer = nil
+-- local neotree_refresh_interval = 2000 --ms
 local is_refresh_neotree_need = false
+local last_neotree_refresh_time = 0
 
 local function is_git_repo_cached()
     local cached = vim.g.is_git_repo_cache
@@ -250,39 +251,92 @@ local function has_neotree_window()
     return false
 end
 
+-- function M.refresh_neo_tree_if_git()
+--     if M.has_target_ft_window("DiffviewFiles") or M.has_target_ft_window("DiffviewFileHistory") then
+--         is_refresh_neotree_need = true
+--     end
+--     if not is_git_repo_cached() then
+--         if neotree_refresh_timer then
+--             neotree_refresh_timer:close()
+--             neotree_refresh_timer = nil
+--         end
+--         return
+--     end
+--
+--     -- Check if the current window is not a neo-tree window
+--     local current_buf = vim.api.nvim_get_current_buf()
+--     local current_ft = vim.bo[current_buf].filetype
+--     if current_ft == "neo-tree" then
+--         vim.notify("current ft is neo-tree", vim.log.levels.WARN)
+--         return
+--     else
+--         vim.notify("current ft not neo-tree", vim.log.levels.WARN)
+--     end
+--
+--     if not neotree_refresh_timer then
+--         neotree_refresh_timer = vim.loop.new_timer()
+--         if not neotree_refresh_timer then
+--             vim.notify("Failed to create refresh timer for neo-tree", vim.log.levels.WARN)
+--             return
+--         end
+--
+--         neotree_refresh_timer:start(neotree_refresh_interval/2, neotree_refresh_interval, function()
+--             vim.schedule(function()
+--                 if has_neotree_window() then
+--                     require("neo-tree.sources.manager").refresh("filesystem")
+--                     is_refresh_neotree_need = false
+--                     vim.notify("refresh neo-tree", vim.log.levels.INFO)
+--                 else
+--                     neotree_refresh_timer:close()
+--                     is_refresh_neotree_need = false
+--                     neotree_refresh_timer = nil
+--                 end
+--             end)
+--         end)
+--     end
+-- end
+
+
 function M.refresh_neo_tree_if_git()
-    if M.has_target_ft_window("DiffviewFiles") or M.has_target_ft_window("DiffviewFileHistory") then
+    -- 检查是否需要刷新（Diffview 相关条件）
+    if not is_refresh_neotree_need and (M.has_target_ft_window("DiffviewFiles") or M.has_target_ft_window("DiffviewFileHistory") ) then
         is_refresh_neotree_need = true
+        -- vim.notify("need refresh neo-tree", vim.log.levels.INFO)
     end
-    if not is_git_repo_cached() or not is_refresh_neotree_need then
-        if neotree_refresh_timer then
-            neotree_refresh_timer:close()
-            neotree_refresh_timer = nil
-        end
+
+    -- 检查 Git 仓库状态
+    if not is_git_repo_cached() then
         return
     end
 
-    if not neotree_refresh_timer then
-        neotree_refresh_timer = vim.loop.new_timer()
-        if not neotree_refresh_timer then
-            vim.notify("Failed to create refresh timer for neo-tree", vim.log.levels.WARN)
-            return
-        end
-
-        neotree_refresh_timer:start(neotree_refresh_interval/2, neotree_refresh_interval, function()
-            vim.schedule(function()
-                if has_neotree_window() then
-                    require("neo-tree.sources.manager").refresh("filesystem")
-                    is_refresh_neotree_need = false
-                    -- vim.notify("refresh neo-tree", vim.log.levels.INFO)
-                else
-                    neotree_refresh_timer:close()
-                    is_refresh_neotree_need = false
-                    neotree_refresh_timer = nil
-                end
-            end)
-        end)
+    local current_buf = vim.api.nvim_get_current_buf()
+    local current_ft = vim.bo[current_buf].filetype
+    if current_ft == "neo-tree" then
+        return
     end
+
+    -- 防抖逻辑：记录最后一次刷新时间 ms
+    local is_refresh_interval_passed = true
+    local now = vim.loop.now()
+    if last_neotree_refresh_time and (now - last_neotree_refresh_time < 2000) then
+        is_refresh_interval_passed = false
+        -- vim.notify("refresh interval too short", vim.log.levels.INFO)
+        return
+    end
+    last_neotree_refresh_time = now
+
+    if not is_refresh_interval_passed and not is_refresh_neotree_need then
+        return
+    end
+
+    -- 执行一次性刷新
+    vim.defer_fn(function()
+        if has_neotree_window() then
+            require("neo-tree.sources.manager").refresh("filesystem")
+            is_refresh_neotree_need = false
+            -- vim.notify("Refreshed neo-tree once (with delay)", vim.log.levels.INFO)
+        end
+    end, 500)
 end
 
 ------------------------ End Of Neo-tree ------------------------
