@@ -122,6 +122,23 @@ return {
                 above = "",
                 -- Used below heading for border.
                 below = "󰽿",
+                -- atx = false,
+                backgrounds = {
+                    "RenderMarkdownH2Bg",
+                    "RenderMarkdownH2Bg",
+                    "RenderMarkdownH2Bg",
+                    "RenderMarkdownH2Bg",
+                    "RenderMarkdownH2Bg",
+                    "RenderMarkdownH2Bg",
+                },
+                foregrounds = {
+                    "RenderMarkdownH1",
+                    "RenderMarkdownH2",
+                    "RenderMarkdownH3",
+                    "RenderMarkdownH4",
+                    "RenderMarkdownH5",
+                    "RenderMarkdownH6",
+                },
             },
 
             checkbox = {
