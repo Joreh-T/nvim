@@ -118,7 +118,6 @@ function M.close_terminal_and_focus_largest()
     M.focus_largest_window()
 end
 
-
 function M.has_target_ft_window(filetype_pattern)
     -- 遍历当前标签页中的所有窗口
     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
@@ -209,21 +208,33 @@ end)()
 ------------------------ End Of Avante ------------------------
 
 ------------------------ Neo-tree ------------------------
-local refresh_timer = nil
-local refresh_interval = vim.g.neo_tree_refresh_interval or 3000
+local neotree_refresh_timer = nil
+local neotree_refresh_interval = 2000 --ms
+local is_refresh_neotree_need = false
 
 local function is_git_repo_cached()
     local cached = vim.g.is_git_repo_cache
+
     if cached == nil then
-        local handle = io.popen("git rev-parse --is-inside-work-tree 2>/dev/null")
+        -- 执行 git 命令
+        local handle = io.popen("git rev-parse --is-inside-work-tree")
+        -- 检查是否成功打开了 handle
         if handle then
-            cached = handle:read("*a"):match("%s*(.*)%s*") == "true"
+            -- 读取命令的输出
+            local result = handle:read("*a")
             handle:close()
-            vim.g.is_git_repo_cache = cached
+            -- vim.notify("git rev-parse output: '" .. result .. "'", vim.log.levels.INFO)
+            -- 去除结果中的空格和换行符
+            local trimmed_result = result:match("^%s*(.-)%s*$")
+            -- vim.notify("trimmed result: '" .. trimmed_result .. "'", vim.log.levels.INFO)
+            -- 判断是否为 "true"
+            cached = trimmed_result == "true"
         else
+            -- vim.notify("Failed to execute git command.", vim.log.levels.ERROR)
             cached = false
         end
     end
+    -- vim.notify("is git repo: " .. tostring(cached), vim.log.levels.INFO)
     return cached
 end
 
@@ -231,37 +242,45 @@ local function has_neotree_window()
     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
         local buf = vim.api.nvim_win_get_buf(win)
         if vim.bo[buf].filetype == "neo-tree" then
+            -- vim.notify("have neo-tree", vim.log.levels.INFO)
             return true
         end
     end
+    -- vim.notify("have not neo-tree", vim.log.levels.WARN)
     return false
 end
 
 function M.refresh_neo_tree_if_git()
-    if not is_git_repo_cached() or not has_neotree_window() then
-        if refresh_timer then
-            refresh_timer:close()
-            refresh_timer = nil
+    if M.has_target_ft_window("DiffviewFiles") or M.has_target_ft_window("DiffviewFileHistory") then
+        is_refresh_neotree_need = true
+    end
+    if not is_git_repo_cached() or not is_refresh_neotree_need then
+        if neotree_refresh_timer then
+            neotree_refresh_timer:close()
+            neotree_refresh_timer = nil
         end
         return
     end
 
-    if not refresh_timer then
-        refresh_timer = vim.loop.new_timer()
-        if not refresh_timer then
+    if not neotree_refresh_timer then
+        neotree_refresh_timer = vim.loop.new_timer()
+        if not neotree_refresh_timer then
             vim.notify("Failed to create refresh timer for neo-tree", vim.log.levels.WARN)
             return
         end
 
-        refresh_timer:start(refresh_interval, refresh_interval, function()
-            if has_neotree_window() then
-                vim.schedule(function()
+        neotree_refresh_timer:start(neotree_refresh_interval/2, neotree_refresh_interval, function()
+            vim.schedule(function()
+                if has_neotree_window() then
                     require("neo-tree.sources.manager").refresh("filesystem")
-                end)
-            else
-                refresh_timer:close()
-                refresh_timer = nil
-            end
+                    is_refresh_neotree_need = false
+                    -- vim.notify("refresh neo-tree", vim.log.levels.INFO)
+                else
+                    neotree_refresh_timer:close()
+                    is_refresh_neotree_need = false
+                    neotree_refresh_timer = nil
+                end
+            end)
         end)
     end
 end
