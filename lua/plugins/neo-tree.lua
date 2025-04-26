@@ -53,7 +53,10 @@ return {
           end
         end,
       }
-
+      opts.default_component_configs.modified = {
+        symbol = "● ",
+        highlight = "NeoTreeGitModified",
+      }
       opts.default_component_configs.git_status = {
         symbols = {
           added = "",
