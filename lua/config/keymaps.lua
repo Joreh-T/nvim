@@ -72,7 +72,8 @@ map({ "n", "v" }, "<C-c>", '"+y', { noremap = true, desc = "Copy to system clipb
 
 -- 粘贴：Ctrl + v
 map("n", "<C-v>", '"+p', { noremap = true, desc = "Paste from system clipboard" })
-map("i", "<C-v>", "<C-r>+", { noremap = true, desc = "Paste from system clipboard" })
+-- map("i", "<C-v>", "<C-r>+", { noremap = true, desc = "Paste from system clipboard" }) -- 这样在neovide中如果待粘贴数据中带有注释符号，则会触发自动注释
+map("i", "<C-v>", '<esc>"+p', { noremap = true, desc = "Paste from system clipboard" })
 -- map('c', '<C-v>', '<C-r>+', { noremap = true, silent = true }) -- 这样ui不会马上刷新
 map("c", "<C-v>", function()
     return vim.fn.getreg("+")
