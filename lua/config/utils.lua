@@ -1,5 +1,20 @@
 local M = {}
 
+------------------------ OS Info ------------------------
+function M.is_windows()
+    return SYSTEM_NAME == "windows_nt"
+end
+
+function M.is_linux()
+    return SYSTEM_NAME == "linux"
+end
+
+function M.is_macos()
+    return SYSTEM_NAME == "darwin"
+end
+
+------------------------ End Of OS Info ------------------------
+
 -- Global table to store cursor positions
 local cursor_positions = {}
 
@@ -214,29 +229,38 @@ local is_refresh_neotree_need = false
 local last_neotree_refresh_time = 0
 
 local function is_git_repo_cached()
-    local cached = vim.g.is_git_repo_cache
-
-    if cached == nil then
-        -- 执行 git 命令
-        local handle = io.popen("git rev-parse --is-inside-work-tree")
-        -- 检查是否成功打开了 handle
-        if handle then
-            -- 读取命令的输出
-            local result = handle:read("*a")
-            handle:close()
-            -- vim.notify("git rev-parse output: '" .. result .. "'", vim.log.levels.INFO)
-            -- 去除结果中的空格和换行符
-            local trimmed_result = result:match("^%s*(.-)%s*$")
-            -- vim.notify("trimmed result: '" .. trimmed_result .. "'", vim.log.levels.INFO)
-            -- 判断是否为 "true"
-            cached = trimmed_result == "true"
-        else
-            -- vim.notify("Failed to execute git command.", vim.log.levels.ERROR)
-            cached = false
-        end
+    if vim.g.is_git_repo_cache ~= nil then
+        return vim.g.is_git_repo_cache
     end
-    -- vim.notify("is git repo: " .. tostring(cached), vim.log.levels.INFO)
-    return cached
+
+    -- 构建跨平台命令
+    local command
+    if M.is_windows() then
+        -- 在 Windows 中显式调用 CMD 并兼容 PowerShell 环境
+        command = 'cmd /c "git rev-parse --is-inside-work-tree 2>nul"'
+        -- vim.notify("windows env")
+    else
+        -- Linux/Mac 使用标准静默方式
+        command = "git rev-parse --is-inside-work-tree 2>/dev/null"
+        -- vim.notify("linux env")
+    end
+
+    local handle = io.popen(command)
+    if not handle then
+        vim.g.is_git_repo_cache = false
+        return false
+    end
+
+    local result = handle:read("*a")
+    handle:close()
+
+    -- 空白处理
+    local trimmed = result:gsub("%s+", "")
+    -- vim.notify("git rev-parse output: '" .. trimmed .. "'", vim.log.levels.INFO)
+    vim.g.is_git_repo_cache = trimmed == "true"
+
+    -- vim.notify(string.format("final result %s", trimmed), vim.log.levels.INFO)
+    return vim.g.is_git_repo_cache
 end
 
 local function has_neotree_window()
@@ -251,59 +275,16 @@ local function has_neotree_window()
     return false
 end
 
--- function M.refresh_neo_tree_if_git()
---     if M.has_target_ft_window("DiffviewFiles") or M.has_target_ft_window("DiffviewFileHistory") then
---         is_refresh_neotree_need = true
---     end
---     if not is_git_repo_cached() then
---         if neotree_refresh_timer then
---             neotree_refresh_timer:close()
---             neotree_refresh_timer = nil
---         end
---         return
---     end
---
---     -- Check if the current window is not a neo-tree window
---     local current_buf = vim.api.nvim_get_current_buf()
---     local current_ft = vim.bo[current_buf].filetype
---     if current_ft == "neo-tree" then
---         vim.notify("current ft is neo-tree", vim.log.levels.WARN)
---         return
---     else
---         vim.notify("current ft not neo-tree", vim.log.levels.WARN)
---     end
---
---     if not neotree_refresh_timer then
---         neotree_refresh_timer = vim.loop.new_timer()
---         if not neotree_refresh_timer then
---             vim.notify("Failed to create refresh timer for neo-tree", vim.log.levels.WARN)
---             return
---         end
---
---         neotree_refresh_timer:start(neotree_refresh_interval/2, neotree_refresh_interval, function()
---             vim.schedule(function()
---                 if has_neotree_window() then
---                     require("neo-tree.sources.manager").refresh("filesystem")
---                     is_refresh_neotree_need = false
---                     vim.notify("refresh neo-tree", vim.log.levels.INFO)
---                 else
---                     neotree_refresh_timer:close()
---                     is_refresh_neotree_need = false
---                     neotree_refresh_timer = nil
---                 end
---             end)
---         end)
---     end
--- end
-
 
 function M.refresh_neo_tree_if_git()
     -- 检查是否需要刷新（Diffview 相关条件）
-    if not is_refresh_neotree_need and (M.has_target_ft_window("DiffviewFiles") or M.has_target_ft_window("DiffviewFileHistory") ) then
+    if not is_refresh_neotree_need and (M.has_target_ft_window("DiffviewFiles") or M.has_target_ft_window("DiffviewFileHistory")) then
         is_refresh_neotree_need = true
         -- vim.notify("need refresh neo-tree", vim.log.levels.INFO)
     end
-
+    if not has_neotree_window() or M.has_target_ft_window("snacks_dashboard") then
+        return
+    end
     -- 检查 Git 仓库状态
     if not is_git_repo_cached() then
         return
