@@ -1,3 +1,10 @@
+local mark_icon = ""
+if vim.g.neovide then
+    mark_icon = "󰍎"
+else
+    mark_icon = "🚥"
+end
+
 return {
   "crusj/bookmarks.nvim",
   branch = "main",
@@ -28,7 +35,8 @@ return {
       fix_enable = false, -- If true, when saving the current file, if the bookmark line number of the current file changes, try to fix it.
 
       virt_text = "", -- Show virt text at the end of bookmarked lines, if it is empty, use the description of bookmarks instead.
-      sign_icon = "🚥", -- if it is not empty, show icon in signColumn.
+
+      sign_icon = mark_icon, -- if it is not empty, show icon in signColumn.
 
       virt_pattern = {
         "*.go",

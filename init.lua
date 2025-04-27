@@ -3,7 +3,14 @@ require("config.lazy")
 
 local icons = require("lazyvim.config").icons
 
-icons.diagnostics.Error = " "
-icons.diagnostics.Warn = " "
-icons.diagnostics.Info = " "
-icons.diagnostics.Hint = "󰌵 "
+if vim.g.neovide then
+    icons.diagnostics.Error = " "
+    icons.diagnostics.Warn = " "
+    icons.diagnostics.Info = " "
+    icons.diagnostics.Hint = "󰌵 "
+else
+    icons.diagnostics.Error = "😡 "
+    icons.diagnostics.Warn = "😟 "
+    icons.diagnostics.Info = "🙂 "
+    icons.diagnostics.Hint = "🤔 "
+end

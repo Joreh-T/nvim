@@ -41,7 +41,7 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
-  install = { colorscheme = {"one_monokai", "tokyonight", "habamax" } },
+  install = { colorscheme = {"sonokai", "one_monokai", "tokyonight", "habamax" } }, --HINT_N: The first theme loads at launch
   checker = {
     enabled = true, -- check for plugin updates periodically
     notify = false, -- notify on update
