@@ -15,7 +15,7 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 
 ------------------ Neo-tree ------------------
 
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "BufRead", "VimResume"}, {
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "WinEnter", "VimResume" }, {
     pattern = "*",
     callback = utils.refresh_neo_tree_if_git,
     desc = "Auto refresh neo-tree on focus or buffer enter",
@@ -74,16 +74,16 @@ vim.api.nvim_create_autocmd("ModeChanged", {
 ------------------ End Of Neovide ------------------
 
 ------------------ Outline ------------------
-vim.api.nvim_create_autocmd({ "WinEnter", "CursorMoved", "CursorMovedI" }, {
+vim.api.nvim_create_autocmd({ "WinEnter", "VimResume" }, {
     pattern = "*",
     callback = function(args)
         if vim.bo.filetype == "Outline" and utils.has_avante_window() then
-            vim.schedule(function()
-                vim.cmd("normal! 0")
-            end)
-            if vim.fn.mode() ~= "n" then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-            end
+            -- vim.schedule(function()
+            --     vim.cmd("normal! 0")
+            -- end)
+            vim.defer_fn(function()
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>0", true, false, true), "n", true)
+            end, 350)
         end
     end,
 })
