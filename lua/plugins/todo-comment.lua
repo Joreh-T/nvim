@@ -10,11 +10,11 @@ return {
         color = "error", -- can be a hex color, or a named color (see below)
         alt = { "FIXME", "BUG", "FIXIT", "ISSUE", "FIX_N" }, -- a set of other keywords that all map to this FIX keywords
       },
-      TODO = { icon = " ", color = "info", alt = {"TODO_N"} },
+      TODO = { icon = " ", color = "info", alt = {"TODO_N", "TODO"} },
       HACK = { icon = " ", color = "warning" },
-      WARN = { icon = " ", color = "warning", alt = { "WARNING", "WARN_N" } },
-      PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-      NOTE = { icon = " ", color = "hint", alt = { "INFO", "INFO_N", "HINT_N" } },
+      WARN = { icon = " ", color = "warning", alt = { "WARNING", "WARN_N", "WARN" } },
+      PERF = { icon = " ", color = "default", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+      NOTE = { icon = " ", color = "hint", alt = { "INFO", "INFO_N", "HINT_N", "HINT" } },
       -- TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED", "TEST_Q" } },
     },
     gui_style = {
@@ -35,12 +35,12 @@ return {
       exclude = {}, -- list of file types to exclude highlighting
     },
     colors = {
-      error = { "#DC2626" },
-      warning = { "#FBBF24" },
-      info = { "#F8957B" },
-      hint = { "#10B981" },
-      default = { "#7C3AED" },
-      test = { "#FF00FF" }
+      error = { "Red" },
+      warning = { "Yellow" },
+      info = { "Orange" },
+      hint = { "Green" },
+      default = { "Purple" },
+      test = { "Blue" }
     },
     search = {
       command = "rg",
