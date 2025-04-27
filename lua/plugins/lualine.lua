@@ -7,6 +7,13 @@ return {
         -- | A | B | C                             X | Y | Z |
         -- +-------------------------------------------------+
         local icons = LazyVim.config.icons
+        -- opts.options.component_separators =  { left = '|', right = '' }
+        opts.options = {
+            component_separators = {
+                left = "%#WinBarNC#%*",
+                right = "%#WinBarNC#%*",
+            },
+        }
         opts.sections.lualine_a = { "mode" }
         opts.sections.lualine_b = { "branch" }
         opts.sections.lualine_c = {
@@ -21,7 +28,7 @@ return {
                 },
             },
             { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-            { LazyVim.lualine.pretty_path(), separator = "" }, -- 去除路径后的分隔符
+            { LazyVim.lualine.pretty_path(), separator = "", padding = { left = 1, right = 0 } }, -- 去除路径后的分隔符
             {
                 function()
                     return vim.bo.modified and "●" or " "
@@ -102,8 +109,17 @@ return {
                 format = "{kind_icon}{symbol.name:Normal}",
                 hl_group = "lualine_c_normal",
             })
+
+            local get_clean = function()
+                if not symbols or not symbols.has() then
+                    return ""
+                end
+                local raw = symbols.get()
+                return string.gsub(raw, "%s*$", "") -- 正则删除尾部空格
+            end
+
             table.insert(opts.sections.lualine_c, {
-                symbols and symbols.get,
+                get_clean, -- 替换原有的 symbols.get
                 cond = function()
                     return vim.b.trouble_lualine ~= false and symbols.has()
                 end,
