@@ -202,6 +202,14 @@ return {
         event = "VeryLazy",
         opts = {
             options = {
+                diagnostics = "nvim_lsp",
+                -- diagnostics = false,
+                diagnostics_indicator = function(_, _, _, _)
+                    return ""
+                end,
+                -- diagnostics_indicator = function(count, level, diagnostics_dict, context)
+                --     return "(" .. count .. ")"
+                -- end,
                 offsets = {
                     {
                         filetype = "neo-tree",
