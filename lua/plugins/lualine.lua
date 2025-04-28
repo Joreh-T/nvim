@@ -31,7 +31,7 @@ return {
                 },
             },
             { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-            { LazyVim.lualine.pretty_path(), separator = "", padding = { left = 1, right = 0 } }, -- 去除路径后的分隔符
+            { LazyVim.lualine.pretty_path(), separator = "", padding = { left = 1, right = 0 } },
             {
                 function()
                     return vim.bo.modified and "●" or " "
@@ -42,7 +42,7 @@ return {
                     local hl = vim.api.nvim_get_hl(0, { name = group })
                     return { fg = hl.fg and string.format("#%06x", hl.fg) or "#e5c07b" }
                 end,
-                padding = { left = 0, right = 1 },
+                padding = { left = 1, right = 1 },
             },
 
             -- {
