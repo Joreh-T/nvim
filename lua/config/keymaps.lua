@@ -78,7 +78,7 @@ map("i", "<C-v>", '<esc>"+p', { noremap = true, desc = "Paste from system clipbo
 map("c", "<C-v>", function()
     return vim.fn.getreg("+")
 end, { noremap = true, expr = true, desc = "Paste clipboard in cmdline" })
-
+map("t", "<C-v>", [[<C-\><C-n>"+pa<Right>]], { noremap = true, desc = "Paste from system clipboard in terminal" })
 --   {map("n", "gk", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true, silent = true })},
 --   {map("n", "gj", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = true })}
 --   { "K", function() return vim.lsp.buf.hover() end, desc = "Hover" },
