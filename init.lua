@@ -17,3 +17,14 @@ else
     icons.diagnostics.Info = "🙂 "
     icons.diagnostics.Hint = "🤔 "
 end
+
+local utils = require("config.utils")
+if utils.is_windows() then
+    vim.defer_fn(function()
+        local shada_dir = vim.fn.stdpath("data") .. "/shada/"
+        local tmp_files = vim.fn.glob(shada_dir .. "main.shada.tmp.*", true, true)
+        for _, file in ipairs(tmp_files) do
+            vim.fn.delete(file)
+        end
+    end, 5000) -- 延迟 n 秒执行，避免干扰启动流程
+end
