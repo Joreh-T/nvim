@@ -34,14 +34,14 @@ return {
       max_line_len = 400, -- ignore lines longer than this
       exclude = {}, -- list of file types to exclude highlighting
     },
-    colors = {
-      error = { "Red" },
-      warning = { "Yellow" },
-      info = { "Orange" },
-      hint = { "Green" },
-      default = { "Purple" },
-      test = { "Blue" }
-    },
+    -- colors = {
+    --   error = { "Red" },
+    --   warning = { "Yellow" },
+    --   info = { "Orange" },
+    --   hint = { "Green" },
+    --   default = { "Purple" },
+    --   test = { "Blue" }
+    -- },
     search = {
       command = "rg",
       args = {
