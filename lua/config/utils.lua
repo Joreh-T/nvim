@@ -95,11 +95,11 @@ function M.open_terminal_rezise_height()
         end
     end)
     -- 避免有avante窗口时无法自动进入t模式
-    vim.defer_fn(function()
-        if vim.fn.mode() ~= "t" then
+    if M.has_target_ft_window("^Avante") and vim.fn.mode() ~= "t" and M.has_target_ft_window("snacks_terminal") then
+        vim.defer_fn(function()
             vim.cmd("startinsert")
-        end
-    end, 100)
+        end, 100)
+    end
 end
 
 function M.focus_largest_window()
