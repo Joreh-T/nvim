@@ -22,22 +22,53 @@ end
 -- └───────── major（主版本号）
 -- Greater than or Equal
 function M.is_nvim_ge(major, minor, patch)
-  local v = vim.version()
-  if v.major > major then return true end
-  if v.major < major then return false end
-  if v.minor > minor then return true end
-  if v.minor < minor then return false end
-  return v.patch >= (patch or 0)
+    local v = vim.version()
+    -- vim.notify(("Checking if Neovim >= %d.%d%s (current: %d.%d.%d)"):format(
+    --   major, minor, patch and ("." .. patch) or "", v.major, v.minor, v.patch
+    -- ), vim.log.levels.DEBUG)
+
+    if v.major > major then
+        return true
+    elseif v.major < major then
+        return false
+    end
+
+    if v.minor > minor then
+        return true
+    elseif v.minor < minor then
+        return false
+    end
+
+    if patch == nil then
+        return true
+    end
+
+    return v.patch >= patch
 end
 
--- Less than or Equal
 function M.is_nvim_le(major, minor, patch)
-  local v = vim.version()
-  if v.major < major then return true end
-  if v.major > major then return false end
-  if v.minor < minor then return true end
-  if v.minor > minor then return false end
-  return v.patch <= (patch or 0)
+    local v = vim.version()
+    -- vim.notify(("Checking if Neovim <= %d.%d%s (current: %d.%d.%d)"):format(
+    --   major, minor, patch and ("." .. patch) or "", v.major, v.minor, v.patch
+    -- ), vim.log.levels.DEBUG)
+
+    if v.major < major then
+        return true
+    elseif v.major > major then
+        return false
+    end
+
+    if v.minor < minor then
+        return true
+    elseif v.minor > minor then
+        return false
+    end
+
+    if patch == nil then
+        return true
+    end
+
+    return v.patch <= patch
 end
 
 -------------------- End Of NVIM version Check ------------------
@@ -301,7 +332,6 @@ local function has_neotree_window()
     -- vim.notify("have not neo-tree", vim.log.levels.WARN)
     return false
 end
-
 
 function M.refresh_neo_tree_if_git()
     -- 检查是否需要刷新（Diffview 相关条件）
