@@ -1,9 +1,15 @@
+local utils = require("config.utils")
+
 return {
     {
         "neovim/nvim-lspconfig",
         dependencies = {
             "mason.nvim",
-            { "williamboman/mason-lspconfig.nvim", config = function() end },
+            {
+                "williamboman/mason-lspconfig.nvim",
+                version = utils.is_nvim_le(0, 10) and "v1.32.0" or nil,
+                config = function() end,
+            },
             opts = function(_, opts)
                 opts.ensure_installed = {
                     "clangd",

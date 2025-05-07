@@ -15,6 +15,33 @@ end
 
 ------------------------ End Of OS Info ------------------------
 
+----------------------- NVIM version Check --------------------
+-- 0.10.4
+-- │  │ └── patch（补丁号）
+-- │  └────── minor（次版本号）
+-- └───────── major（主版本号）
+-- Greater than or Equal
+function M.is_nvim_ge(major, minor, patch)
+  local v = vim.version()
+  if v.major > major then return true end
+  if v.major < major then return false end
+  if v.minor > minor then return true end
+  if v.minor < minor then return false end
+  return v.patch >= (patch or 0)
+end
+
+-- Less than or Equal
+function M.is_nvim_le(major, minor, patch)
+  local v = vim.version()
+  if v.major < major then return true end
+  if v.major > major then return false end
+  if v.minor < minor then return true end
+  if v.minor > minor then return false end
+  return v.patch <= (patch or 0)
+end
+
+-------------------- End Of NVIM version Check ------------------
+
 -- Global table to store cursor positions
 local cursor_positions = {}
 
