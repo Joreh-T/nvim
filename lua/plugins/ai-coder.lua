@@ -5,7 +5,8 @@ return {
         -- lazy = false,
         -- version = "v0.0.23",
         opts = {
-            provider = "deepseek",
+            provider = "aihubmix",
+            -- auto_suggestions_provider = "deepseek",
             vendors = {
                 deepseek = {
                     __inherited_from = "openai",
@@ -15,6 +16,10 @@ return {
                     timeout = 30000,
                     max_tokens = 8192,
                 },
+            },
+            aihubmix = {
+                model = "gemini-2.5-pro-preview-05-06",
+                api_key_name = "AIHUBMIX_API_KEY",
             },
             windows = {
                 ---@alias AvantePosition "right" | "left" | "top" | "bottom" | "smart"
@@ -54,7 +59,7 @@ return {
                 --   support_paste_from_clipboard = false,
                 --   minimize_diff = true,
                 enable_token_counting = false,
-                --   enable_cursor_planning_mode = false,
+                enable_cursor_planning_mode = true,
                 --   enable_claude_text_editor_tool_mode = false,
                 --   use_cwd_as_project_root = false,
             },
