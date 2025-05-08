@@ -6,7 +6,7 @@ return {
         -- version = "v0.0.23",
         opts = {
             provider = "aihubmix",
-            -- auto_suggestions_provider = "deepseek",
+            auto_suggestions_provider = "deepseek",
             vendors = {
                 deepseek = {
                     __inherited_from = "openai",
@@ -60,7 +60,7 @@ return {
                 --   minimize_diff = true,
                 enable_token_counting = false,
                 enable_cursor_planning_mode = true,
-                --   enable_claude_text_editor_tool_mode = false,
+                enable_claude_text_editor_tool_mode = true,
                 --   use_cwd_as_project_root = false,
             },
         },
