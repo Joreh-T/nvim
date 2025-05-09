@@ -46,8 +46,8 @@ map("n", "<leader>bl", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 -- end, { noremap = true, silent = true, desc = "Recent Files" })
 
 del("n", "<leader>|") -- del keymap: map("<leader>|", "<C-W>v", { desc = "Split Window Right" }) },
-map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
-map("n", "<leader>\\", "<C-W>v", { desc = "Split Window Right", remap = false })
+map("n", "<leader>-", "<cmd>split<cr>", { desc = "Split Window Below", remap = true })
+map("n", "<leader>\\", "<cmd>vsplit<cr>", { desc = "Split Window Right", remap = false })
 -----------------------------------------------------------
 map({ "n", "v" }, "<S-h>", "^", { noremap = true, silent = true })
 map("n", "<S-l>", "$", { noremap = true, silent = true })
@@ -135,6 +135,15 @@ map("n", "q", function()
         vim.api.nvim_feedkeys("q", "n", false)
     end
 end)
+
+if vim.g.vscode then
+    -- Navigate VSCode tabs like lazyvim buffers
+    map("n", "[b", "<Cmd>call VSCodeNotify('workbench.action.previousEditor')<CR>")
+    map("n", "]b", "<Cmd>call VSCodeNotify('workbench.action.nextEditor')<CR>")
+
+    map("n", "<leader>\\", "<Cmd>call VSCodeNotify('workbench.action.splitEditor')<CR>")
+    map("n", "<leader>-", "<Cmd>call VSCodeNotify('workbench.action.splitEditorDown')<CR>")
+end
 
 -- lazygit
 -- if vim.fn.executable("lazygit") == 1 then
