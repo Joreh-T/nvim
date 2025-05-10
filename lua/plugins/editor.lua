@@ -1,3 +1,5 @@
+local utils = require("config.utils")
+
 return {
     -- auto switch input method depends on Nvim's edit mode.
     {
@@ -29,7 +31,7 @@ return {
             -- { "<leader>fg", "<cmd>FzfLua git_files<cr>", desc = "Find Files (git-files)" },
             { "<leader>fR", "<cmd>FzfLua oldfiles<cr>", desc = "Recent" },
             { "<leader>fr", LazyVim.pick("oldfiles", { cwd = vim.uv.cwd() }), desc = "Recent (cwd)" },
-            { "<leader><leader>", LazyVim.pick("oldfiles", { cwd = vim.uv.cwd() }), desc = "Find Recent Files (cwd)" },
+            { "<leader><leader>", LazyVim.pick("files", { root = false }), desc = "Find Files (cwd)" },
         },
 
         opts = function(_, opts)
@@ -136,30 +138,36 @@ return {
     {
         "folke/noice.nvim",
         event = "VeryLazy",
-        config = function(_, opts)
-            local custom_opts = vim.tbl_deep_extend("force", opts, {
-                messages = {
-                    view_search = false, -- 关闭搜索virtual text
+        opts = function(_, opts)
+            opts.messages = {
+                view_search = false, -- disable  virtual text when use "/" or "?"
+            }
+            local cmdline_pos = {
+                row = utils.get_window_lines(0.2),
+                col = "50%",
+            }
+            opts.views = {
+                -- position of cmdline
+                cmdline_popup = {
+                    position = {
+                        row = cmdline_pos.row,
+                        col = cmdline_pos.col,
+                    },
+                    size = {
+                        width = 60,
+                        height = "auto",
+                    },
                 },
-                --  views = {
-                --   cmdline_popup = {
-                --     position = { row = "20%", col = "50%" },
-                --     size = { width = "auto", height = "auto" },
-                --     -- border = {
-                --     --   style = "rounded",
-                --     -- },
-                --     -- win_options = {
-                --     --   winhighlight = {
-                --     --     Normal = "NoiceCmdlinePopup",
-                --     --     FloatBorder = "NoiceCmdlinePopupBorder",
-                --     --   },
-                --     -- },
-                --   },
-                -- },
-            })
-            require("noice").setup(custom_opts)
+                -- position of cmdline's completion
+                cmdline_popupmenu = {
+                    position = {
+                        row = cmdline_pos.row + 3,
+                    },
+                },
+            }
         end,
     },
+
     {
         -- 在editor中显示16进制颜色
         "norcalli/nvim-colorizer.lua",

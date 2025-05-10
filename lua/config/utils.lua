@@ -378,4 +378,33 @@ function M.refresh_neo_tree_if_git()
 end
 
 ------------------------ End Of Neo-tree ------------------------
+
+--[[
+获取当前 Neovim 窗口总行数的 n 倍
+参数：
+  n : number 倍数（支持浮点数）
+返回值：
+  integer : 总行数 × n
+  nil, string : 错误时返回 nil 和错误信息
+]]
+function M.get_window_lines(n)
+    -- 无参数时返回当前窗口高度
+    if not n then
+        return vim.api.nvim_win_get_height(0)
+    end
+
+    if type(n) ~= "number" then
+        vim.notify("Input arg not number", vim.log.levels.ERROR)
+        return nil
+    end
+    if n <= 0 then
+        vim.notify("Input arg less than 0", vim.log.levels.ERROR)
+        return nil
+    end
+
+    local total_lines = vim.o.lines
+    local result = math.floor(total_lines * n + 0.5)
+    return math.max(1, result)
+end
+
 return M
