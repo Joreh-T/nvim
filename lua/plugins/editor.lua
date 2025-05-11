@@ -261,4 +261,18 @@ return {
             },
         },
     },
+    {
+        "Joreh-T/caseConverter.nvim",
+        -- config = function()
+        --     require("case_converter").setup({
+        --         -- Optional configuration
+        --     })
+        -- end,
+        -- defualt keymaps:
+        --  `<Leader>tt` - Convert between snake_case and camelCase/PascalCase
+        --  `<Leader>tc` - Cycle through cases: snake_case → camelCase → PascalCase → snake_case
+        --  `<Leader>ts` - Convert to snake_case
+        --  `<Leader>tm` - Convert to camelCase
+        --  `<Leader>tp` - Convert to PascalCase
+    },
 }
