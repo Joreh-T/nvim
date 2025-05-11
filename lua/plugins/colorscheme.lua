@@ -5,6 +5,7 @@ local local_colors = require("plugins.colorscheme-base-cfg.onedark-palette")
 local onedark_style = "dark"
 
 vim.g.sonokai_style = "atlantis" -- default, atlantis, espresso, maia, andromeda, shusia
+vim.g.sonokai_menu_selection_background = "bg"
 return {
     {
         "navarasu/onedark.nvim",

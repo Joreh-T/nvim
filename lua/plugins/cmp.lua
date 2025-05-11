@@ -93,6 +93,9 @@
 -- blink.cmp as a replacement for nvim-cmp (lazy.vim 14.x)
 return {
     "saghen/blink.cmp",
+    dependencies = {
+        "xzbdmw/colorful-menu.nvim", -- Adding Syntax Highlighting to the Completion Window
+    },
     opts = function(_, opts)
         opts.keymap = {
             -- 'default' for mappings similar to built-in completion
@@ -101,6 +104,40 @@ return {
             -- see the "default configuration" section below for full documentation on how to define
             preset = "super-tab",
             ["<Tab>"] = { "accept", "fallback" }, -- fallback: Runs the next non-blink keymap, or runs the built-in neovim binding
+        }
+        opts.completion = {
+            menu = {
+                draw = {
+                    -- Adding Syntax Highlighting to the Completion Window
+                    -- We don't need label_description now because label and label_description are already
+                    -- combined together in label by colorful-menu.nvim.
+                    columns = { { "kind_icon" }, { "label", gap = 1 } },
+                    components = {
+                        label = {
+                            text = function(ctx)
+                                return require("colorful-menu").blink_components_text(ctx)
+                            end,
+                            highlight = function(ctx)
+                                return require("colorful-menu").blink_components_highlight(ctx)
+                            end,
+                        },
+                    },
+                    treesitter = { "lsp" },
+                },
+            },
+            accept = {
+                -- experimental auto-brackets support
+                auto_brackets = {
+                    enabled = true,
+                },
+            },
+            documentation = {
+                auto_show = true,
+                auto_show_delay_ms = 200,
+            },
+            ghost_text = {
+                enabled = vim.g.ai_cmp,
+            },
         }
     end,
 }
