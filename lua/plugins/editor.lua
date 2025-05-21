@@ -221,7 +221,7 @@ return {
         lazy = false,
     },
     {
-        "Joreh-T/persistence.nvim",
+        "folke/persistence.nvim",
         event = "BufReadPre",
         opts = {
             dir = vim.fn.stdpath("state") .. "/sessions/", -- directory where session files are saved

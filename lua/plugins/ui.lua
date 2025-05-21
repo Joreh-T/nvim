@@ -207,6 +207,28 @@ return {
                 diagnostics_indicator = function(_, _, _, _)
                     return ""
                 end,
+                custom_filter = function(buf_number, _)
+                    local bufname = vim.api.nvim_buf_get_name(buf_number)
+
+                    -- 1. 过滤掉文件类型为 'netrw' 的缓冲区
+                    if vim.bo[buf_number].filetype == "netrw" then
+                        return false
+                    end
+
+                    -- 2. 过滤掉名称以 'netrw%' 开头（例如 netrw 的一些特殊缓冲区）
+                    if bufname:match("^netrw%%") then
+                        return false
+                    end
+
+                    -- 3. 过滤掉表示目录的缓冲区
+                    -- 条件：缓冲区有名称 AND 该名称指向一个目录
+                    if bufname ~= "" and vim.fn.isdirectory(bufname) == 1 then
+                        return false
+                    end
+
+                    -- 如果以上条件都不满足，则显示该缓冲区
+                    return true
+                end,
                 -- diagnostics_indicator = function(count, level, diagnostics_dict, context)
                 --     return "(" .. count .. ")"
                 -- end,
@@ -357,11 +379,7 @@ return {
                     -- end,
                     filter = function(buf, win)
                         return vim.bo[buf].filetype == "snacks_terminal"
-                            or (
-                                vim.w[win].snacks_win
-                                and vim.w[win].snacks_win.position == pos
-                                and not vim.w[win].trouble_preview
-                            )
+                            or (vim.w[win].snacks_win and vim.w[win].snacks_win.position == pos and not vim.w[win].trouble_preview)
                     end,
                 }
             end
