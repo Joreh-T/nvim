@@ -10,6 +10,22 @@ return {
     },
 
     {
+        "MagicDuck/grug-far.nvim",
+        version = utils.is_nvim_le(0, 10, 4) and "v1.6.3" or nil,
+
+        -- Note (lazy loading): grug-far.lua defers all it's requires so it's lazy by default
+        -- additional lazy config to defer loading is not really needed...
+        config = function()
+            -- optional setup call to override plugin options
+            -- alternatively you can set options with vim.g.grug_far = { ... }
+            local width = utils.get_global_col_scaled(0.35)
+            require("grug-far").setup({
+                windowCreationCommand = string.format("%d vsplit", width),
+            })
+        end,
+    },
+
+    {
         "junegunn/fzf",
         build = function()
             if vim.fn.executable("fzf") == 0 then
@@ -19,6 +35,7 @@ return {
             end
         end,
     },
+
     {
         "ibhagwan/fzf-lua",
         keys = {
@@ -143,7 +160,7 @@ return {
                 view_search = false, -- disable  virtual text when use "/" or "?"
             }
             local cmdline_pos = {
-                row = utils.get_window_lines(0.2),
+                row = utils.get_global_row_scaled(0.2),
                 col = "50%",
             }
             opts.views = {

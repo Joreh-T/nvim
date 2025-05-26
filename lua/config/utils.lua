@@ -379,32 +379,90 @@ end
 
 ------------------------ End Of Neo-tree ------------------------
 
---[[
-获取当前 Neovim 窗口总行数的 n 倍
-参数：
-  n : number 倍数（支持浮点数）
-返回值：
-  integer : 总行数 × n
-  nil, string : 错误时返回 nil 和错误信息
-]]
-function M.get_window_lines(n)
-    -- 无参数时返回当前窗口高度
-    if not n then
-        return vim.api.nvim_win_get_height(0)
+function M.get_global_row_scaled(factor)
+    local total_rows = vim.o.lines
+
+    if factor == nil then
+        return total_rows
     end
 
-    if type(n) ~= "number" then
-        vim.notify("Input arg not number", vim.log.levels.ERROR)
-        return nil
-    end
-    if n <= 0 then
-        vim.notify("Input arg less than 0", vim.log.levels.ERROR)
-        return nil
+    if type(factor) ~= "number" then
+        vim.notify("Input arg not a number", vim.log.levels.ERROR)
+        return total_rows
     end
 
-    local total_lines = vim.o.lines
-    local result = math.floor(total_lines * n + 0.5)
+    if factor <= 0 then
+        vim.notify("Input factor must be greater than 0", vim.log.levels.ERROR)
+        return total_rows
+    end
+
+    local result = math.floor(total_rows * factor + 0.5)
+    return math.max(1, result)
+
+end
+
+
+function M.get_global_col_scaled(factor)
+    local total_cols = vim.api.nvim_win_get_width(0)
+
+    if factor == nil then
+        return total_cols
+    end
+
+    if type(factor) ~= "number" or factor <= 0 then
+        return total_cols
+    end
+
+    if factor <= 0 then
+        vim.notify("Input factor must be greater than 0", vim.log.levels.ERROR)
+        return total_cols
+    end
+
+    local result = math.floor(total_cols * factor + 0.5)
     return math.max(1, result)
 end
+
+function M.get_focused_window_row_scaled(factor)
+    local total_rows = vim.api.nvim_win_get_height(0)
+
+    if factor == nil then
+        return total_rows
+    end
+
+    if type(factor) ~= "number" then
+        vim.notify("Input arg not a number", vim.log.levels.ERROR)
+        return total_rows
+    end
+
+    if factor <= 0 then
+        vim.notify("Input factor must be greater than 0", vim.log.levels.ERROR)
+        return total_rows
+    end
+
+    local result = math.floor(total_rows * factor + 0.5)
+    return math.max(1, result)
+
+end
+
+function M.get_focused_window_col_scaled(factor)
+    local total_cols = vim.o.columns
+
+    if factor == nil then
+        return total_cols
+    end
+
+    if type(factor) ~= "number" or factor <= 0 then
+        return total_cols
+    end
+
+    if factor <= 0 then
+        vim.notify("Input factor must be greater than 0", vim.log.levels.ERROR)
+        return total_cols
+    end
+
+    local result = math.floor(total_cols * factor + 0.5)
+    return math.max(1, result)
+end
+
 
 return M
