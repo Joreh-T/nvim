@@ -15,20 +15,17 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 
--- rtp 是 Neovim 查找插件、脚本、配置文件和其他资源的路径。vim.opt.rtp 是用来操作 Neovim 的 runtimepath 选项，而 prepend 方法会将指定路径添加到 runtimepath 的最前面。确保 Neovim 优先加载指定路径下的插件或配置。
+-- 'rtp' is the path Neovim uses to search for plugins, scripts, configuration files, and other resources. `vim.opt.rtp` is used to manipulate Neovim's runtimepath option, and the prepend method adds the specified path to the beginning of runtimepath. This ensures Neovim prioritizes loading plugins or configurations from the specified path.
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   spec = {
-    -- 添加 LazyVim 并导入插件
+    -- add LazyVim and import LazyVim's plugins
     {
       "LazyVim/LazyVim",
       { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-      -- { import = "lazyvim.plugins.extras.coding.codeium" },
-      -- { import = "lazyvim.plugins.extras.coding.mini-surround" },
-    --   { import = "lazyvim.plugins.extras.editor.outline" },
     },
-    -- 导入自定义插件
+    -- Import my custom plugins
     { import = "plugins" },
   },
 

@@ -50,11 +50,7 @@ return {
                     "--function-arg-placeholders=false",
                 },
                 filetypes = { "c", "cpp", "objc", "objcpp" },
-                root_dir = require("lspconfig").util.root_pattern(
-                    "compile_commands.json",
-                    "compile_flags.txt",
-                    ".clangd"
-                ), -- 根目录
+                root_dir = require("lspconfig").util.root_pattern("compile_commands.json", "compile_flags.txt", ".clangd"), -- 根目录
                 settings = {
                     clangd = {
                         usePlaceholders = true,

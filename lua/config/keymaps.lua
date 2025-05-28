@@ -8,7 +8,7 @@ local map = vim.keymap.set
 local del = vim.keymap.del
 
 -----------------------------------------------------------
--- 映射 'yw' 为 'viwy' 避免复制多余的空格
+-- Mapping 'yw' to 'viwy' avoids copying extra spaces.
 map("n", "yw", "viwy", { noremap = true, silent = true })
 map("n", "<A-j>", "<C-d>", { noremap = true, silent = true, desc = "Scroll Up Half Page" })
 map("n", "<A-k>", "<C-u>", { noremap = true, silent = true, desc = "Scroll Down Half Page" })
@@ -52,14 +52,12 @@ map("n", "<leader>\\", "<C-W>v", { desc = "Split Window Right", remap = false })
 map({ "n", "v" }, "<S-h>", "^", { noremap = true, silent = true })
 map("n", "<S-l>", "$", { noremap = true, silent = true })
 map("v", "<S-l>", "$h", { noremap = true, silent = true })
--- map({ "n", "v" }, "<S-l>", "$", { noremap = true, silent = true }) --这俩放一起，v模式下会选中换行符
 
 -----------------------------------------------------------
 map("i", "jk", "<esc>", { noremap = true, silent = true })
 
 -----------------------------------------------------------
 map("v", "jkl", "<esc>", { noremap = true, silent = true })
--- diagnostic 浮动窗口显示diagnostic内容
 
 map("n", "gh", function()
     vim.diagnostic.open_float(nil, {
@@ -67,14 +65,14 @@ map("n", "gh", function()
     })
 end, { noremap = true, silent = true, desc = "Hover diagnostic" })
 
--- 复制：Ctrl + c
+-- Ctrl + c
 map({ "n", "v" }, "<C-c>", '"+y', { noremap = true, desc = "Copy to system clipboard" })
 
--- 粘贴：Ctrl + v
+-- Ctrl + v
 map("n", "<C-v>", '"+p', { noremap = true, desc = "Paste from system clipboard" })
--- map("i", "<C-v>", "<C-r>+", { noremap = true, desc = "Paste from system clipboard" }) -- 这样在neovide中如果待粘贴数据中带有注释符号，则会触发自动注释
+-- map("i", "<C-v>", "<C-r>+", { noremap = true, desc = "Paste from system clipboard" }) -- In Neovide, if the data to be pasted contains comment symbols, it will trigger automatic commenting.
 map("i", "<C-v>", '<esc>"+p', { noremap = true, desc = "Paste from system clipboard" })
--- map('c', '<C-v>', '<C-r>+', { noremap = true, silent = true }) -- 这样ui不会马上刷新
+-- map('c', '<C-v>', '<C-r>+', { noremap = true, silent = true }) -- The UI won't refresh immediately.
 map("c", "<C-v>", function()
     return vim.fn.getreg("+")
 end, { noremap = true, expr = true, desc = "Paste clipboard in cmdline" })
@@ -83,27 +81,26 @@ map("t", "<C-v>", [[<C-\><C-n>"+pa<Right>]], { noremap = true, desc = "Paste fro
 --   {map("n", "gj", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = true })}
 --   { "K", function() return vim.lsp.buf.hover() end, desc = "Hover" },
 
-
 ------------------------- Git Tools -------------------------
-local diffview_open = false -- 状态标志
-local diffviewFileHistory_open = false -- 状态标志
--- 定义切换函数
+local diffview_open = false
+local diffviewFileHistory_open = false
+
 local function toggle_diffview()
     if diffview_open then
-        vim.cmd("DiffviewClose") -- 如果已打开，则关闭
+        vim.cmd("DiffviewClose")
         diffview_open = false
     else
-        vim.cmd("DiffviewOpen") -- 如果未打开，则打开
+        vim.cmd("DiffviewOpen")
         diffview_open = true
     end
 end
 
 local function toggle_history_view()
     if diffviewFileHistory_open then
-        vim.cmd("DiffviewClose") -- 如果已打开，则关闭
+        vim.cmd("DiffviewClose")
         diffviewFileHistory_open = false
     else
-        vim.cmd("DiffviewFileHistory") -- 如果未打开，则打开
+        vim.cmd("DiffviewFileHistory")
         diffviewFileHistory_open = true
     end
 end
@@ -113,12 +110,11 @@ map("n", "<leader>gH", toggle_history_view, { noremap = true, silent = true, des
 
 map("n", "q", function()
     local closed_diffview = false
-    -- 安全遍历所有窗口
+    -- Traverse all windows
     for _, win in ipairs(vim.api.nvim_list_wins()) do
-        -- 检查窗口是否有效
+        -- check if the window is a Diffview window
         local ok, buf = pcall(vim.api.nvim_win_get_buf, win)
         if ok then
-            -- 检查文件类型
             local cur_buf_type = vim.bo[buf].filetype
             if cur_buf_type == "DiffviewFiles" or cur_buf_type == "DiffviewFileHistory" then
                 vim.api.nvim_win_call(win, function()
@@ -130,7 +126,7 @@ map("n", "q", function()
             end
         end
     end
-    -- 如果没有关闭任何 Diffview，执行默认 q 行为
+    -- If no Diffview window is closed, perform the default 'q' action.
     if not closed_diffview then
         vim.api.nvim_feedkeys("q", "n", false)
     end
@@ -140,7 +136,7 @@ end)
 -- if vim.fn.executable("lazygit") == 1 then
 --     local util = require(("config.util"))
 --     map("n", "<leader>gg", function()
---         -- 如果avante中打开了ask功能自动进入insert模式就不用下面的步骤
+--         -- If cursor will automatically enter insert mode in avante ask, the following steps are not needed.
 --         if util.has_avante_window() then
 --             vim.cmd("AvanteToggle")
 --         end

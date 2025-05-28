@@ -3,33 +3,33 @@
 -- Add any additional options here
 --
 
--- 在打开 Makefile 时设置 expandtab = false
+-- Set expandtab = false when opening Makefile
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "make",
-  callback = function()
-    vim.opt.expandtab = false -- 在 Makefile 中禁用 expandtab
-  end,
+    pattern = "make",
+    callback = function()
+        vim.opt.expandtab = false -- Disable expandtab in Makefile
+    end,
 })
 
 ---------------------------------------------------------------------
--- 设置 Neovim 启动时使用 PowerShell
+-- Set PowerShell as the default shell when Neovim starts on Windows
 local os = vim.loop.os_uname().sysname
 if os == "Windows_NT" then
-  vim.o.shell = "powershell -Nologo"
+    vim.o.shell = "powershell -Nologo"
 end
 
-vim.opt.list = true -- 显示不可见字符
+vim.opt.list = true -- Show invisible characters
 vim.opt.listchars = { space = "·", tab = ">-", eol = "↲" }
-vim.opt.tabstop = 4 -- 设置 tab 键的宽度为 4
+vim.opt.tabstop = 4 -- Set tab width to 4
 vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4 -- 设置自动缩进时的宽度为 4
+vim.opt.shiftwidth = 4 -- Set auto-indent width to 4
 vim.opt.copyindent = true
-vim.opt.expandtab = true -- 插入tab 转换为空格
+vim.opt.expandtab = true -- Convert tabs to spaces
 vim.opt.smartindent = true
 -- vim.opt.autoindent = true
-vim.opt.conceallevel = 0 -- 显示隐藏字符
-vim.opt.clipboard = "unnamedplus" --使用系统剪切板替换nvim剪切板
-vim.opt.relativenumber = true -- 相对行号
+vim.opt.conceallevel = 0 -- Show hidden characters
+vim.opt.clipboard = "unnamedplus" -- Use system clipboard instead of nvim clipboard
+vim.opt.relativenumber = true -- Relative line numbers
 vim.opt.number = true
 vim.opt.jumpoptions = "stack"
 
@@ -38,12 +38,12 @@ vim.g.python3_host_prog = "/usr/bin/python3"
 vim.g.autoformat = false
 vim.o.wrap = true
 
-vim.g.snacks_animate = false -- 暂时关闭动画， 会导致V模式下向下选择时光标异常
+vim.g.snacks_animate = false -- Temporarily disable animation, which causes cursor anomalies in Visual mode when selecting downward
 ---------------------------------------------------------------------
 ---
-vim.o.virtualedit = "onemore" -- 设置 virtualedit, 光标上下移动不会默认到行尾
-vim.o.undofile = true -- 保存文件的所有更改历史
-vim.o.scrolloff = 7 -- 保证上下各有 n 行显示空间
+vim.o.virtualedit = "onemore" -- Set virtualedit, cursor won't default to line end when moving up/down
+vim.o.undofile = true -- Save all change history of files
+vim.o.scrolloff = 7 -- Ensure n lines of space above and below cursor
 
 --
 -- if vim.fn.has("wsl") == 1 then
@@ -60,89 +60,89 @@ vim.o.scrolloff = 7 -- 保证上下各有 n 行显示空间
 --         cache_enabled = false,
 --     }
 -- end
--- wsl 跨系统复制粘贴
+-- Cross-system copy-paste for WSL
 if vim.fn.has("wsl") == 1 then
-  vim.g.clipboard = {
-    name = "win32yank",
-    copy = {
-      ["+"] = "win32yank.exe -i --crlf",
-      ["*"] = "win32yank.exe -i --crlf",
-    },
-    paste = {
-      ["+"] = "win32yank.exe -o --lf",
-      ["*"] = "win32yank.exe -o --lf",
-    },
-    cache_enabled = false,
-  }
+    vim.g.clipboard = {
+        name = "win32yank",
+        copy = {
+            ["+"] = "win32yank.exe -i --crlf",
+            ["*"] = "win32yank.exe -i --crlf",
+        },
+        paste = {
+            ["+"] = "win32yank.exe -o --lf",
+            ["*"] = "win32yank.exe -o --lf",
+        },
+        cache_enabled = false,
+    }
 end
 
 if vim.g.neovide then
-  -- Function to parse and compare versions
-  local function is_version_leq(target_version)
-    local version_str = vim.fn.system("neovide --version")
-    local version = version_str:match("Neovide (%d+%.%d+%.%d+)")
-    if not version then
-      return false
+    -- Function to parse and compare versions
+    local function is_version_leq(target_version)
+        local version_str = vim.fn.system("neovide --version")
+        local version = version_str:match("Neovide (%d+%.%d+%.%d+)")
+        if not version then
+            return false
+        end
+
+        local target_major, target_minor, target_patch = target_version:match("(%d+)%.(%d+)%.(%d+)")
+        local major, minor, patch = version:match("(%d+)%.(%d+)%.(%d+)")
+
+        if not (major and minor and patch) then
+            return false
+        end
+
+        -- Compare versions numerically
+        if tonumber(major) < tonumber(target_major) then
+            return true
+        elseif tonumber(major) == tonumber(target_major) then
+            if tonumber(minor) < tonumber(target_minor) then
+                return true
+            elseif tonumber(minor) == tonumber(target_minor) then
+                return tonumber(patch) <= tonumber(target_patch)
+            end
+        end
+        return false
     end
 
-    local target_major, target_minor, target_patch = target_version:match("(%d+)%.(%d+)%.(%d+)")
-    local major, minor, patch = version:match("(%d+)%.(%d+)%.(%d+)")
-
-    if not (major and minor and patch) then
-      return false
+    if is_version_leq("0.15.0") then
+        vim.g.neovide_transparency = 0.99
+    else
+        vim.g.neovide_opacity = 0.98
     end
 
-    -- Compare versions numerically
-    if tonumber(major) < tonumber(target_major) then
-      return true
-    elseif tonumber(major) == tonumber(target_major) then
-      if tonumber(minor) < tonumber(target_minor) then
-        return true
-      elseif tonumber(minor) == tonumber(target_minor) then
-        return tonumber(patch) <= tonumber(target_patch)
-      end
-    end
-    return false
-  end
+    vim.g.neovide_title_background_color = "#2a2f38"
+    -- string.format(
+    --   "%x",
+    -- vim.api.nvim_get_hl(0, {id=vim.api.nvim_get_hl_id_by_name("Normal")}).bg)
+    --
+    vim.o.guifont = "JetBrainsMono Nerd Font:h14"
+    vim.g.neovide_ligatures = true -- Enable ligature effects
 
-  if is_version_leq("0.15.0") then
-    vim.g.neovide_transparency = 0.99
-  else
-    vim.g.neovide_opacity = 0.98
-  end
+    vim.g.neovide_hide_mouse_when_typing = true
+    -- vim.g.neovide_refresh_rate = 60
 
-  vim.g.neovide_title_background_color = "#2a2f38"
-  -- string.format(
-  --   "%x",
-  -- vim.api.nvim_get_hl(0, {id=vim.api.nvim_get_hl_id_by_name("Normal")}).bg)
-  --
-  vim.o.guifont = "JetBrainsMono Nerd Font:h14"
-  vim.g.neovide_ligatures = true -- 启用连字效果
+    -- Cursor Animation
+    vim.g.neovide_cursor_animation_length = 0.15 -- Cursor movement animation speed
+    vim.g.neovide_cursor_trail_size = 0.2 -- Trail length
+    vim.g.neovide_cursor_antialiasing = true -- Anti-aliasing
+    -- ""：Disable particles
+    -- "railgun"：Beam effect
+    -- "torpedo"：Trail particles
+    -- "pixiedust"：Sparkle particles
+    -- "sonicboom"：Shockwave effect
+    -- "ripple"：Ripple effect
+    -- "wireframe"：Wireframe effect
+    vim.g.neovide_cursor_vfx_mode = "pixiedust" -- Particle effect mode
 
-  vim.g.neovide_hide_mouse_when_typing = true
-  -- vim.g.neovide_refresh_rate = 60
+    -- Scroll Animation
+    vim.g.neovide_scroll_animation_length = 0.3 -- Scroll animation duration (seconds)
+    vim.g.neovide_scroll_animation_far = 1.5 -- Magnify animation for long-distance scrolling
 
-  -- Cursor Animation
-  vim.g.neovide_cursor_animation_length = 0.15 -- 光标移动动画速度
-  vim.g.neovide_cursor_trail_size = 0.2 -- 拖尾长度
-  vim.g.neovide_cursor_antialiasing = true -- 抗锯齿
-  -- ""：禁用粒子。
-  -- "railgun"：光束效果
-  -- "torpedo"：拖尾粒子
-  -- "pixiedust"：闪烁粒子
-  -- "sonicboom"：冲击波效果
-  -- "ripple"：涟漪效果
-  -- "wireframe"：线框效果
-  vim.g.neovide_cursor_vfx_mode = "pixiedust" -- 粒子效果模式
+    -- Window Effects
+    vim.g.neovide_floating_blur = 10 -- Floating window blur intensity
+    vim.g.neovide_floating_opacity = 0.8 -- Opacity
+    vim.g.neovide_floating_z_height = 10 -- Float height
 
-  -- Scroll Animatio
-  vim.g.neovide_scroll_animation_length = 0.3 -- 滚动动画时长（秒）
-  vim.g.neovide_scroll_animation_far = 1.5 -- 远距离滚动时放大动画
-
-  -- Window Effects
-  vim.g.neovide_floating_blur = 10 -- 浮动窗口模糊强度
-  vim.g.neovide_floating_opacity = 0.8 -- 透明度
-  vim.g.neovide_floating_z_height = 10 -- 悬浮高度
-
-  vim.g.neovide_window_blurred = true
+    vim.g.neovide_window_blurred = true
 end
