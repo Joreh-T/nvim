@@ -22,7 +22,6 @@ return {
                     "markdownlint-cli2",
                     "marksman",
                     "pyright",
-                    "ruff",
                     "shellcheck",
                     "shfmt",
                     "stylua",
@@ -34,9 +33,7 @@ return {
         opts = function(_, opts)
             opts.servers = opts.servers or {}
             opts.servers.harper_ls = {
-                -- 显式关闭自动启动
                 autostart = false,
-                -- 可选：禁用文件类型关联
                 filetypes = {},
             }
             opts.servers.clangd = vim.tbl_deep_extend("force", opts.servers.clangd or {}, {
@@ -50,7 +47,7 @@ return {
                     "--function-arg-placeholders=false",
                 },
                 filetypes = { "c", "cpp", "objc", "objcpp" },
-                root_dir = require("lspconfig").util.root_pattern("compile_commands.json", "compile_flags.txt", ".clangd"), -- 根目录
+                root_dir = require("lspconfig").util.root_pattern("compile_commands.json", "compile_flags.txt", ".clangd"),
                 settings = {
                     clangd = {
                         usePlaceholders = true,

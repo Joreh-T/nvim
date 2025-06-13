@@ -1,25 +1,28 @@
+local utils = require("config.utils")
+
 return {
     {
         "yetone/avante.nvim",
         event = "VeryLazy",
+        commit = utils.is_windows() and "d3c93c0dabb4311d0af30940726fb0bff30a9676" or nil,
         -- lazy = false,
         -- version = "v0.0.23",
         opts = {
-            provider = "aihubmix",
-            -- auto_suggestions_provider = "aihubmix",
-            vendors = {
+            provider = "deepseek",
+            providers = {
                 deepseek = {
                     __inherited_from = "openai",
                     api_key_name = "DEEPSEEK_API_KEY",
                     endpoint = "https://api.deepseek.com",
-                    model = "deepseek-coder",
+                    model = "deepseek-reasoner",
+                    -- model = "deepseek-coder",
                     timeout = 30000,
                     max_tokens = 8192,
                 },
-            },
-            aihubmix = {
-                model = "DeepSeek-R1", -- "gemini-2.5-pro-preview-05-06", "DeepSeek-R1"
-                api_key_name = "AIHUBMIX_API_KEY",
+                aihubmix = {
+                    model = "DeepSeek-R1", -- "gemini-2.5-pro-preview-05-06", "DeepSeek-R1"
+                    api_key_name = "AIHUBMIX_API_KEY",
+                },
             },
             windows = {
                 ---@alias AvantePosition "right" | "left" | "top" | "bottom" | "smart"
@@ -66,8 +69,7 @@ return {
         },
         -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
         build = (function()
-            local sysname = vim.loop.os_uname().sysname
-            if sysname == "Windows_NT" then
+            if utils.is_windows() then
                 return "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
             else
                 return "make"
