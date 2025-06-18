@@ -110,6 +110,7 @@ return {
             },
             heading = {
                 enabled = true,
+                icons = {' '},
                 render_modes = false,
                 width = "full",
                 right_pad = 5,
