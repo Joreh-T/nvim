@@ -553,17 +553,22 @@ return {
             --   }
             -- })
             opts.default_component_configs.diagnostics = {
-                enabled = false, -- 禁用诊断图标
+                enabled = false,
             }
-            -- 修改窗口宽度
             opts.window = opts.window or {}
-            opts.window.width = function()
-                local total_width = vim.o.columns
-                return math.max(33, math.floor(total_width * 0.20))
-            end
+            opts.window = {
+                position = "left",
+                width = function()
+                    local total_width = vim.o.columns
+                    return math.max(33, math.floor(total_width * 0.20))
+                end,
+            }
+            -- opts.window.width = function()
+            --     local total_width = vim.o.columns
+            --     return math.max(33, math.floor(total_width * 0.20))
+            -- end
             opts.window.title = ""
 
-            -- 修改文件系统窗口标题
             opts.filesystem = opts.filesystem or {}
             opts.filesystem.filtered_items = opts.filesystem.filtered_items or {}
             opts.filesystem.filtered_items.hide_dotfiles = false
@@ -572,7 +577,6 @@ return {
                 leave_dirs_open = false,
             }
             opts.filesystem.window = { title = "" }
-            -- 修改图标配置
             opts.default_component_configs = opts.default_component_configs or {}
             opts.default_component_configs.icon = {
                 folder_closed = "",

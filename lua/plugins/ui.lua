@@ -240,7 +240,7 @@ return {
                 },
                 max_name_length = 30,
                 hover = {
-                    enabled = true,
+                    enabled = false,
                     delay = 200,
                     reveal = { "close" },
                 },
@@ -399,16 +399,16 @@ return {
             --   open = "Outline",
             -- })
 
-            local outline_spec = {
-                title = "Outline",
-                ft = "Outline",
-                size = {
-                    width = math.max(base_opts.options.right.size, math.floor(vim.o.columns * 0.17)),
-                    height = 0.4,
-                },
-                -- pinned = true,
-                -- open = "Outline",
-            }
+            -- local outline_spec = {
+            --     title = "Outline",
+            --     ft = "Outline",
+            --     size = {
+            --         width = math.max(base_opts.options.right.size, math.floor(vim.o.columns * 0.17)),
+            --         height = 0.4,
+            --     },
+            --     -- pinned = true,
+            --     -- open = "Outline",
+            -- }
 
             local left = {}
 
