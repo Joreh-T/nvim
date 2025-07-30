@@ -18,6 +18,8 @@ else
     icons.diagnostics.Hint = "🤔 "
 end
 
+-- vim.lsp.enable({'clangd'})
+
 local utils = require("config.utils")
 if utils.is_windows() then
     vim.defer_fn(function()
@@ -26,5 +28,5 @@ if utils.is_windows() then
         for _, file in ipairs(tmp_files) do
             vim.fn.delete(file)
         end
-    end, 5000) -- 延迟 n 秒执行，避免干扰启动流程
+    end, 5000)
 end

@@ -347,21 +347,29 @@ function M.refresh_neo_tree_if_git()
         return
     end
 
-    local current_buf = vim.api.nvim_get_current_buf()
+    -- local current_buf = vim.api.nvim_get_current_buf()
+    -- local current_ft = vim.bo[current_buf].filetype
+    -- if current_ft == "neo-tree" then
+    --     return
+    -- end
+
+    local current_win = vim.api.nvim_get_current_win()
+    local current_buf = vim.api.nvim_win_get_buf(current_win)
     local current_ft = vim.bo[current_buf].filetype
+
     if current_ft == "neo-tree" then
         return
     end
 
     -- Debounce logic: record last refresh time in ms
-    local is_refresh_interval_passed = true
     local now = vim.loop.now()
     if last_neotree_refresh_time and (now - last_neotree_refresh_time < 2000) then
-        is_refresh_interval_passed = false
+        is_refresh_neotree_need = true
         -- vim.notify("refresh interval too short", vim.log.levels.INFO)
         return
     end
     last_neotree_refresh_time = now
+    is_refresh_neotree_need = false
 
     if not is_refresh_interval_passed and not is_refresh_neotree_need then
         return
@@ -371,7 +379,6 @@ function M.refresh_neo_tree_if_git()
     vim.defer_fn(function()
         if has_neotree_window() then
             require("neo-tree.sources.manager").refresh("filesystem")
-            is_refresh_neotree_need = false
             -- vim.notify("Refreshed neo-tree once (with delay)", vim.log.levels.INFO)
         end
     end, 500)

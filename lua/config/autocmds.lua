@@ -18,7 +18,7 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "WinEnter", "VimResume" }, {
     pattern = "*",
     callback = utils.refresh_neo_tree_if_git,
-    desc = "Auto refresh neo-tree on focus or buffer enter",
+    desc = "Auto refresh neo-tree when git status changed",
 })
 
 ------------------End Of Neo-tree ------------------

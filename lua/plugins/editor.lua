@@ -12,7 +12,7 @@ return {
     {
         -- Search and replace keywords
         "MagicDuck/grug-far.nvim",
-        version = utils.is_nvim_le(0, 10, 4) and "v1.6.3" or nil,
+        -- version = utils.is_nvim_le(0, 10, 4) and "v1.6.3" or nil,
 
         -- Note (lazy loading): grug-far.lua defers all it's requires so it's lazy by default
         -- additional lazy config to defer loading is not really needed...
@@ -411,7 +411,7 @@ return {
             "kevinhwang91/nvim-hlslens",
             {
                 "lewis6991/gitsigns.nvim",
-                commit = utils.is_nvim_le(0, 10) and "ee7e50dfbdf49e3acfa416fd3ad3abbdb658582c" or nil,
+                -- commit = utils.is_nvim_le(0, 10) and "ee7e50dfbdf49e3acfa416fd3ad3abbdb658582c" or nil,
             },
         },
         config = function()

@@ -14,6 +14,7 @@ vim.api.nvim_create_autocmd("FileType", {
 ---------------------------------------------------------------------
 -- Set PowerShell as the default shell when Neovim starts on Windows
 local os = vim.loop.os_uname().sysname
+
 if os == "Windows_NT" then
     vim.o.shell = "powershell -Nologo"
 end
@@ -34,7 +35,10 @@ vim.opt.number = true
 vim.opt.jumpoptions = "stack"
 
 ---------------------------------------------------------------------
-vim.g.python3_host_prog = "/usr/bin/python3"
+if not os == "Windows_NT" then
+    vim.g.python3_host_prog = "/usr/bin/python3"
+end
+
 vim.g.autoformat = false
 vim.o.wrap = true
 
@@ -44,6 +48,7 @@ vim.g.snacks_animate = false -- Temporarily disable animation, which causes curs
 vim.o.virtualedit = "onemore" -- Set virtualedit, cursor won't default to line end when moving up/down
 vim.o.undofile = true -- Save all change history of files
 vim.o.scrolloff = 7 -- Ensure n lines of space above and below cursor
+-- vim.opt.winborder = 'rounded'
 
 --
 -- if vim.fn.has("wsl") == 1 then
@@ -116,15 +121,15 @@ if vim.g.neovide then
     --   "%x",
     -- vim.api.nvim_get_hl(0, {id=vim.api.nvim_get_hl_id_by_name("Normal")}).bg)
     --
-    vim.o.guifont = "JetBrainsMono Nerd Font:h14"
+    vim.o.guifont = "JetBrainsMono Nerd Font:h13.5"
     vim.g.neovide_ligatures = true -- Enable ligature effects
 
     vim.g.neovide_hide_mouse_when_typing = true
     -- vim.g.neovide_refresh_rate = 60
 
     -- Cursor Animation
-    vim.g.neovide_cursor_animation_length = 0.15 -- Cursor movement animation speed
-    vim.g.neovide_cursor_trail_size = 0.2 -- Trail length
+    vim.g.neovide_cursor_animation_length = 0.1 -- Cursor movement animation speed
+    vim.g.neovide_cursor_trail_size = 0.15 -- Trail length
     vim.g.neovide_cursor_antialiasing = true -- Anti-aliasing
     -- ""：Disable particles
     -- "railgun"：Beam effect
