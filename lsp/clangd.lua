@@ -1,6 +1,6 @@
 return {
     cmd = {
-        "/root/.local/share/nvim/mason/bin/clangd",
+        MASON_BIN_PATH .. "/clangd",
         "--background-index",
         "--clang-tidy",
         "-j=4",
