@@ -81,7 +81,11 @@ return {
                             icon = " ",
                             key = "c",
                             desc = "Config",
-                            action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+                            action = function()
+                                local config_dir = vim.fn.stdpath("config")
+                                vim.cmd("cd " .. config_dir)
+                                Snacks.dashboard.pick("files")
+                            end,
                         },
                         -- { icon = " ", key = "s", desc = "Select Session", action = "<leader>qS" },
                         { icon = " ", key = "s", desc = "Select Session", action = ":lua require('persistence').select()" },
