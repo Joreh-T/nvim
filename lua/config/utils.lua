@@ -153,7 +153,7 @@ function M.open_terminal_rezise_height()
         end
     end)
     -- Avoid inability to automatically enter t mode when there's an avante window
-    if M.has_target_ft_window("^Avante") and vim.fn.mode() ~= "t" and M.has_target_ft_window("snacks_terminal") then
+    if M.has_target_ft_window("^Avante", true) and vim.fn.mode() ~= "t" and M.has_target_ft_window("snacks_terminal") then
         vim.defer_fn(function()
             vim.cmd("startinsert")
         end, 100)
@@ -191,13 +191,24 @@ function M.close_terminal_and_focus_largest()
     M.focus_largest_window()
 end
 
-function M.has_target_ft_window(filetype_pattern)
-    -- Iterate through all windows in current tab
+function M.has_target_ft_window(filetype_pattern, use_pattern_regex)
+    use_pattern_regex = use_pattern_regex or false
     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
         local buf = vim.api.nvim_win_get_buf(win)
-        -- Check if filetype matches the given pattern
-        if vim.bo[buf].filetype:match(filetype_pattern) then
-            return true
+        local ft = vim.bo[buf].filetype or ""
+        if ft ~= "" then
+            -- Check if filetype matches the given pattern
+            if use_pattern_regex then
+                -- pattern matching
+                if ft:match(filetype_pattern) then
+                    return true
+                end
+            else
+                -- whole string matching
+                if ft == filetype_pattern then
+                    return true
+                end
+            end
         end
     end
     return false
@@ -339,7 +350,8 @@ function M.refresh_neo_tree_if_git()
         is_refresh_neotree_need = true
         -- vim.notify("need refresh neo-tree", vim.log.levels.INFO)
     end
-    if not has_neotree_window() or M.has_target_ft_window("snacks_dashboard") then
+
+    if not has_neotree_window() or (not is_refresh_neotree_need) or M.has_target_ft_window("snacks_dashboard") then
         return
     end
     -- Check Git repository status
@@ -369,7 +381,7 @@ function M.refresh_neo_tree_if_git()
             is_refresh_neotree_need = false
             -- vim.notify("Refreshed neo-tree once (with delay)", vim.log.levels.INFO)
         end
-    end, 500)
+    end, 1000)
 end
 ------------------------ End Of Neo-tree ------------------------
 
