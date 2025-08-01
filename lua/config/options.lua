@@ -33,6 +33,7 @@ vim.opt.clipboard = "unnamedplus" -- Use system clipboard instead of nvim clipbo
 vim.opt.relativenumber = true -- Relative line numbers
 vim.opt.number = true
 vim.opt.jumpoptions = "stack"
+vim.opt.nrformats = "bin,hex,octal,alpha" -- Enable binary, hexadecimal, octal, and alphabetical number formats
 
 ---------------------------------------------------------------------
 if not os == "Windows_NT" then
@@ -48,6 +49,9 @@ vim.g.snacks_animate = false -- Temporarily disable animation, which causes curs
 vim.o.virtualedit = "onemore" -- Set virtualedit, cursor won't default to line end when moving up/down
 vim.o.undofile = true -- Save all change history of files
 vim.o.scrolloff = 7 -- Ensure n lines of space above and below cursor
+-- vim.diagnostic.config({
+--     virtual_lines = true, -- Show diagnostics in virtual lines
+-- })
 -- vim.opt.winborder = 'rounded'
 
 --

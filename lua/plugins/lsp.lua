@@ -23,6 +23,7 @@ return {
                     "markdownlint-cli2",
                     "marksman",
                     "pyright",
+                    "ruff",
                     "shellcheck",
                     "shfmt",
                     "stylua",

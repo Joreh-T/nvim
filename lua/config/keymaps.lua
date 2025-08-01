@@ -68,6 +68,7 @@ end, { noremap = true, silent = true, desc = "Hover diagnostic" })
 -- Ctrl + c
 map({ "n", "v" }, "<C-c>", '"+y', { noremap = true, desc = "Copy to system clipboard" })
 
+map("v", "p", '"_dP') -- Prevent overwriting the system clipboard when pasting in visual mode
 -- Ctrl + v
 map("n", "<C-v>", '"+p', { noremap = true, desc = "Paste from system clipboard" })
 -- map("i", "<C-v>", "<C-r>+", { noremap = true, desc = "Paste from system clipboard" }) -- In Neovide, if the data to be pasted contains comment symbols, it will trigger automatic commenting.
