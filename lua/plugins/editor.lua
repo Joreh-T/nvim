@@ -252,14 +252,14 @@ return {
         },
         keys = {
             {
-                "<leader>qS",
+                "<leader>qs",
                 function()
                     require("persistence").load()
                 end,
                 desc = "Restore Session",
             },
             {
-                "<leader>qs",
+                "<leader>qS",
                 function()
                     require("persistence").select()
                 end,
