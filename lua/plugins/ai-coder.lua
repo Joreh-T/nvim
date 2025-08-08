@@ -1,19 +1,27 @@
+local utils = require("config.utils")
+
 return {
     {
         "yetone/avante.nvim",
         event = "VeryLazy",
+        commit = utils.is_windows() and "d3c93c0dabb4311d0af30940726fb0bff30a9676" or nil,
         -- lazy = false,
         -- version = "v0.0.23",
         opts = {
             provider = "deepseek",
-            vendors = {
+            providers = {
                 deepseek = {
                     __inherited_from = "openai",
                     api_key_name = "DEEPSEEK_API_KEY",
-                    endpoint = "https://api.deepseek.com/v1",
-                    model = "deepseek-coder",
+                    endpoint = "https://api.deepseek.com",
+                    model = "deepseek-reasoner",
+                    -- model = "deepseek-coder",
                     timeout = 30000,
                     max_tokens = 8192,
+                },
+                aihubmix = {
+                    model = "DeepSeek-R1", -- "gemini-2.5-pro-preview-05-06", "DeepSeek-R1"
+                    api_key_name = "AIHUBMIX_API_KEY",
                 },
             },
             windows = {
@@ -54,15 +62,14 @@ return {
                 --   support_paste_from_clipboard = false,
                 --   minimize_diff = true,
                 enable_token_counting = false,
-                --   enable_cursor_planning_mode = false,
-                --   enable_claude_text_editor_tool_mode = false,
-                --   use_cwd_as_project_root = false,
+                enable_cursor_planning_mode = true,
+                enable_claude_text_editor_tool_mode = true,
+                use_cwd_as_project_root = true,
             },
         },
         -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
         build = (function()
-            local sysname = vim.loop.os_uname().sysname
-            if sysname == "Windows_NT" then
+            if utils.is_windows() then
                 return "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
             else
                 return "make"

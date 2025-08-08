@@ -1,12 +1,11 @@
+local utils = require("config.utils")
+
 return {
     -- git blame
     {
         "APZelos/blamer.nvim",
         config = function()
-            -- 检测操作系统
-            local os_name = vim.loop.os_uname().sysname
-            -- 如果不是 Windows，则启用 Blamer
-            if os_name ~= "Windows_NT" then
+            if utils().is_windows() then
                 vim.g.blamer_enabled = true
                 vim.g.blamer_delay = 500
             end
@@ -19,7 +18,6 @@ return {
         opts = function(_, opts)
             local actions = require("diffview.actions")
 
-            -- 覆盖默认的快捷键映射
             opts.keymaps = {
                 view = {
                     ["<leader>e"] = actions.toggle_files,
@@ -35,12 +33,12 @@ return {
                 },
             }
 
-            -- 移除 `<leader>b` 键位（如果默认存在）
+            -- Remove the `<leader>b` keybinding (if it exists by default)
             opts.keymaps.view["<leader>b"] = nil
             opts.keymaps.file_panel["<leader>b"] = nil
             opts.keymaps.file_history_panel["<leader>b"] = nil
 
-            return opts -- 返回修改后的配置
+            return opts
         end,
     },
     {
@@ -83,6 +81,7 @@ return {
             },
         },
     },
+
     {
         "kdheepak/lazygit.nvim",
         lazy = true,

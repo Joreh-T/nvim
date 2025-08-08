@@ -1,6 +1,6 @@
 -- if true then return {} end
 local screen_width = vim.o.columns
-local center_indent = math.floor((screen_width - 78) / 2) -- 尽量让header居中
+local center_indent = math.floor((screen_width - 78) / 2) -- Try to center the snacks header as much as possible
 
 return {
     {
@@ -96,15 +96,12 @@ return {
                         padding = 3, -- Spacing from below
                         indent = center_indent, -- Spacing from left
                     },
-                    -- 动态判断窗口宽度来决定是否添加终端面板
                     -- {
                     --   pane = 2,
                     --   section = "terminal",
                     --   enabled = function()
-                    --     -- 获取当前窗口的列数（宽度）
                     --     local width = vim.o.columns
                     --
-                    --     -- 判断窗口宽度大于一定值时才显示这个面板
                     --     return width >= 120
                     --   end,
                     --   cmd = "pokemon-colorscripts -n pikachu --no-title; sleep .2", -- 运行终端命令
@@ -137,13 +134,12 @@ return {
                     --     return Snacks.git.get_root() ~= nil
                     --   end,
                     --   cmd = (function()
-                    --     -- 检查 'hub' 是否可用
                     --     if vim.fn.executable("hub") == 1 then
                     --       return "hub status --short --branch --renames"
                     --     else
                     --       return "git status --short --branch --renames"
                     --     end
-                    --   end)(), -- 注意这里直接执行函数，将返回值作为结果
+                    --   end)(),
                     --   height = 5,
                     --   padding = 1,
                     --   ttl = 5 * 60,
@@ -207,6 +203,27 @@ return {
                 diagnostics_indicator = function(_, _, _, _)
                     return ""
                 end,
+                custom_filter = function(buf_number, _)
+                    local bufname = vim.api.nvim_buf_get_name(buf_number)
+
+                    -- 1. Filter out buffers with file type 'netrw'
+                    if vim.bo[buf_number].filetype == "netrw" then
+                        return false
+                    end
+
+                    -- 2. Filter out buffers with file types that start with 'netrw'
+                    if bufname:match("^netrw%%") then
+                        return false
+                    end
+
+                    -- 3. Filter out buffers representing directories
+                    -- Condition: Buffer has a name AND the name points to a directory
+                    if bufname ~= "" and vim.fn.isdirectory(bufname) == 1 then
+                        return false
+                    end
+
+                    return true
+                end,
                 -- diagnostics_indicator = function(count, level, diagnostics_dict, context)
                 --     return "(" .. count .. ")"
                 -- end,
@@ -223,7 +240,7 @@ return {
                 },
                 max_name_length = 30,
                 hover = {
-                    enabled = true,
+                    enabled = false,
                     delay = 200,
                     reveal = { "close" },
                 },
@@ -283,7 +300,7 @@ return {
             vim.opt.splitkeep = "screen"
         end,
         opts = function(_, opts)
-            -- 插件加载顺序检查
+            -- Plugin load order check
             local edgy_idx = LazyVim.plugin.extra_idx("ui.edgy")
             local symbols_idx = LazyVim.plugin.extra_idx("editor.outline")
             if edgy_idx and edgy_idx > symbols_idx then
@@ -293,7 +310,6 @@ return {
                 )
             end
 
-            -- 基础配置
             local base_opts = {
                 options = {
                     left = { size = 25 },
@@ -343,7 +359,6 @@ return {
                 },
             }
 
-            -- 终端窗口配置模板
             local terminal_spec = function(pos)
                 return {
                     ft = "snacks_terminal",
@@ -357,16 +372,11 @@ return {
                     -- end,
                     filter = function(buf, win)
                         return vim.bo[buf].filetype == "snacks_terminal"
-                            or (
-                                vim.w[win].snacks_win
-                                and vim.w[win].snacks_win.position == pos
-                                and not vim.w[win].trouble_preview
-                            )
+                            or (vim.w[win].snacks_win and vim.w[win].snacks_win.position == pos and not vim.w[win].trouble_preview)
                     end,
                 }
             end
 
-            -- 文件树配置
             local neo_tree_spec = {
                 title = "File Explorer",
                 ft = "neo-tree",
@@ -380,7 +390,6 @@ return {
                 pinned = false,
             }
 
-            -- Outline 配置
             -- opts.right = opts.right or {}
             -- table.insert(opts.right, {
             --   title = "Outline",
@@ -390,16 +399,16 @@ return {
             --   open = "Outline",
             -- })
 
-            local outline_spec = {
-                title = "Outline",
-                ft = "Outline",
-                size = {
-                    width = math.max(base_opts.options.right.size, math.floor(vim.o.columns * 0.17)),
-                    height = 0.4,
-                },
-                -- pinned = true,
-                -- open = "Outline",
-            }
+            -- local outline_spec = {
+            --     title = "Outline",
+            --     ft = "Outline",
+            --     size = {
+            --         width = math.max(base_opts.options.right.size, math.floor(vim.o.columns * 0.17)),
+            --         height = 0.4,
+            --     },
+            --     -- pinned = true,
+            --     -- open = "Outline",
+            -- }
 
             local left = {}
 
@@ -415,7 +424,6 @@ return {
                 left = nil
             end
 
-            -- 合并配置
             return vim.tbl_deep_extend("force", opts or {}, {
                 options = base_opts.options,
                 animate = base_opts.animate,
@@ -430,6 +438,140 @@ return {
                     right = { terminal_spec("right") },
                 },
             })
+        end,
+    },
+
+    {
+        -- Bottom Statusbar
+        "nvim-lualine/lualine.nvim",
+        optional = true,
+        event = "VeryLazy",
+        opts = function(_, opts)
+            -- +-------------------------------------------------+
+            -- | A | B | C                             X | Y | Z |
+            -- +-------------------------------------------------+
+            local icons = LazyVim.config.icons
+            -- opts.options.component_separators =  { left = '|', right = '' }
+            opts.options = {
+                theme = "auto",
+                globalstatus = vim.o.laststatus == 3,
+                disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard" } },
+                component_separators = {
+                    left = "%#WinBarNC#%*",
+                    right = "%#WinBarNC#%*",
+                },
+            }
+            opts.sections.lualine_a = { "mode" }
+            opts.sections.lualine_b = { "branch" }
+            opts.sections.lualine_c = {
+                LazyVim.lualine.root_dir(),
+                {
+                    "diagnostics",
+                    symbols = {
+                        error = icons.diagnostics.Error,
+                        warn = icons.diagnostics.Warn,
+                        info = icons.diagnostics.Info,
+                        hint = icons.diagnostics.Hint,
+                    },
+                },
+                { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+                { LazyVim.lualine.pretty_path(), separator = "", padding = { left = 1, right = 0 } },
+                {
+                    function()
+                        return vim.bo.modified and "●" or " "
+                    end,
+                    color = function()
+                        -- return vim.bo.modified and { fg = "#e5c07b" } or { fg = "#98c379" }
+                        local group = vim.bo.modified and "NeoTreeGitModified" or "Green"
+                        local hl = vim.api.nvim_get_hl(0, { name = group })
+                        return { fg = hl.fg and string.format("#%06x", hl.fg) or "#e5c07b" }
+                    end,
+                    padding = { left = 1, right = 1 },
+                },
+
+                -- {
+                --     function() return vim.bo.modified and "[+]" or "[-]" end,
+                --     color = { fg = "#ff9e64" },
+                --     padding = { left = 0, right = 1 },
+                -- },
+            }
+            opts.sections.lualine_x = {
+                Snacks.profiler.status(),
+            -- stylua: ignore
+            {
+              function() return require("noice").api.status.command.get() end,
+              cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
+              color = function() return { fg = Snacks.util.color("Statement") } end,
+            },
+            -- stylua: ignore
+            {
+              function() return require("noice").api.status.mode.get() end,
+              cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
+              color = function() return { fg = Snacks.util.color("Constant") } end,
+            },
+            -- stylua: ignore
+            {
+              function() return "  " .. require("dap").status() end,
+              cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
+              color = function() return { fg = Snacks.util.color("Debug") } end,
+            },
+            -- stylua: ignore
+            -- {
+            --   require("lazy.status").updates,
+            --   cond = require("lazy.status").has_updates,
+            --   color = function() return { fg = Snacks.util.color("Special") } end,
+            -- },
+            {
+                "diff",
+                symbols = {
+                    added = icons.git.added,
+                    modified = icons.git.modified,
+                    removed = icons.git.removed,
+                },
+                source = function()
+                    local gitsigns = vim.b.gitsigns_status_dict
+                    if gitsigns then
+                        return {
+                            added = gitsigns.added,
+                            modified = gitsigns.changed,
+                            removed = gitsigns.removed,
+                        }
+                    end
+                end,
+            },
+            }
+            opts.sections.lualine_y = {
+                { "progress", separator = " ", padding = { left = 1, right = 0 } },
+                { "location", padding = { left = 0, right = 1 } },
+            }
+            opts.sections.lualine_z = {}
+
+            if vim.g.trouble_lualine and LazyVim.has("trouble.nvim") then
+                local trouble = require("trouble")
+                local symbols = trouble.statusline({
+                    mode = "symbols",
+                    groups = {},
+                    title = false,
+                    filter = { range = true },
+                    format = "{kind_icon}{symbol.name:Normal}",
+                    hl_group = "lualine_c_normal",
+                })
+
+                local get_clean = function()
+                    if not symbols or not symbols.has() then
+                        return ""
+                    end
+                    local raw = symbols.get()
+                    return string.gsub(raw, "%s*$", "") -- Delete trailing spaces
+                end
+
+                table.insert(opts.sections.lualine_c, {
+                    get_clean, -- Replace the default symbols.get
+                    cond = function()
+                        return vim.b.trouble_lualine ~= false and symbols.has()
+                    end,
+                })
+            end
         end,
     },
 }

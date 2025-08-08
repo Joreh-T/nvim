@@ -5,6 +5,7 @@ local local_colors = require("plugins.colorscheme-base-cfg.onedark-palette")
 local onedark_style = "dark"
 
 vim.g.sonokai_style = "atlantis" -- default, atlantis, espresso, maia, andromeda, shusia
+vim.g.sonokai_menu_selection_background = "bg"
 return {
     {
         "navarasu/onedark.nvim",
@@ -13,9 +14,9 @@ return {
         -- toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'}, -- List of styles to toggle between
         opts = {
             style = onedark_style, -- dark, darker, cool, deep, warm, warmer, light
-            --   transparent = false,     -- 是否启用透明背景
-            term_colors = false, -- 是否调整终端颜色
-            ending_tildes = true, -- 是否显示缓冲区末尾的波浪符
+            --   transparent = false,
+            term_colors = false, -- Whether to adjust the terminal color
+            ending_tildes = true, -- Whether to display a tilde at the end of the buffer
 
             colors = {
                 dir_color = "#cccccc",
@@ -90,7 +91,6 @@ return {
         --   priority = disable, -- defautl 50, make it higher to fast load
         --
         --   opts = {
-        --     -- 其他设置
         --     transparent = false,
         --     colors = {
         --       local_white = "#C2C7E5",
@@ -116,8 +116,8 @@ return {
         --         String = { fg = colors.string_color },
         --         Structure = { fg = colors.orange },
         --         NormalFloat = { fg = colors.float_color_fg, bg = colors.float_color_bg },
-        --         Delimiter = { fg = colors.delimiter_color }, -- 分隔符符号:“;”
-        --         ["@lsp.type.comment"] = { fg = colors.type_comment_color }, -- c/cpp中宏控制的未启用的代码
+        --         Delimiter = { fg = colors.delimiter_color }, -- color of “;”
+        --         ["@lsp.type.comment"] = { fg = colors.type_comment_color }, -- Unenabled code for macro control in C/CPP
         --         ["@lsp.type.macro"] = { fg = colors.local_white },
         --         ["@lsp.type.property"] = { fg = colors.type_pr_color },
         --         ["@variable"] = { fg = colors.var_color_2 },

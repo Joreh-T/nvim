@@ -17,9 +17,9 @@ end
 
 ----------------------- NVIM version Check --------------------
 -- 0.10.4
--- │  │ └── patch（补丁号）
--- │  └────── minor（次版本号）
--- └───────── major（主版本号）
+-- │  │ └── patch version
+-- │  └────── minor version
+-- └───────── major version
 -- Greater than or Equal
 function M.is_nvim_ge(major, minor, patch)
     local v = vim.version()
@@ -112,7 +112,7 @@ end
 
 -- Avoid abnormal terminal height when an outline buffer exists in the current window.
 function M.open_terminal_rezise_height()
-    -- 保存当前窗口列表用于对比
+    -- Save current window list for comparison
     local prev_wins = vim.api.nvim_list_wins()
 
     local has_outline = false
@@ -126,10 +126,10 @@ function M.open_terminal_rezise_height()
 
     Snacks.terminal()
 
-    -- 异步处理窗口尺寸调整
+    -- Handle window size adjustment asynchronously
     vim.schedule(function()
         if has_outline then
-            -- 获取新创建的终端窗口
+            -- Get newly created terminal window
             local new_wins = vim.api.nvim_list_wins()
             local term_win = nil
             for _, win in ipairs(new_wins) do
@@ -142,17 +142,17 @@ function M.open_terminal_rezise_height()
             local ui_height = vim.api.nvim_list_uis()[1].height
 
             if term_win then
-                -- 切换到终端窗口进行操作
+                -- Switch to terminal window for operations
                 vim.api.nvim_set_current_win(term_win)
-                -- 计算并设置高度（至少保留 5 行高度）
+                -- Calculate and set height (minimum 5 lines)
                 local new_height = math.max(5, math.floor(ui_height * 0.21))
                 vim.api.nvim_win_set_height(term_win, new_height)
-                -- 锁定窗口高度（可选）
+                -- Lock window height (optional)
                 -- vim.wo[term_win].winfixheight = true
             end
         end
     end)
-    -- 避免有avante窗口时无法自动进入t模式
+    -- Avoid inability to automatically enter t mode when there's an avante window
     if M.has_target_ft_window("^Avante") and vim.fn.mode() ~= "t" and M.has_target_ft_window("snacks_terminal") then
         vim.defer_fn(function()
             vim.cmd("startinsert")
@@ -183,19 +183,19 @@ function M.focus_largest_window()
 end
 
 function M.close_terminal_and_focus_largest()
-    -- 关闭当前窗口
+    -- Close current window
     vim.cmd("close")
     -- Snacks.terminal(nil, { cwd = LazyVim.root() })
 
-    -- 查找剩余窗口中面积最大的窗口
+    -- Find the window with the largest area among remaining windows
     M.focus_largest_window()
 end
 
 function M.has_target_ft_window(filetype_pattern)
-    -- 遍历当前标签页中的所有窗口
+    -- Iterate through all windows in current tab
     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
         local buf = vim.api.nvim_win_get_buf(win)
-        -- 检查文件类型是否匹配给定的模式
+        -- Check if filetype matches the given pattern
         if vim.bo[buf].filetype:match(filetype_pattern) then
             return true
         end
@@ -204,7 +204,7 @@ function M.has_target_ft_window(filetype_pattern)
 end
 
 ------------------------ Avante ------------------------
--- 检查是否存在 Avante 开头的文件类型窗口
+-- Check if there's a window with filetype starting with Avante
 function M.has_avante_window()
     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
         local buf = vim.api.nvim_win_get_buf(win)
@@ -215,14 +215,14 @@ function M.has_avante_window()
     return false
 end
 
--- 定义需要监视的文件类型列表（支持部分匹配）
+-- Define list of filetypes to monitor (supports partial matching)
 local avante_monitor_ft = {
-    "terminal$", -- 匹配以 "terminal" 结尾的文件类型
+    "terminal$", -- Match filetypes ending with "terminal"
     "Outline$",
     -- "neo-tree"
 }
 
--- 检查文件类型是否匹配目标列表（支持部分匹配）
+-- Check if filetype matches target list (supports partial matching)
 function M.is_avante_monitor_ft(ft)
     for _, pattern in ipairs(avante_monitor_ft) do
         if ft:match(pattern) then
@@ -232,18 +232,18 @@ function M.is_avante_monitor_ft(ft)
     return false
 end
 
--- 安全防抖函数 (支持 Neovim 0.5+)
+-- Safe debounce function (supports Neovim 0.5+)
 M.debounce_toggle_avante = (function()
-    local cooldown = false -- 新增冷却状态标志
+    local cooldown = false -- Add cooldown status flag
     local timer = nil
     return function(ft)
-        -- 如果处于冷却状态则直接返回
+        -- Return directly if in cooldown state
         if cooldown then
             print("[Avante] In cooldown, skip toggle")
             return
         end
 
-        -- 立即执行操作
+        -- Execute operation immediately
         record_cursor_position()
         if M.has_avante_window() then
             vim.cmd("AvanteToggle")
@@ -255,7 +255,7 @@ M.debounce_toggle_avante = (function()
             -- end, 320)
         end
 
-        -- 启动冷却计时器
+        -- Start cooldown timer
         cooldown = true
         timer = vim.loop.new_timer()
         if not timer then
@@ -264,15 +264,15 @@ M.debounce_toggle_avante = (function()
         end
 
         timer:start(
-            200, -- 冷却时间 200ms
+            200, -- Cooldown time 200ms
             0,
             vim.schedule_wrap(function()
-                -- 安全释放资源
+                -- Safely release resources
                 pcall(function()
                     timer:close()
                 end)
                 timer = nil
-                cooldown = false -- 解除冷却状态
+                cooldown = false -- Release cooldown state
                 -- print("[Avante] Cooldown ended")
             end)
         )
@@ -291,14 +291,14 @@ local function is_git_repo_cached()
         return vim.g.is_git_repo_cache
     end
 
-    -- 构建跨平台命令
+    -- Build cross-platform command
     local command
     if M.is_windows() then
-        -- 在 Windows 中显式调用 CMD 并兼容 PowerShell 环境
+        -- Explicitly call CMD in Windows and be compatible with PowerShell environment
         command = 'cmd /c "git rev-parse --is-inside-work-tree 2>nul"'
         -- vim.notify("windows env")
     else
-        -- Linux/Mac 使用标准静默方式
+        -- Linux/Mac use standard silent mode
         command = "git rev-parse --is-inside-work-tree 2>/dev/null"
         -- vim.notify("linux env")
     end
@@ -312,7 +312,7 @@ local function is_git_repo_cached()
     local result = handle:read("*a")
     handle:close()
 
-    -- 空白处理
+    -- Tail whitespace trimming
     local trimmed = result:gsub("%s+", "")
     -- vim.notify("git rev-parse output: '" .. trimmed .. "'", vim.log.levels.INFO)
     vim.g.is_git_repo_cache = trimmed == "true"
@@ -334,7 +334,7 @@ local function has_neotree_window()
 end
 
 function M.refresh_neo_tree_if_git()
-    -- 检查是否需要刷新（Diffview 相关条件）
+    -- Check if refresh is needed (Diffview related conditions)
     if not is_refresh_neotree_need and (M.has_target_ft_window("DiffviewFiles") or M.has_target_ft_window("DiffviewFileHistory")) then
         is_refresh_neotree_need = true
         -- vim.notify("need refresh neo-tree", vim.log.levels.INFO)
@@ -342,7 +342,7 @@ function M.refresh_neo_tree_if_git()
     if not has_neotree_window() or M.has_target_ft_window("snacks_dashboard") then
         return
     end
-    -- 检查 Git 仓库状态
+    -- Check Git repository status
     if not is_git_repo_cached() then
         return
     end
@@ -353,7 +353,7 @@ function M.refresh_neo_tree_if_git()
         return
     end
 
-    -- 防抖逻辑：记录最后一次刷新时间 ms
+    -- Debounce logic: record last refresh time in ms
     local is_refresh_interval_passed = true
     local now = vim.loop.now()
     if last_neotree_refresh_time and (now - last_neotree_refresh_time < 2000) then
@@ -367,7 +367,7 @@ function M.refresh_neo_tree_if_git()
         return
     end
 
-    -- 执行一次性刷新
+    -- Execute one-time refresh
     vim.defer_fn(function()
         if has_neotree_window() then
             require("neo-tree.sources.manager").refresh("filesystem")
@@ -378,4 +378,87 @@ function M.refresh_neo_tree_if_git()
 end
 
 ------------------------ End Of Neo-tree ------------------------
+
+function M.get_global_row_scaled(factor)
+    local total_rows = vim.o.lines
+
+    if factor == nil then
+        return total_rows
+    end
+
+    if type(factor) ~= "number" then
+        vim.notify("Input arg not a number", vim.log.levels.ERROR)
+        return total_rows
+    end
+
+    if factor <= 0 then
+        vim.notify("Input factor must be greater than 0", vim.log.levels.ERROR)
+        return total_rows
+    end
+
+    local result = math.floor(total_rows * factor + 0.5)
+    return math.max(1, result)
+end
+
+function M.get_global_col_scaled(factor)
+    local total_cols = vim.api.nvim_win_get_width(0)
+
+    if factor == nil then
+        return total_cols
+    end
+
+    if type(factor) ~= "number" or factor <= 0 then
+        return total_cols
+    end
+
+    if factor <= 0 then
+        vim.notify("Input factor must be greater than 0", vim.log.levels.ERROR)
+        return total_cols
+    end
+
+    local result = math.floor(total_cols * factor + 0.5)
+    return math.max(1, result)
+end
+
+function M.get_focused_window_row_scaled(factor)
+    local total_rows = vim.api.nvim_win_get_height(0)
+
+    if factor == nil then
+        return total_rows
+    end
+
+    if type(factor) ~= "number" then
+        vim.notify("Input arg not a number", vim.log.levels.ERROR)
+        return total_rows
+    end
+
+    if factor <= 0 then
+        vim.notify("Input factor must be greater than 0", vim.log.levels.ERROR)
+        return total_rows
+    end
+
+    local result = math.floor(total_rows * factor + 0.5)
+    return math.max(1, result)
+end
+
+function M.get_focused_window_col_scaled(factor)
+    local total_cols = vim.o.columns
+
+    if factor == nil then
+        return total_cols
+    end
+
+    if type(factor) ~= "number" or factor <= 0 then
+        return total_cols
+    end
+
+    if factor <= 0 then
+        vim.notify("Input factor must be greater than 0", vim.log.levels.ERROR)
+        return total_cols
+    end
+
+    local result = math.floor(total_cols * factor + 0.5)
+    return math.max(1, result)
+end
+
 return M

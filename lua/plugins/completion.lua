@@ -1,4 +1,57 @@
 -- if true then return {} end
+
+-- blink.cmp as a replacement for nvim-cmp (lazy.vim 14.x)
+return {
+    "saghen/blink.cmp",
+    dependencies = {
+        "xzbdmw/colorful-menu.nvim", -- Adding Syntax Highlighting to the Completion Window
+    },
+    opts = function(_, opts)
+        opts.keymap = {
+            -- 'default' for mappings similar to built-in completion
+            -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
+            -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
+            -- see the "default configuration" section below for full documentation on how to define
+            preset = "super-tab",
+            ["<Tab>"] = { "accept", "fallback" }, -- fallback: Runs the next non-blink keymap, or runs the built-in neovim binding
+        }
+        opts.completion = {
+            menu = {
+                draw = {
+                    -- Adding Syntax Highlighting to the Completion Window
+                    -- We don't need label_description now because label and label_description are already
+                    -- combined together in label by colorful-menu.nvim.
+                    columns = { { "kind_icon" }, { "label", gap = 1 } },
+                    components = {
+                        label = {
+                            text = function(ctx)
+                                return require("colorful-menu").blink_components_text(ctx)
+                            end,
+                            highlight = function(ctx)
+                                return require("colorful-menu").blink_components_highlight(ctx)
+                            end,
+                        },
+                    },
+                    treesitter = { "lsp" },
+                },
+            },
+            accept = {
+                -- experimental auto-brackets support
+                auto_brackets = {
+                    enabled = true,
+                },
+            },
+            documentation = {
+                auto_show = true,
+                auto_show_delay_ms = 200,
+            },
+            ghost_text = {
+                enabled = vim.g.ai_cmp,
+            },
+        }
+    end,
+}
+
 -- return {
 --
 --   -- auto completion
@@ -89,45 +142,3 @@
 --   },
 -- }
 --
-
--- blink.cmp as a replacement for nvim-cmp (lazy.vim 14.x)
-return {
-  "saghen/blink.cmp",
-
-  opts = {
-    keymap = {
-      -- 'default' for mappings similar to built-in completion
-      -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
-      -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
-      -- see the "default configuration" section below for full documentation on how to define
-      preset = "super-tab",
-      ["<C-y>"] = { "select_and_accept" },
-    },
-
-  --   sources = {
-  --     providers = {
-  --       lsp = {
-  --         name = "LSP",
-  --         module = "blink.cmp.sources.lsp",
-  --
-  --         --- *All* providers have the following options available
-  --         --- NOTE: All of these options may be functions to get dynamic behavior
-
-  --         --- See the type definitions for more information.
-  --         enabled = true, -- Whether or not to enable the provider
-  --         async = false, -- Whether we should wait for the provider to return before showing the completions
-  --         timeout_ms = 30000, -- How long to wait for the provider to return before showing completions and treating it as asynchronous
-  --         transform_items = nil, -- Function to transform the items before they're returned
-  --         should_show_items = true, -- Whether or not to show the items
-  --         max_items = nil, -- Maximum number of items to display in the menu
-  --         min_keyword_length = 0, -- Minimum number of characters in the keyword to trigger the provider
-  --         -- If this provider returns 0 items, it will fallback to these providers.
-  --         -- If multiple providers falback to the same provider, all of the providers must return 0 items for it to fallback
-  --         fallbacks = { "buffer" },
-  --         score_offset = 0, -- Boost/penalize the score of the items
-  --         override = nil, -- Override the source's functions
-  --       },
-  --     },
-  --   },
-  },
-}

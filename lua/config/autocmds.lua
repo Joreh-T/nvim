@@ -61,12 +61,12 @@ vim.api.nvim_create_autocmd("ModeChanged", {
     callback = function()
         if vim.fn.mode() == "i" then
             vim.g.neovide_cursor_animation_length = 0.0
-            vim.g.neovide_cursor_vfx_mode = "" -- 粒子效果模式
-            vim.g.neovide_cursor_trail_size = 0 -- 拖尾长度
+            vim.g.neovide_cursor_vfx_mode = "" -- Disable particle effects
+            vim.g.neovide_cursor_trail_size = 0 -- Trail length
         else
-            vim.g.neovide_cursor_animation_length = 0.15 -- 光标移动动画速度
-            vim.g.neovide_cursor_vfx_mode = "pixiedust" -- 粒子效果模式
-            vim.g.neovide_cursor_trail_size = 0.2 -- 拖尾长度
+            vim.g.neovide_cursor_animation_length = 0.15 -- Cursor movement animation speed
+            vim.g.neovide_cursor_vfx_mode = "pixiedust" -- Particle effect mode
+            vim.g.neovide_cursor_trail_size = 0.2 -- Trail length
         end
     end,
 })
