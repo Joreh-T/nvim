@@ -52,7 +52,7 @@ vim.o.scrolloff = 7 -- Ensure n lines of space above and below cursor
 -- vim.diagnostic.config({
 --     virtual_lines = true, -- Show diagnostics in virtual lines
 -- })
--- vim.opt.winborder = 'rounded'
+vim.opt.winborder = 'rounded'
 
 --
 -- if vim.fn.has("wsl") == 1 then

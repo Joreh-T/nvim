@@ -214,6 +214,22 @@ function M.has_target_ft_window(filetype_pattern, use_pattern_regex)
     return false
 end
 
+function M.is_current_window_ft(filetype_pattern, use_pattern_regex)
+    local current_win = vim.api.nvim_get_current_win()
+    local current_buf = vim.api.nvim_win_get_buf(current_win)
+    local ft = vim.bo[current_buf].filetype or ""
+
+    if ft == "" then
+        return false
+    end
+
+    if use_pattern_regex then
+        return ft:match(filetype_pattern) ~= nil
+    else
+        return ft == filetype_pattern
+    end
+end
+
 ------------------------ Avante ------------------------
 -- Check if there's a window with filetype starting with Avante
 function M.has_avante_window()
@@ -345,29 +361,33 @@ local function has_neotree_window()
 end
 
 function M.refresh_neo_tree_if_git()
-    -- Check if refresh is needed (Diffview related conditions)
-    if not is_refresh_neotree_need and (M.has_target_ft_window("DiffviewFiles") or M.has_target_ft_window("DiffviewFileHistory")) then
-        is_refresh_neotree_need = true
-        -- vim.notify("need refresh neo-tree", vim.log.levels.INFO)
-    end
-
-    if not has_neotree_window() or (not is_refresh_neotree_need) or M.has_target_ft_window("snacks_dashboard") then
-        return
-    end
     -- Check Git repository status
     if not is_git_repo_cached() then
         return
     end
 
-    local current_win = vim.api.nvim_get_current_win()
-    local current_buf = vim.api.nvim_win_get_buf(current_win)
-    local current_ft = vim.bo[current_buf].filetype
+    -- Check if refresh is needed (Diffview related conditions)
+    if M.has_target_ft_window("DiffviewFiles") or M.has_target_ft_window("DiffviewFileHistory") then
+        is_refresh_neotree_need = true
+        -- vim.notify("need refresh neo-tree", vim.log.levels.INFO)
+    end
 
-    if current_ft == "neo-tree" then
+    local now = vim.loop.now()
+    if last_neotree_refresh_time and (now - last_neotree_refresh_time > 2000) then
+        is_refresh_neotree_need = true
+    end
+
+    if M.is_current_window_ft("neo-tree") or M.is_current_window_ft("Outline") or M.has_target_ft_window("snacks_dashboard") then
+        is_refresh_neotree_need = false
+    end
+
+    if not has_neotree_window() or not is_refresh_neotree_need then
+        is_refresh_neotree_need = false
         return
     end
+
     -- Debounce logic: record last refresh time in ms
-    local now = vim.loop.now()
+    now = vim.loop.now()
     if last_neotree_refresh_time and (now - last_neotree_refresh_time < 2000) then
         -- vim.notify("refresh interval too short", vim.log.levels.INFO)
         return
@@ -376,11 +396,17 @@ function M.refresh_neo_tree_if_git()
 
     -- Execute one-time refresh
     vim.defer_fn(function()
-        if has_neotree_window() then
-            require("neo-tree.sources.manager").refresh("filesystem")
+        -- check again before actual refresh due to refresh is delayed
+        if M.is_current_window_ft("neo-tree") or M.is_current_window_ft("Outline") or M.has_target_ft_window("snacks_dashboard") then
             is_refresh_neotree_need = false
-            -- vim.notify("Refreshed neo-tree once (with delay)", vim.log.levels.INFO)
+            return;
         end
+
+        -- if has_neotree_window() then
+        require("neo-tree.sources.manager").refresh("filesystem")
+        is_refresh_neotree_need = false
+        -- vim.notify("Refreshed neo-tree once (with delay)", vim.log.levels.INFO)
+        -- end
     end, 1000)
 end
 ------------------------ End Of Neo-tree ------------------------

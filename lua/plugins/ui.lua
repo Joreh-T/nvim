@@ -315,10 +315,33 @@ return {
                 )
             end
 
+             for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
+                 opts[pos] = opts[pos] or {}
+                 table.insert(opts[pos], {
+                     ft = "snacks_terminal",
+                     size = { height = 0.22, width = 0.35 },
+                     title = "[%{b:snacks_terminal.id}] %{b:term_title}",
+
+                    -- title = function()
+                    --     local term_title = vim.b.term_title or "Terminal"
+                    --     term_title = term_title:match("[^/\\]+$") or term_title
+                    --     term_title = #term_title > 20 and term_title:sub(1, 20) .. "…" or term_title
+                    --     local open_time = vim.b.open_time or os.date("%H:%M:%S")
+                    --     return ("%s (Opened at %s)"):format(term_title, open_time)
+                    -- end,
+                     filter = function(_buf, win)
+                         return vim.w[win].snacks_win
+                             and vim.w[win].snacks_win.position == pos
+                             and vim.w[win].snacks_win.relative == "editor"
+                             and not vim.w[win].trouble_preview
+                     end,
+                 })
+             end
+
             local base_opts = {
                 options = {
                     left = { size = 25 },
-                    bottom = { size = 50 },
+                    -- bottom = { size = 20 }, -- It'll use the height of the terminal if not set.
                     right = { size = 25 },
                     top = { size = 10 },
                 },
@@ -364,24 +387,6 @@ return {
                 },
             }
 
-            local terminal_spec = function(pos)
-                return {
-                    ft = "snacks_terminal",
-                    -- size = { height = math.floor(vim.o.lines * 0.35) },
-                    -- title = function()
-                    --   local term_title = vim.b.term_title or "Terminal"
-                    --   term_title = term_title:match("[^/\\]+$") or term_title
-                    --   term_title = #term_title > 20 and term_title:sub(1, 20) .. "…" or term_title
-                    --   local open_time = vim.b.open_time or os.date("%H:%M:%S")
-                    --   return ("%s (Opened at %s)"):format(term_title, open_time)
-                    -- end,
-                    filter = function(buf, win)
-                        return vim.bo[buf].filetype == "snacks_terminal"
-                            or (vim.w[win].snacks_win and vim.w[win].snacks_win.position == pos and not vim.w[win].trouble_preview)
-                    end,
-                }
-            end
-
             local neo_tree_spec = {
                 title = "File Explorer",
                 ft = "neo-tree",
@@ -395,38 +400,34 @@ return {
                 pinned = false,
             }
 
-            -- opts.right = opts.right or {}
-            -- table.insert(opts.right, {
-            --   title = "Outline",
-            --   ft = "Outline",
-            --   size = { width = math.max(base_opts.options.right.size, math.floor(vim.o.columns * 0.17)) },
-            --   pinned = true,
-            --   open = "Outline",
-            -- })
-
-            -- local outline_spec = {
-            --     title = "Outline",
-            --     ft = "Outline",
-            --     size = {
-            --         width = math.max(base_opts.options.right.size, math.floor(vim.o.columns * 0.17)),
-            --         height = 0.4,
-            --     },
-            --     -- pinned = true,
-            --     -- open = "Outline",
-            -- }
+            local outline_spec = {
+                title = "Outline",
+                ft = "Outline",
+                size = {
+                    width = math.max(base_opts.options.right.size, math.floor(vim.o.columns * 0.17)),
+                    height = 0.45,
+                },
+                -- pinned = true,
+                -- open = "Outline",
+            }
 
             local left = {}
+            local right = {}
 
             if LazyVim.has("neo-tree.nvim") then
                 table.insert(left, neo_tree_spec)
             end
 
             if LazyVim.has("outline.nvim") then
-                table.insert(left, outline_spec)
+                table.insert(right, outline_spec)
             end
 
             if vim.tbl_isempty(left) then
                 left = nil
+            end
+
+            if vim.tbl_isempty(right) then
+                right = nil
             end
 
             return vim.tbl_deep_extend("force", opts or {}, {
@@ -436,12 +437,7 @@ return {
                 icons = base_opts.icons,
                 keys = base_opts.keys,
                 left = left,
-                positions = {
-                    top = { terminal_spec("top") },
-                    bottom = { terminal_spec("bottom") },
-                    left = { terminal_spec("left") },
-                    right = { terminal_spec("right") },
-                },
+                right = right,
             })
         end,
     },

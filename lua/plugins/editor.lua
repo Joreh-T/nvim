@@ -430,7 +430,7 @@ return {
     },
 
     {
-        "hedyhli/outline.nvim",
+        "Joreh-T/outline.nvim",
         lazy = true,
         cmd = { "Outline", "OutlineOpen" },
         keys = {
@@ -440,6 +440,18 @@ return {
             keymaps = {
                 up_and_jump = "<up>",
                 down_and_jump = "<down>",
+            },
+            outline_items = {
+                update_on_buf_enter_blacklist_exact = {
+                    "neo-tree",
+                    "lazygit"
+                },
+                update_on_buf_enter_blacklist_pattern = {
+                    "^Avante",
+                    "help",
+                    "terminal",
+                    "git",
+                },
             },
             outline_window = {
                 position = "right",
@@ -460,6 +472,8 @@ return {
                 center_on_jump = true,
             },
             preview_window = {
+                auto_preview = true,
+                auto_preview_delay = 1000,
                 -- Border option for floating preview window.
                 -- Options include: single/double/rounded/solid/shadow or an array of border
                 -- characters.
