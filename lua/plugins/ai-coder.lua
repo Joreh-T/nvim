@@ -4,7 +4,7 @@ return {
     {
         "yetone/avante.nvim",
         event = "VeryLazy",
-        commit = utils.is_windows() and "d3c93c0dabb4311d0af30940726fb0bff30a9676" or nil,
+        -- commit = utils.is_windows() and "d3c93c0dabb4311d0af30940726fb0bff30a9676" or nil,
         -- lazy = false,
         -- version = "v0.0.23",
         opts = {

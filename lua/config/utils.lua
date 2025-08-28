@@ -377,7 +377,7 @@ function M.refresh_neo_tree_if_git()
         is_refresh_neotree_need = true
     end
 
-    if M.is_current_window_ft("neo-tree") or M.is_current_window_ft("Outline") or M.has_target_ft_window("snacks_dashboard") then
+    if M.is_current_window_ft("neo-tree") or M.is_current_window_ft("Outline") or M.is_current_window_ft("grug-far") or M.has_target_ft_window("snacks_dashboard") then
         is_refresh_neotree_need = false
     end
 
@@ -397,7 +397,7 @@ function M.refresh_neo_tree_if_git()
     -- Execute one-time refresh
     vim.defer_fn(function()
         -- check again before actual refresh due to refresh is delayed
-        if M.is_current_window_ft("neo-tree") or M.is_current_window_ft("Outline") or M.has_target_ft_window("snacks_dashboard") then
+        if M.is_current_window_ft("neo-tree") or M.is_current_window_ft("Outline") or M.is_current_window_ft("grug-far") or M.has_target_ft_window("snacks_dashboard") then
             is_refresh_neotree_need = false
             return;
         end

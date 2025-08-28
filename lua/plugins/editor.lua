@@ -472,7 +472,7 @@ return {
                 center_on_jump = true,
             },
             preview_window = {
-                auto_preview = true,
+                auto_preview = false,
                 auto_preview_delay = 1000,
                 -- Border option for floating preview window.
                 -- Options include: single/double/rounded/solid/shadow or an array of border
@@ -634,7 +634,7 @@ return {
     },
 
     {
-        "crusj/bookmarks.nvim",
+        "Joreh-T/bookmarks.nvim",
         branch = "main",
         dependencies = { "kyazdani42/nvim-web-devicons", "nvim-telescope/telescope.nvim" },
         config = function()
