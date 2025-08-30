@@ -314,6 +314,10 @@ local is_refresh_neotree_need = false
 local last_neotree_refresh_time = 0
 
 local function is_git_repo_cached()
+    if M.has_target_ft_window("snacks_dashboard") then
+        vim.g.is_git_repo_cache = nil
+        return false
+    end
     if vim.g.is_git_repo_cache ~= nil then
         return vim.g.is_git_repo_cache
     end
