@@ -369,8 +369,8 @@ return {
                     winhighlight = "WinBar:EdgyWinBarNC,WinBarNC:EdgyWinBarNC",
                 },
                 icons = {
-                    closed = "",
-                    open = "",
+                    closed = "󰪟",
+                    open = "⦿",
                 },
                 keys = {
                     ["<c-Right>"] = function(win)

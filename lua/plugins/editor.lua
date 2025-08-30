@@ -525,33 +525,33 @@ return {
                 },
             },
         },
-        config = function(_, opts)
-            require("outline").setup(opts)
-
-            -- Dynamic width adjustment logic
-            vim.api.nvim_create_autocmd("VimResized", {
-                callback = function()
-                    local outline_buf = nil
-
-                    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                        if vim.bo[buf].filetype == "Outline" then
-                            outline_buf = buf
-                            break
-                        end
-                    end
-
-                    if outline_buf then
-                        for _, win in ipairs(vim.api.nvim_list_wins()) do
-                            if vim.api.nvim_win_get_buf(win) == outline_buf then
-                                local total_width = vim.o.columns
-                                local new_width = math.max(18, math.floor(total_width * 0.18))
-                                vim.api.nvim_win_set_width(win, new_width)
-                            end
-                        end
-                    end
-                end,
-            })
-        end,
+        -- config = function(_, opts)
+        --     require("outline").setup(opts)
+        --
+        --     -- Dynamic width adjustment logic
+        --     vim.api.nvim_create_autocmd("VimResized", {
+        --         callback = function()
+        --             local outline_buf = nil
+        --
+        --             for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        --                 if vim.bo[buf].filetype == "Outline" then
+        --                     outline_buf = buf
+        --                     break
+        --                 end
+        --             end
+        --
+        --             if outline_buf then
+        --                 for _, win in ipairs(vim.api.nvim_list_wins()) do
+        --                     if vim.api.nvim_win_get_buf(win) == outline_buf then
+        --                         local total_width = vim.o.columns
+        --                         local new_width = math.max(18, math.floor(total_width * 0.18))
+        --                         vim.api.nvim_win_set_width(win, new_width)
+        --                     end
+        --                 end
+        --             end
+        --         end,
+        --     })
+        -- end,
     },
 
     {
