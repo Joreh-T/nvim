@@ -315,28 +315,29 @@ return {
                 )
             end
 
-             for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
-                 opts[pos] = opts[pos] or {}
-                 table.insert(opts[pos], {
-                     ft = "snacks_terminal",
-                     size = { height = 0.22, width = 0.35 },
-                     title = "[%{b:snacks_terminal.id}] %{b:term_title}",
+            for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
+                opts[pos] = opts[pos] or {}
+                table.insert(opts[pos], {
+                    ft = "snacks_terminal",
+                    size = { height = 0.22, width = 0.35 },
+                    -- title = "[%{b:snacks_terminal.id}] %{b:term_title} %{b:os.date("%H:%M")}",
+                    title = function()
+                        -- local term_title = vim.b.term_title or "Terminal"
+                        -- local path = term_title:match("^.-:(.+)$") or term_title
+                        -- term_title = term_title:match("[^/\\]+$") or term_title
+                        -- term_title = #term_title > 20 and "… " .. term_title:sub(-20) or term_title
+                        local open_time = vim.b.open_time or os.date("%H:%M")
+                        return ("Terminal @%s"):format(open_time)
+                    end,
 
-                    -- title = function()
-                    --     local term_title = vim.b.term_title or "Terminal"
-                    --     term_title = term_title:match("[^/\\]+$") or term_title
-                    --     term_title = #term_title > 20 and term_title:sub(1, 20) .. "…" or term_title
-                    --     local open_time = vim.b.open_time or os.date("%H:%M:%S")
-                    --     return ("%s (Opened at %s)"):format(term_title, open_time)
-                    -- end,
-                     filter = function(_buf, win)
-                         return vim.w[win].snacks_win
-                             and vim.w[win].snacks_win.position == pos
-                             and vim.w[win].snacks_win.relative == "editor"
-                             and not vim.w[win].trouble_preview
-                     end,
-                 })
-             end
+                    filter = function(_buf, win)
+                        return vim.w[win].snacks_win
+                            and vim.w[win].snacks_win.position == pos
+                            and vim.w[win].snacks_win.relative == "editor"
+                            and not vim.w[win].trouble_preview
+                    end,
+                })
+            end
 
             local base_opts = {
                 options = {
@@ -368,8 +369,8 @@ return {
                     winhighlight = "WinBar:EdgyWinBarNC,WinBarNC:EdgyWinBarNC",
                 },
                 icons = {
-                    closed = "",
-                    open = "",
+                    closed = "",
+                    open = "",
                 },
                 keys = {
                     ["<c-Right>"] = function(win)
@@ -574,5 +575,27 @@ return {
                 })
             end
         end,
+    },
+
+    {
+        "Joreh-T/placeholder_highlighter.nvim",
+        event = "VeryLazy",
+
+        opts = {
+            -- highlight = { link = "SpecialChar" },
+            -- highlight = { fg = "#F6D5A4", bold = true,},
+
+            filetypes = {
+                "c",
+                "cpp",
+                "python",
+                "lua",
+                "go",
+                "rust",
+                "typescript",
+            },
+
+            debounce = 150, -- ms
+        },
     },
 }
