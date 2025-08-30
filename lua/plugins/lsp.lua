@@ -3,11 +3,12 @@ local utils = require("config.utils")
 return {
     {
         "neovim/nvim-lspconfig",
+        -- enabled = false,
         dependencies = {
-            "mason.nvim",
+            "mason-org/mason.nvim",
             {
-                "williamboman/mason-lspconfig.nvim",
-                version = utils.is_nvim_le(0, 10) and "v1.32.0" or nil,
+                "mason-org/mason-lspconfig.nvim",
+                -- version = utils.is_nvim_le(0, 10) and "v1.32.0" or nil,
                 config = function() end,
             },
             opts = function(_, opts)
@@ -22,6 +23,7 @@ return {
                     "markdownlint-cli2",
                     "marksman",
                     "pyright",
+                    "ruff",
                     "shellcheck",
                     "shfmt",
                     "stylua",

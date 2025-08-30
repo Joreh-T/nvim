@@ -4,7 +4,7 @@ return {
     {
         "yetone/avante.nvim",
         event = "VeryLazy",
-        commit = utils.is_windows() and "d3c93c0dabb4311d0af30940726fb0bff30a9676" or nil,
+        -- commit = utils.is_windows() and "d3c93c0dabb4311d0af30940726fb0bff30a9676" or nil,
         -- lazy = false,
         -- version = "v0.0.23",
         opts = {
@@ -108,6 +108,29 @@ return {
                 },
                 ft = { "markdown", "Avante" },
             },
+        },
+    },
+    {
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        build = ":Copilot auth",
+        event = "BufReadPost",
+        opts = {
+            suggestion = {
+                enabled = not vim.g.ai_cmp,
+                auto_trigger = true,
+                hide_during_completion = vim.g.ai_cmp,
+                keymap = {
+                    accept = false, -- handled by nvim-cmp / blink.cmp
+                    next = "<M-]>",
+                    prev = "<M-[>",
+                },
+            },
+            -- panel = { enabled = false },
+            -- filetypes = {
+            --     markdown = true,
+            --     help = true,
+            -- },
         },
     },
 }

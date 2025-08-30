@@ -12,7 +12,7 @@ return {
     {
         -- Search and replace keywords
         "MagicDuck/grug-far.nvim",
-        version = utils.is_nvim_le(0, 10, 4) and "v1.6.3" or nil,
+        -- version = utils.is_nvim_le(0, 10, 4) and "v1.6.3" or nil,
 
         -- Note (lazy loading): grug-far.lua defers all it's requires so it's lazy by default
         -- additional lazy config to defer loading is not really needed...
@@ -252,14 +252,14 @@ return {
         },
         keys = {
             {
-                "<leader>qS",
+                "<leader>qs",
                 function()
                     require("persistence").load()
                 end,
                 desc = "Restore Session",
             },
             {
-                "<leader>qs",
+                "<leader>qS",
                 function()
                     require("persistence").select()
                 end,
@@ -308,11 +308,16 @@ return {
                     color = "error", -- can be a hex color, or a named color (see below)
                     alt = { "FIXME", "BUG", "FIXIT", "ISSUE", "FIX_N" }, -- a set of other keywords that all map to this FIX keywords
                 },
-                TODO = { icon = " ", color = "info", alt = { "TODO_N", "TODO" } },
-                HACK = { icon = " ", color = "warning" },
-                WARN = { icon = " ", color = "warning", alt = { "WARNING", "WARN_N", "WARN" } },
-                PERF = { icon = " ", color = "default", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-                NOTE = { icon = " ", color = "hint", alt = { "INFO", "INFO_N", "HINT_N", "HINT" } },
+                -- TODO = { icon = " ", color = "info", alt = { "TODO_N", "TODO" } },
+                -- HACK = { icon = " ", color = "warning" },
+                -- WARN = { icon = " ", color = "warning", alt = { "WARNING", "WARN_N", "WARN" } },
+                -- PERF = { icon = " ", color = "default", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+                -- NOTE = { icon = " ", color = "hint", alt = { "INFO", "INFO_N", "HINT_N", "HINT" } },
+                TODO = { icon = "🧩", color = "info", alt = { "TODO_N", "TODO" } },
+                HACK = { icon = "🧪", color = "warning" },
+                WARN = { icon = "🧯", color = "warning", alt = { "WARNING", "WARN_N", "WARN" } },
+                PERF = { icon = "🚩", color = "default", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+                NOTE = { icon = "💡", color = "hint", alt = { "INFO", "INFO_N", "HINT_N", "HINT" } },
                 -- TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED", "TEST_Q" } },
             },
             gui_style = {
@@ -411,7 +416,7 @@ return {
             "kevinhwang91/nvim-hlslens",
             {
                 "lewis6991/gitsigns.nvim",
-                commit = utils.is_nvim_le(0, 10) and "ee7e50dfbdf49e3acfa416fd3ad3abbdb658582c" or nil,
+                -- commit = utils.is_nvim_le(0, 10) and "ee7e50dfbdf49e3acfa416fd3ad3abbdb658582c" or nil,
             },
         },
         config = function()
@@ -425,7 +430,7 @@ return {
     },
 
     {
-        "hedyhli/outline.nvim",
+        "Joreh-T/outline.nvim",
         lazy = true,
         cmd = { "Outline", "OutlineOpen" },
         keys = {
@@ -435,6 +440,18 @@ return {
             keymaps = {
                 up_and_jump = "<up>",
                 down_and_jump = "<down>",
+            },
+            outline_items = {
+                update_on_buf_enter_blacklist_exact = {
+                    "neo-tree",
+                    "lazygit"
+                },
+                update_on_buf_enter_blacklist_pattern = {
+                    "^Avante",
+                    "help",
+                    "terminal",
+                    "git",
+                },
             },
             outline_window = {
                 position = "right",
@@ -455,6 +472,8 @@ return {
                 center_on_jump = true,
             },
             preview_window = {
+                auto_preview = false,
+                auto_preview_delay = 1000,
                 -- Border option for floating preview window.
                 -- Options include: single/double/rounded/solid/shadow or an array of border
                 -- characters.
@@ -615,7 +634,7 @@ return {
     },
 
     {
-        "crusj/bookmarks.nvim",
+        "Joreh-T/bookmarks.nvim",
         branch = "main",
         dependencies = { "kyazdani42/nvim-web-devicons", "nvim-telescope/telescope.nvim" },
         config = function()

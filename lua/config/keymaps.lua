@@ -20,11 +20,11 @@ map("n", "<CR>", "o<esc>", { noremap = true, silent = true })
 map("t", "jk", [[<C-\><C-n>]], { noremap = true, silent = true })
 
 --open/close terminal
--- map("n", "<a-`>", function() Snacks.terminal() end, { desc = "Terminal (cwd)" })
+map("n", "<a-`>", function() Snacks.terminal() end, { desc = "Terminal (cwd)" })
 -- map("n", "<a-`>", function() Snacks.terminal(nil, { cwd = LazyVim.root() }) end, { desc = "Open Terminal (Root Dir)" })
 -- { map("t", "<a-`>", "<cmd>close<cr>", { desc = "Hide Terminal" }) },
---
-map("n", "<a-`>", utils.open_terminal_rezise_height, { desc = "Terminal (cwd)" })
+
+-- map("n", "<a-`>", utils.open_terminal_rezise_height, { desc = "Terminal (cwd)" })
 map("t", "<a-`>", utils.close_terminal_and_focus_largest, { desc = "Hide Terminal and Focus Largest Window" })
 
 map("n", "<leader>ft", function()
@@ -68,6 +68,7 @@ end, { noremap = true, silent = true, desc = "Hover diagnostic" })
 -- Ctrl + c
 map({ "n", "v" }, "<C-c>", '"+y', { noremap = true, desc = "Copy to system clipboard" })
 
+map("v", "p", '"_dP') -- Prevent overwriting the system clipboard when pasting in visual mode
 -- Ctrl + v
 map("n", "<C-v>", '"+p', { noremap = true, desc = "Paste from system clipboard" })
 -- map("i", "<C-v>", "<C-r>+", { noremap = true, desc = "Paste from system clipboard" }) -- In Neovide, if the data to be pasted contains comment symbols, it will trigger automatic commenting.
