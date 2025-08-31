@@ -416,7 +416,6 @@ return {
             "kevinhwang91/nvim-hlslens",
             {
                 "lewis6991/gitsigns.nvim",
-                -- commit = utils.is_nvim_le(0, 10) and "ee7e50dfbdf49e3acfa416fd3ad3abbdb658582c" or nil,
             },
         },
         config = function()
@@ -424,7 +423,35 @@ return {
             require("gitsigns").setup({})
             require("scrollbar.handlers.gitsigns").setup()
             require("scrollbar.handlers.search").setup({
-                -- override_lens = function() end,
+                override_lens = function(render, posList, nearest, idx, relIdx)
+                    local sfw = vim.v.searchforward == 1
+                    local indicator, text, chunks
+                    local absRelIdx = math.abs(relIdx)
+                    if absRelIdx > 1 then
+                        indicator = ("%d%s"):format(absRelIdx, sfw ~= (relIdx > 1) and "▲" or "▼")
+                    elseif absRelIdx == 1 then
+                        indicator = sfw ~= (relIdx == 1) and "▲" or "▼"
+                    else
+                        indicator = ""
+                    end
+
+                    local lnum, col = unpack(posList[idx])
+                    local cnt = #posList
+                    if nearest then
+                        if indicator ~= "" then
+                            -- text = ("[%s %d/%d]"):format(indicator, idx, cnt)
+                            text = ("[%d/%d]"):format(idx, cnt)
+                        else
+                            text = ("[%d/%d]"):format(idx, cnt)
+                        end
+                        chunks = { { " " }, { text, "HlSearchLensNear" } }
+                    else
+                        -- text = ("[%d %s]"):format(idx, indicator)
+                        text = ("[%d/%d]"):format(idx, cnt)
+                        chunks = { { " " }, { text, "HlSearchLens" } }
+                    end
+                    render.setVirt(0, lnum - 1, col - 1, chunks, nearest)
+                end,
             })
         end,
     },
@@ -444,7 +471,7 @@ return {
             outline_items = {
                 update_on_buf_enter_blacklist_exact = {
                     "neo-tree",
-                    "lazygit"
+                    "lazygit",
                 },
                 update_on_buf_enter_blacklist_pattern = {
                     "^Avante",
