@@ -97,6 +97,26 @@ return {
             return opts
         end,
     },
+
+    {
+        "linux-cultist/venv-selector.nvim",
+        branch = "main",
+        cmd = "VenvSelect",
+        enabled = function()
+            return LazyVim.has("telescope.nvim")
+        end,
+        opts = {
+            settings = {
+                options = {
+                    notify_user_on_venv_activation = true,
+                },
+            },
+        },
+        --  Call config for python files and load the cached venv automatically
+        ft = "python",
+        keys = { { "<leader>cv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv", ft = "python" } },
+    },
+
     {
         "MeanderingProgrammer/render-markdown.nvim",
         -- dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
@@ -112,7 +132,7 @@ return {
             },
             heading = {
                 enabled = true,
-                icons = {' '},
+                icons = { " " },
                 render_modes = false,
                 width = "full",
                 right_pad = 5,

@@ -583,6 +583,11 @@ return {
 
     {
         "nvim-neo-tree/neo-tree.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "MunifTanjim/nui.nvim",
+            "nvim-tree/nvim-web-devicons", -- optional, but recommended
+        },
         keys = {
             { "<leader>E", "<leader>fe", desc = "Explorer NeoTree (Root Dir)", remap = true },
             { "<leader>e", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
@@ -622,7 +627,7 @@ return {
                 enabled = true,
                 leave_dirs_open = false,
             }
-            opts.filesystem.window = { title = "" }
+            -- opts.filesystem.window = { title = "" }
             opts.default_component_configs = opts.default_component_configs or {}
             opts.default_component_configs.icon = {
                 folder_closed = "",
