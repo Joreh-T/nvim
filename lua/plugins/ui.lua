@@ -458,10 +458,10 @@ return {
                 theme = "auto",
                 globalstatus = vim.o.laststatus == 3,
                 disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard" } },
-                component_separators = {
-                    left = "%#WinBarNC#%*",
-                    right = "%#WinBarNC#%*",
-                },
+                -- component_separators = {
+                --     left = "%#WinBarNC#%*",
+                --     right = "%#WinBarNC#%*",
+                -- },
             }
             opts.sections.lualine_a = { "mode" }
             opts.sections.lualine_b = { "branch" }
@@ -543,6 +543,19 @@ return {
             },
             }
             opts.sections.lualine_y = {
+                {
+                    function()
+                        local encoding = vim.opt.fileencoding:get()
+                        if encoding and encoding ~= "" then
+                            return encoding:upper()
+                        else
+                            return "UTF-8" -- fallback
+                        end
+                    end,
+                    -- icon = "",
+                    color = { fg = "#98c379" },
+                    padding = { left = 1, right = 1 },
+                },
                 { "progress", separator = " ", padding = { left = 1, right = 0 } },
                 { "location", padding = { left = 0, right = 1 } },
             }
