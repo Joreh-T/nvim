@@ -458,10 +458,11 @@ return {
                 theme = "auto",
                 globalstatus = vim.o.laststatus == 3,
                 disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard" } },
-                -- component_separators = {
-                --     left = "%#WinBarNC#%*",
-                --     right = "%#WinBarNC#%*",
-                -- },
+                component_separators = {
+                    left = "%#WinBarNC#%*",
+                    -- right = "%#WinBarNC#%*",
+                    right = "",
+                },
             }
             opts.sections.lualine_a = { "mode" }
             opts.sections.lualine_b = { "branch" }
@@ -503,7 +504,7 @@ return {
             {
               function() return require("noice").api.status.command.get() end,
               cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-              color = function() return { fg = Snacks.util.color("Statement") } end,
+              color = function() return { fg = Snacks.util.color("StatusLineNC") } end,
             },
             -- stylua: ignore
             {
@@ -554,7 +555,7 @@ return {
                     end,
                     -- icon = "",
                     color = { fg = "#98c379" },
-                    padding = { left = 1, right = 1 },
+                    padding = { left = 1, right = 0 },
                 },
                 { "progress", separator = " ", padding = { left = 1, right = 0 } },
                 { "location", padding = { left = 0, right = 1 } },
