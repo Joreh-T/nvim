@@ -4,6 +4,7 @@ return {
     -- Auto switch input method depends on Nvim's edit mode.
     {
         "keaising/im-select.nvim",
+        event = "VeryLazy",
         config = function()
             require("im_select").setup({})
         end,
@@ -283,6 +284,7 @@ return {
     },
     {
         "Joreh-T/caseConverter.nvim",
+        event = "VeryLazy",
         -- config = function()
         --     require("case_converter").setup({
         --         -- Optional configuration
@@ -412,6 +414,7 @@ return {
 
     {
         "petertriho/nvim-scrollbar",
+        event = "VeryLazy",
         dependencies = {
             "kevinhwang91/nvim-hlslens",
             {
@@ -667,6 +670,7 @@ return {
 
     {
         "Joreh-T/bookmarks.nvim",
+        event = "VeryLazy",
         branch = "main",
         dependencies = { "kyazdani42/nvim-web-devicons", "nvim-telescope/telescope.nvim" },
         config = function()
@@ -745,6 +749,7 @@ return {
 
     {
         "ziontee113/icon-picker.nvim",
+        event = "VeryLazy",
         config = function()
             require("icon-picker").setup({ disable_legacy_commands = true })
 
