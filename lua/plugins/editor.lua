@@ -42,44 +42,145 @@ return {
     {
         -- Fuzzy finder for nvim. Replaced telescope.nvim
         "ibhagwan/fzf-lua",
+        -- event = "VeryLazy",
         keys = {
-            { "<leader>/", LazyVim.pick("live_grep", { root = false }), desc = "Grep (cwd)" },
+            -- { "<leader>/", LazyVim.pick("live_grep", { root = false }), desc = "Grep (cwd)" },
+            { "<leader>/", LazyVim.pick("grep_project"), desc = "Grep (project)" },
             { "<leader>sg", LazyVim.pick("live_grep", { root = false }), desc = "Grep (cwd)" },
             { "<leader>sG", LazyVim.pick("live_grep"), desc = "Grep (Root Dir)" },
-
             { "<leader>fF", LazyVim.pick("files"), desc = "Find Files (Root Dir)" },
             { "<leader>ff", LazyVim.pick("files", { root = false }), desc = "Find Files (cwd)" },
-            -- { "<leader>fg", "<cmd>FzfLua git_files<cr>", desc = "Find Files (git-files)" },
             { "<leader>fR", "<cmd>FzfLua oldfiles<cr>", desc = "Recent" },
             { "<leader>fr", LazyVim.pick("oldfiles", { cwd = vim.uv.cwd() }), desc = "Recent (cwd)" },
             { "<leader><leader>", LazyVim.pick("files", { root = false }), desc = "Find Files (cwd)" },
         },
-
         opts = function(_, opts)
-            opts.winopts = {
-                width = 0.8,
-                height = 0.85,
-                row = 0.5,
-                col = 0.5,
-                preview = {
-                    layout = "vertical",
-                    vertical = "down:55%", -- The height position of the preview window in the layout & ratio
-                    scrollchars = { "┃", "" },
+            local fzf = require("fzf-lua")
+            local config = fzf.config
+            local actions = fzf.actions
+
+            return {
+                "default-title",
+                fzf_colors = true,
+                fzf_opts = {
+                    ["--no-scrollbar"] = false,
                 },
-                on_create = function()
-                    -- <C-\><C-n>: Switch from terminal mode to normal mode;
-                    -- "+p: Paste from the system clipboard (+ register);
-                    -- i: Return to insert mode (fzf is interactive input);
-                    -- buffer = true: Only effective for fzf's temporary buffer, does not affect global settings;
-                    -- silent = true: Avoid command-line prompts;
-                    -- noremap = true: Avoid recursive mappings
-                    --
-                    -- '+' register
-                    vim.keymap.set("t", "<C-v>", [[<C-\><C-n>"+pi]], { noremap = true, silent = true, buffer = true })
-                    -- '*' register
-                    -- vim.keymap.set("t", "<C-v>", [[<C-\><C-n>"*pi]], { noremap = true, silent = true, buffer = true })
+                defaults = {
+                    formatter = "path.dirname_first",
+                },
+                winopts = {
+                    width = 0.8,
+                    height = 0.85,
+                    row = 0.5,
+                    col = 0.5,
+                    preview = {
+                        layout = "vertical", -- horizontal or vertical
+                        vertical = "down:55%",
+                        scrollchars = { "┃", "" },
+                    },
+                    on_create = function()
+                        -- <C-\><C-n>: Switch from terminal mode to normal mode;
+                        -- "+p: Paste from the system clipboard (+ register);
+                        -- i: Return to insert mode (fzf is interactive input);
+                        -- buffer = true: Only effective for fzf's temporary buffer, does not affect global settings;
+                        -- silent = true: Avoid command-line prompts;
+                        -- noremap = true: Avoid recursive mappings
+                        --
+                        -- '+' register
+                        vim.keymap.set("t", "<C-v>", [[<C-\><C-n>"+pi]], { noremap = true, silent = true, buffer = true })
+                        -- '*' register
+                        -- vim.keymap.set("t", "<C-v>", [[<C-\><C-n>"*pi]], { noremap = true, silent = true, buffer = true })
+                    end,
+                },
+                files = {
+                    winopts = { title = " Files " },
+                    cwd_prompt = true,
+                    actions = {
+                        ["alt-i"] = { actions.toggle_ignore },
+                        ["alt-h"] = { actions.toggle_hidden },
+                    },
+                },
+                grep_project = {
+                    winopts = { title = " Fuzzy Search " },
+                },
+                live_grep = {
+                    winopts = { title = " Live Grep " },
+                },
+                oldfiles = {
+                    winopts = { title = " Recent Files " },
+                },
+                buffers = {
+                    winopts = { title = " Buffers " },
+                },
+                grep = {
+                    cwd_prompt = true,
+                    cwd_prompt_shorten_len = 32,
+                    cwd_prompt_shorten_val = 1,
+                    winopts = { title = " Grep " },
+                    actions = {
+                        ["alt-i"] = { actions.toggle_ignore },
+                        ["alt-h"] = { actions.toggle_hidden },
+                    },
+                },
+                -- previewers = {},
+                ui_select = function(fzf_opts, items)
+                    return vim.tbl_deep_extend("force", fzf_opts, {
+                        prompt = " ",
+                        winopts = {
+                            title = " " .. vim.trim((fzf_opts.prompt or "Select"):gsub("%s*:%s*$", "")) .. " ",
+                            title_pos = "center",
+                        },
+                    }, fzf_opts.kind == "codeaction" and {
+                        winopts = {
+                            layout = "vertical",
+                            -- height is number of items minus 15 lines for the preview, with a max of 80% screen height
+                            height = math.floor(math.min(vim.o.lines * 0.8 - 16, #items + 2) + 0.5) + 16,
+                            width = 0.5,
+                            preview = not vim.tbl_isempty(LazyVim.lsp.get_clients({ bufnr = 0, name = "vtsls" })) and {
+                                layout = "vertical",
+                                vertical = "down:15,border-top",
+                                hidden = "hidden",
+                            } or {
+                                layout = "vertical",
+                                vertical = "down:15,border-top",
+                            },
+                        },
+                    } or {
+                        winopts = {
+                            width = 0.5,
+                            -- height is number of items, with a max of 80% screen height
+                            height = math.floor(math.min(vim.o.lines * 0.8, #items + 2) + 0.5),
+                        },
+                    })
                 end,
+                lsp = {},
             }
+        end,
+        config = function(_, opts)
+            if opts[1] == "default-title" then
+                local function fix(t)
+                    t.prompt = t.prompt ~= nil and " " or nil
+                    for _, v in pairs(t) do
+                        if type(v) == "table" then
+                            fix(v)
+                        end
+                    end
+                    return t
+                end
+                opts = vim.tbl_deep_extend("force", fix(require("fzf-lua.profiles.default-title")), opts)
+                opts[1] = nil
+            end
+            require("fzf-lua").setup(opts)
+        end,
+        init = function()
+            LazyVim.on_very_lazy(function()
+                vim.ui.select = function(...)
+                    require("lazy").load({ plugins = { "fzf-lua" } })
+                    local opts = LazyVim.opts("fzf-lua") or {}
+                    require("fzf-lua").register_ui_select(opts.ui_select or nil)
+                    return vim.ui.select(...)
+                end
+            end)
         end,
     },
     -- {
@@ -521,7 +622,7 @@ return {
                 icons = {
                     File = { icon = "󰈔", hl = "Identifier" },
                     Module = { icon = "󰆧", hl = "Include" },
-                    Namespace = { icon = "󰅪", hl = "Include" },
+                    Namespace = { icon = "󰦮", hl = "Include" },
                     Package = { icon = "󰏗", hl = "Include" },
                     Class = { icon = "𝓒", hl = "Type" },
                     Method = { icon = "", hl = "Function" },
@@ -531,15 +632,15 @@ return {
                     Enum = { icon = "ℰ", hl = "Type" },
                     Interface = { icon = "󰜰", hl = "Type" },
                     Function = { icon = "ƒ", hl = "Function" },
-                    Variable = { icon = "", hl = "Constant" },
+                    Variable = { icon = "󰀫", hl = "Constant" },
                     Constant = { icon = "", hl = "Constant" },
                     String = { icon = "𝓐", hl = "String" },
                     Number = { icon = "#", hl = "Number" },
-                    Boolean = { icon = "⊨", hl = "Boolean" },
+                    Boolean = { icon = "󰨙", hl = "Boolean" },
                     Array = { icon = "󰅪", hl = "Constant" },
-                    Object = { icon = "⦿", hl = "Type" },
-                    Key = { icon = "🔐", hl = "Type" },
-                    Null = { icon = "NULL", hl = "Type" },
+                    Object = { icon = "", hl = "Type" },
+                    Key = { icon = "󰌋", hl = "Type" },
+                    Null = { icon = "󰟢", hl = "Type" },
                     EnumMember = { icon = "", hl = "Identifier" },
                     Struct = { icon = "𝓢", hl = "Structure" },
                     Event = { icon = "🗲", hl = "Type" },
