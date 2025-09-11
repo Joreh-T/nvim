@@ -59,9 +59,44 @@ return {
             local config = fzf.config
             local actions = fzf.actions
 
+            local hl = vim.api.nvim_get_hl(0, { name = "FzfLuaCursorLine", link = false })
+            local underline = vim.api.nvim_get_hl(0, { name = "FzfLuaHeaderBind", link = false })
+
+            local new_hl = {
+                fg = hl.fg,
+                bg = hl.bg,
+                bold = true,
+                italic = hl.italic,
+                special = underline.fg,
+                -- underline = true,
+                underdashed = true,
+                -- undercurl = true,
+            }
+            hl.underline = true
+            vim.api.nvim_set_hl(0, "CustomFzfCursorline", new_hl)
+
             return {
                 "default-title",
-                fzf_colors = true,
+                fzf_colors = {
+                    true, -- inherit fzf colors that aren't specified below from
+                    -- the auto-generated theme similar to `fzf_colors=true`
+                    ["fg"] = { "fg", "CursorLine" },
+                    ["bg"] = { "bg", "Normal" },
+                    ["hl"] = { "fg", "Comment" },
+                    ["fg+"] = { "fg", "CursorLine" },
+                    ["bg+"] = { "bg", { "CursorLine", "Normal" } },
+                    ["hl+"] = { "fg", "Green" },
+                    ["info"] = { "fg", "PreProc" },
+                    ["prompt"] = { "fg", "Conditional" },
+                    ["pointer"] = { "fg", "Exception" },
+                    ["marker"] = { "fg", "Keyword" },
+                    ["spinner"] = { "fg", "Label" },
+                    ["header"] = { "fg", "Comment" },
+                    ["gutter"] = "-1",
+                },
+                hls = {
+                    cursorline = "CustomFzfCursorline",
+                },
                 fzf_opts = {
                     ["--no-scrollbar"] = false,
                 },
