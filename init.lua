@@ -8,6 +8,11 @@ _G.MASON_BIN_PATH = vim.fn.stdpath("data") .. "/mason/bin" -- Can't work in Wind
 
 local icons = require("lazyvim.config").icons
 
+
+local is_wt = vim.fn.getenv("WT_SESSION") ~= vim.NIL -- Windows Terminal
+local is_wez = vim.fn.getenv("WEZTERM_PANE") ~= vim.NIL -- WezTerm
+
+-- if vim.g.neovide or is_wez then
 if vim.g.neovide then
     icons.diagnostics.Error = " "
     icons.diagnostics.Warn = " "

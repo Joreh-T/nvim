@@ -129,6 +129,7 @@ if vim.g.neovide then
     -- vim.api.nvim_get_hl(0, {id=vim.api.nvim_get_hl_id_by_name("Normal")}).bg)
     --
     vim.o.guifont = "JetBrainsMono Nerd Font:h13.5"
+    -- vim.o.guifont = "Cascadia Code:h12:style=Regular,Segoe UI Emoji:h12"
     vim.g.neovide_ligatures = true -- Enable ligature effects
 
     vim.g.neovide_hide_mouse_when_typing = true
