@@ -2,7 +2,7 @@
 require("config.lazy")
 
 -- Get the Os Name in lowercase
-_G.SSYSTEM_NAMEYSTEM_NAME = (vim.loop.os_uname().sysname):lower()
+_G.SYSTEM_NAME = (vim.loop.os_uname().sysname):lower()
 
 _G.MASON_BIN_PATH = vim.fn.stdpath("data") .. "/mason/bin" -- Can't work in Windows
 

@@ -16,7 +16,7 @@ vim.api.nvim_create_autocmd("FileType", {
 local os = vim.loop.os_uname().sysname
 
 if os == "Windows_NT" then
-    vim.o.shell = "powershell -Nologo"
+    vim.o.shell = "powershell"
 end
 
 vim.opt.list = true -- Show invisible characters
@@ -39,6 +39,8 @@ vim.opt.fileencodings = { "utf-8", "gbk", "gb2312", "big5", "euc-jp", "euc-kr", 
 ---------------------------------------------------------------------
 if not os == "Windows_NT" then
     vim.g.python3_host_prog = "/usr/bin/python3"
+else
+    vim.g.python3_host_prog = "python3"
 end
 
 vim.g.autoformat = false
