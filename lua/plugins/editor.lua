@@ -745,6 +745,24 @@ return {
             opts.default_component_configs.diagnostics = {
                 enabled = false,
             }
+            opts.hide_root_node = false
+            opts.source_selector = {
+                winbar = false,
+                statusline = false,
+                show_scrolled_off_parent_node = true,
+                sources = {
+                    { source = "filesystem" },
+                    { source = "buffers" },
+                    { source = "git_status" },
+                },
+                show_separator_on_edge = true,
+            }
+            opts.symlink_target = {
+                enabled = true,
+                text_format = " 󱦰 %s", -- %s will be replaced with the symlink target's path.
+            }
+
+            opts.open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "edgy", "Outline", "snacks_terminal" } -- when opening files, do not use windows containing these filetypes or buftypes
             opts.window = opts.window or {}
             opts.window = {
                 position = "left",
@@ -759,12 +777,24 @@ return {
             -- end
             opts.window.title = ""
 
-            opts.filesystem = opts.filesystem or {}
-            opts.filesystem.filtered_items = opts.filesystem.filtered_items or {}
-            opts.filesystem.filtered_items.hide_dotfiles = false
-            opts.filesystem.filtered_items.follow_current_file = {
-                enabled = true,
-                leave_dirs_open = false,
+            opts.filesystem = {
+                use_libuv_file_watcher = true,
+                follow_current_file = {
+                    enabled = true, -- This will find and focus the file in the active buffer every time
+                    --               -- the current file is changed while the tree is open.
+                    leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+                },
+                filtered_items = {
+                    hide_dotfiles = false,
+                    hide_gitignored = true,
+                },
+            }
+            opts.buffers = {
+                follow_current_file = {
+                    enabled = true, -- This will find and focus the file in the active buffer every time
+                    --              -- the current file is changed while the tree is open.
+                    leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+                },
             }
             -- opts.filesystem.window = { title = "" }
             opts.default_component_configs = opts.default_component_configs or {}
