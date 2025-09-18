@@ -565,14 +565,17 @@ return {
                 override_lens = function(render, posList, nearest, idx, relIdx)
                     local sfw = vim.v.searchforward == 1
                     local indicator, text, chunks
-                    local absRelIdx = math.abs(relIdx)
-                    if absRelIdx > 1 then
-                        indicator = ("%d%s"):format(absRelIdx, sfw ~= (relIdx > 1) and "▲" or "▼")
-                    elseif absRelIdx == 1 then
-                        indicator = sfw ~= (relIdx == 1) and "▲" or "▼"
-                    else
-                        indicator = ""
-                    end
+                    -- disable indicator
+                    indicator = ""
+                    -- enable indicator
+                    -- local absRelIdx = math.abs(relIdx)
+                    -- if absRelIdx > 1 then
+                    --     indicator = ("%d%s"):format(absRelIdx, sfw ~= (relIdx > 1) and "▲" or "▼")
+                    -- elseif absRelIdx == 1 then
+                    --     indicator = sfw ~= (relIdx == 1) and "▲" or "▼"
+                    -- else
+                    --     indicator = ""
+                    -- end
 
                     local lnum, col = unpack(posList[idx])
                     local cnt = #posList
@@ -581,7 +584,7 @@ return {
                             -- text = ("[%s %d/%d]"):format(indicator, idx, cnt)
                             text = ("[%d/%d]"):format(idx, cnt)
                         else
-                            text = ("[%d/%d]"):format(idx, cnt)
+                            text = ("[ %d/%d]"):format(idx, cnt)
                         end
                         chunks = { { " " }, { text, "HlSearchLensNear" } }
                     else
