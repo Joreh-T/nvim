@@ -208,6 +208,10 @@ return {
                 diagnostics_indicator = function(_, _, _, _)
                     return ""
                 end,
+                indicator = {
+                    icon = "▎", -- this should be omitted if indicator style is not 'icon'
+                    style = "icon",
+                },
                 custom_filter = function(buf_number, _)
                     local bufname = vim.api.nvim_buf_get_name(buf_number)
 
@@ -236,7 +240,7 @@ return {
                     {
                         filetype = "neo-tree",
                         text = " File Explorer",
-                        highlight = "Green",
+                        highlight = "Yellow",
                         text_align = "left",
                     },
                     {
@@ -292,6 +296,9 @@ return {
                 error_diagnostic_selected = {
                     bold = false,
                     italic = false,
+                },
+                indicator_selected = {
+                    fg = "#72cce8",
                 },
             },
         },
