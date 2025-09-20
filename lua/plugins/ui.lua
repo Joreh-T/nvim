@@ -239,9 +239,9 @@ return {
                 offsets = {
                     {
                         filetype = "neo-tree",
-                        text = " File Explorer",
-                        highlight = "Yellow",
-                        text_align = "left",
+                        text = "🔍 File Explorer",
+                        highlight = "Normal",
+                        text_align = "center",
                     },
                     {
                         filetype = "snacks_layout_box",

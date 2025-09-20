@@ -758,7 +758,12 @@ return {
                     { source = "buffers" },
                     { source = "git_status" },
                 },
-                show_separator_on_edge = true,
+                padding = 0,
+                -- separator_active = "|",
+                separator = { left = "|", right = "|", override = "left" },
+                -- separator = { left = "/", right = "\\", override = "left" },  -- |/  a  /  b  /  c  /...
+                -- separator = { left = "/", right = "\\", override = "active" },-- |/  a  / b:active \  c  \...
+                show_separator_on_edge = false,
             }
             opts.symlink_target = {
                 enabled = true,
@@ -801,7 +806,7 @@ return {
                         }, { prompt = "Choose to copy to clipboard:" }, function(choice)
                             local i = tonumber(choice:sub(1, 1))
                             local result = results[i]
-                            vim.fn.setreg('+', result) -- copy to system clipboard "+"
+                            vim.fn.setreg("+", result) -- copy to system clipboard "+"
                             vim.notify("Copied: " .. result)
                         end)
                     end,
@@ -824,6 +829,9 @@ return {
                     hide_dotfiles = false,
                     hide_gitignored = true,
                 },
+                always_show = { -- remains visible even if other settings would normally hide it
+                    ".gitignored",
+                },
             }
             opts.buffers = {
                 follow_current_file = {
@@ -837,6 +845,8 @@ return {
             opts.default_component_configs.icon = {
                 folder_closed = "",
                 folder_open = "",
+                folder_empty = "󰉖",
+                folder_empty_open = "󰷏",
                 provider = function(icon, node, state)
                     if node.type == "file" or node.type == "terminal" then
                         local success, web_devicons = pcall(require, "nvim-web-devicons")
