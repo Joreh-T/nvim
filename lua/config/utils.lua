@@ -381,7 +381,12 @@ function M.refresh_neo_tree_if_git()
         is_refresh_neotree_need = true
     end
 
-    if M.is_current_window_ft("neo-tree") or M.is_current_window_ft("Outline") or M.is_current_window_ft("grug-far") or M.has_target_ft_window("snacks_dashboard") then
+    if
+        M.is_current_window_ft("neo-tree")
+        or M.is_current_window_ft("Outline")
+        or M.is_current_window_ft("grug-far")
+        or M.has_target_ft_window("snacks_dashboard")
+    then
         is_refresh_neotree_need = false
     end
 
@@ -401,9 +406,14 @@ function M.refresh_neo_tree_if_git()
     -- Execute one-time refresh
     vim.defer_fn(function()
         -- check again before actual refresh due to refresh is delayed
-        if M.is_current_window_ft("neo-tree") or M.is_current_window_ft("Outline") or M.is_current_window_ft("grug-far") or M.has_target_ft_window("snacks_dashboard") then
+        if
+            M.is_current_window_ft("neo-tree")
+            or M.is_current_window_ft("Outline")
+            or M.is_current_window_ft("grug-far")
+            or M.has_target_ft_window("snacks_dashboard")
+        then
             is_refresh_neotree_need = false
-            return;
+            return
         end
 
         -- if has_neotree_window() then
@@ -495,6 +505,80 @@ function M.get_focused_window_col_scaled(factor)
 
     local result = math.floor(total_cols * factor + 0.5)
     return math.max(1, result)
+end
+
+function M.set_welcome_buffer()
+    if vim.fn.argc() == 1 then
+        local stats = vim.uv.fs_stat(vim.fn.argv(0))
+        if stats and stats.type == "directory" then
+            local ver = vim.version()
+            local version = string.format("V%s.%s.%s", ver.major, ver.minor, ver.patch)
+            local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+            local date = os.date("%Y-%m-%d %H:%M")
+            local buf = vim.api.nvim_get_current_buf()
+
+            -- General information (centered)
+            local info_lines = {
+                string.format(" Welcome to Neovim %s! 🎉", version),
+                "",
+                "",
+                string.format("📂 Working dir: %s", cwd),
+                "",
+                string.format("📅 %s", date),
+                "",
+            }
+
+            -- Shortcut information (left-aligned to first line start)
+            local shortcut_lines = {
+                "📂 <leader>e   : Open File Explorer",
+                "🔎 <leader>ff  : Find File",
+                "❌ <leader>qq  : Exit Neovim",
+            }
+
+            local win_width = vim.api.nvim_win_get_width(0)
+            local win_height = vim.api.nvim_win_get_height(0)
+
+            -- Calculate padding for first line
+            local first_line = info_lines[1]
+            local first_pad = math.floor((win_width - vim.fn.strdisplaywidth(first_line)) / 2)
+
+            -- Center general information
+            for i, line in ipairs(info_lines) do
+                if line ~= "" then
+                    local pad = math.floor((win_width - vim.fn.strdisplaywidth(line)) / 2)
+                    info_lines[i] = string.rep(" ", pad) .. line
+                end
+            end
+
+            -- Left-align shortcut information to first line start position
+            for i, line in ipairs(shortcut_lines) do
+                shortcut_lines[i] = string.rep(" ", first_pad) .. line
+            end
+
+            -- Combine both sets of information
+            local message = vim.list_extend(info_lines, shortcut_lines)
+
+            -- Add top padding for vertical centering
+            local top_padding = math.floor((win_height - #message) / 2)
+            for _ = 1, top_padding do
+                table.insert(message, 1, "")
+            end
+
+            -- Write to buffer
+            vim.api.nvim_buf_set_lines(buf, 0, -1, false, message)
+
+            -- Set buffer/window options
+            vim.bo[buf].modified = false -- Do not mark as modified
+            vim.bo[buf].buftype = "nofile" -- Non-file buffer
+            vim.bo[buf].bufhidden = "wipe" -- Auto delete when closing window
+            vim.bo[buf].swapfile = false -- Do not generate swapfile
+            vim.bo[buf].modifiable = false -- Not modifiable
+            vim.bo[buf].readonly = true -- Read-only
+            vim.wo.list = false -- Do not display invisible characters
+            vim.wo.number = false -- Turn off line numbers
+            vim.wo.relativenumber = false -- Turn off relative line numbers
+        end
+    end
 end
 
 return M

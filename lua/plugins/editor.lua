@@ -885,6 +885,9 @@ return {
 
     {
         "mikavilpas/yazi.nvim",
+        cond = function()
+            return vim.fn.executable("yazi") == 1
+        end,
         version = "*", -- use the latest stable version
         event = "VeryLazy",
         dependencies = {
@@ -914,7 +917,6 @@ return {
             open_for_directories = false,
             keymaps = {
                 show_help = "<f1>",
-                copy_relative_path_to_selected_files = "Y",
             },
             integrations = {
                 grep_in_selected_files = "fzf-lua", -- or "telescope"
@@ -922,8 +924,28 @@ return {
             },
         },
         init = function()
+            vim.api.nvim_create_autocmd("BufEnter", {
+                group = vim.api.nvim_create_augroup("Yazi_start_directory", { clear = true }),
+                desc = "Start Yazi with directory and focus",
+                once = true,
+                callback = function()
+                    if package.loaded["yazi"] then
+                        return
+                    end
+
+                    if vim.fn.argc() == 1 then
+                        local stats = vim.uv.fs_stat(vim.fn.argv(0))
+                        if stats and stats.type == "directory" then
+                            vim.defer_fn(function()
+                                vim.cmd("Yazi")
+                            end, 50)
+                        end
+                    end
+                end,
+            })
+
+            -- 👇 if you use `open_for_directories=true`, this is recommended
             -- mark netrw as loaded so it's not loaded at all.
-            --
             -- More details: https://github.com/mikavilpas/yazi.nvim/issues/802
             vim.g.loaded_netrwPlugin = 1
         end,
