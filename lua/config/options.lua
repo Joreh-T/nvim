@@ -43,6 +43,11 @@ else
     vim.g.python3_host_prog = "python3"
 end
 
+-- Reduce timeoutlen in terminal mode to avoid HJKL stuttering
+vim.cmd [[
+  autocmd TermOpen * setlocal timeoutlen=10
+]]
+
 vim.g.autoformat = false
 vim.o.wrap = true
 
