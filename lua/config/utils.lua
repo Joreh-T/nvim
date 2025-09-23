@@ -512,27 +512,46 @@ function M.set_welcome_buffer()
         local stats = vim.uv.fs_stat(vim.fn.argv(0))
         if stats and stats.type == "directory" then
             local ver = vim.version()
-            local version = string.format("V%s.%s.%s", ver.major, ver.minor, ver.patch)
+            local version = string.format("%s.%s.%s", ver.major, ver.minor, ver.patch)
             local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
             local date = os.date("%Y-%m-%d %H:%M")
             local buf = vim.api.nvim_get_current_buf()
 
+            local buf_info = {
+                filetype = vim.bo[buf].filetype,
+                buftype = vim.bo[buf].buftype,
+            }
+
+            if buf_info.filetype ~= "" or buf_info.buftype ~= "" then
+                return
+            end
+
+            -- Store original window options
+            local original_wo = {
+                list = vim.wo.list,
+                number = vim.wo.number,
+                relativenumber = vim.wo.relativenumber,
+            }
+
             -- General information (centered)
             local info_lines = {
-                string.format(" Welcome to Neovim %s! 🎉", version),
+                string.format("✨  Welcome to Joreh\'s Neovim! 🧮 Enjoy your fresh thinking! 🚀"),
                 "",
+                string.format("✌️Nvim V%s", version),
                 "",
-                string.format("📂 Working dir: %s", cwd),
+                string.format("📍Working dir: %s", cwd),
                 "",
                 string.format("📅 %s", date),
+                "",
                 "",
             }
 
             -- Shortcut information (left-aligned to first line start)
             local shortcut_lines = {
-                "📂 <leader>e   : Open File Explorer",
-                "🔎 <leader>ff  : Find File",
-                "❌ <leader>qq  : Exit Neovim",
+                "   📂 <Space>e            Open File Explorer",
+                "   🔎 <Space>ff           Find File",
+                "   🔄 <Space>qs           Restore The Last Session",
+                "   ❌ <Space>qq           Exit Neovim",
             }
 
             local win_width = vim.api.nvim_win_get_width(0)
@@ -577,6 +596,22 @@ function M.set_welcome_buffer()
             vim.wo.list = false -- Do not display invisible characters
             vim.wo.number = false -- Turn off line numbers
             vim.wo.relativenumber = false -- Turn off relative line numbers
+
+            -- Create an autocommand to restore window options when the buffer is wiped
+            vim.api.nvim_create_autocmd("BufWipeout", {
+                buffer = buf,
+                once = true,
+                callback = function()
+                    -- The window that was displaying the welcome buffer is likely the current one.
+                    -- We need to check if it's still valid before restoring options.
+                    local current_win = vim.api.nvim_get_current_win()
+                    if vim.api.nvim_win_is_valid(current_win) then
+                        vim.wo.list = original_wo.list
+                        vim.wo.number = original_wo.number
+                        vim.wo.relativenumber = original_wo.relativenumber
+                    end
+                end,
+            })
         end
     end
 end

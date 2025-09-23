@@ -5,6 +5,17 @@ local utils = require("config.utils")
 -- Disable spelling check.
 vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
+-- Set expandtab = false when opening Makefile
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "make", "mk" },
+    callback = function()
+        -- only affect the current buffer
+        vim.bo.expandtab = false
+        vim.bo.shiftwidth = 4
+        vim.bo.softtabstop = 0
+    end,
+})
+
 -- Treat "*.jsp" files as HTML files.
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     pattern = { "*.jsp" },

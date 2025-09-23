@@ -3,14 +3,6 @@
 -- Add any additional options here
 --
 
--- Set expandtab = false when opening Makefile
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "make",
-    callback = function()
-        vim.opt.expandtab = false -- Disable expandtab in Makefile
-    end,
-})
-
 ---------------------------------------------------------------------
 -- Set PowerShell as the default shell when Neovim starts on Windows
 local os = vim.loop.os_uname().sysname
