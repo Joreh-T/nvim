@@ -38,4 +38,3 @@ if utils.is_windows() then
     end, 5000)
 end
 
-utils.set_welcome_buffer()

@@ -99,3 +99,45 @@ vim.api.nvim_create_autocmd({ "WinEnter", "VimResume" }, {
     end,
 })
 ------------------ End Of Outline ------------------
+------------------ Welcome Buffer ------------------
+-- vim.api.nvim_create_autocmd("VimEnter", {
+--     pattern = "*",
+--     desc = "Joreh's Welcome Buffer",
+--     once = true,
+--     callback = function()
+--         if not utils.has_yazi then
+--             vim.defer_fn(function()
+--                 utils.focus_largest_window()
+--                 utils.set_welcome_buffer(2)
+--                 if utils.is_plugin_loaded("neo-tree.nvim") then
+--                     vim.cmd("Neotree")
+--                 end
+--             end, 100) -- make sure buffer-2 has been created
+--         else
+--             utils.set_welcome_buffer()
+--         end
+--     end,
+-- })
+
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+    pattern = "*",
+    desc = "Joreh's Welcome Buffer",
+    callback = function(args)
+        local no_name_buf_id_neo_tree = 2
+        local no_name_buf_id_yazi = 1
+        if not utils.has_yazi and no_name_buf_id_neo_tree == args.buf then
+            vim.defer_fn(function()
+                utils.focus_largest_window()
+                utils.set_welcome_buffer(no_name_buf_id_neo_tree)
+                if utils.is_plugin_loaded("neo-tree.nvim") then
+                    vim.cmd("Neotree")
+                end
+                vim.api.nvim_del_autocmd(args.id)
+            end, 100)
+        elseif utils.has_yazi and no_name_buf_id_yazi == args.buf then
+            utils.set_welcome_buffer(no_name_buf_id_yazi)
+            vim.api.nvim_del_autocmd(args.id)
+        end
+    end,
+})
+--------------- End of Welcome Buffer --------------

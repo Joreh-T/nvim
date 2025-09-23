@@ -1,5 +1,6 @@
 local M = {}
 
+local nvim_config = require("lazy.core.config")
 ------------------------ OS Info ------------------------
 function M.is_windows()
     return SYSTEM_NAME == "windows_nt"
@@ -507,7 +508,7 @@ function M.get_focused_window_col_scaled(factor)
     return math.max(1, result)
 end
 
-function M.set_welcome_buffer()
+function M.set_welcome_buffer(buf)
     if vim.fn.argc() == 1 then
         local stats = vim.uv.fs_stat(vim.fn.argv(0))
         if stats and stats.type == "directory" then
@@ -515,7 +516,7 @@ function M.set_welcome_buffer()
             local version = string.format("%s.%s.%s", ver.major, ver.minor, ver.patch)
             local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
             local date = os.date("%Y-%m-%d %H:%M")
-            local buf = vim.api.nvim_get_current_buf()
+            buf = buf or vim.api.nvim_get_current_buf()
 
             local buf_info = {
                 filetype = vim.bo[buf].filetype,
@@ -535,7 +536,7 @@ function M.set_welcome_buffer()
 
             -- General information (centered)
             local info_lines = {
-                string.format("✨  Welcome to Joreh\'s Neovim! 🧮 Enjoy your fresh thinking! 🚀"),
+                string.format("✨  Welcome to Joreh's Neovim! 🧮 Enjoy your fresh thinking! 🚀"),
                 "",
                 string.format("✌️Nvim V%s", version),
                 "",
@@ -548,10 +549,11 @@ function M.set_welcome_buffer()
 
             -- Shortcut information (left-aligned to first line start)
             local shortcut_lines = {
-                "   📂 <Space>e            Open File Explorer",
-                "   🔎 <Space>ff           Find File",
-                "   🔄 <Space>qs           Restore The Last Session",
-                "   ❌ <Space>qq           Exit Neovim",
+                "  Quick Start 👇:",
+                "    📂 <Space>e    ➡️   Open File Explorer",
+                "    🔎 <Space>ff   ➡️   Find File",
+                "    🔄 <Space>qs   ➡️   Restore The Last Session",
+                "    ❌ <Space>qq   ➡️   Exit Neovim",
             }
 
             local win_width = vim.api.nvim_win_get_width(0)
@@ -614,6 +616,15 @@ function M.set_welcome_buffer()
             })
         end
     end
+end
+
+function M.has_yazi()
+    return vim.fn.executable("yazi") == 1
+end
+
+function M.is_plugin_loaded(name)
+    local plugin = nvim_config.plugins[name]
+    return plugin and plugin._.loaded or false
 end
 
 return M
