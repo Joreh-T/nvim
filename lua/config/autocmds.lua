@@ -125,7 +125,7 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
     callback = function(args)
         local no_name_buf_id_neo_tree = 2
         local no_name_buf_id_yazi = 1
-        if not utils.has_yazi and no_name_buf_id_neo_tree == args.buf then
+        if not utils.has_yazi() and no_name_buf_id_neo_tree == args.buf then
             vim.defer_fn(function()
                 utils.focus_largest_window()
                 utils.set_welcome_buffer(no_name_buf_id_neo_tree)
@@ -134,7 +134,7 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
                 end
                 vim.api.nvim_del_autocmd(args.id)
             end, 100)
-        elseif utils.has_yazi and no_name_buf_id_yazi == args.buf then
+        elseif utils.has_yazi() and no_name_buf_id_yazi == args.buf then
             utils.set_welcome_buffer(no_name_buf_id_yazi)
             vim.api.nvim_del_autocmd(args.id)
         end

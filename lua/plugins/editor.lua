@@ -725,9 +725,7 @@ return {
 
     {
         "nvim-neo-tree/neo-tree.nvim",
-        cond = function()
-            return vim.fn.executable("yazi") == 0
-        end,
+        cond = not utils.has_yazi(),
         dependencies = {
             "nvim-lua/plenary.nvim",
             "MunifTanjim/nui.nvim",
@@ -885,9 +883,7 @@ return {
 
     {
         "mikavilpas/yazi.nvim",
-        cond = function()
-            return vim.fn.executable("yazi") == 1
-        end,
+        cond = utils.has_yazi(),
         version = "*", -- use the latest stable version
         event = "VeryLazy",
         dependencies = {
