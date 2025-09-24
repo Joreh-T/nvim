@@ -550,10 +550,10 @@ function M.set_welcome_buffer(buf)
             -- Shortcut information (left-aligned to first line start)
             local shortcut_lines = {
                 "  Quick Start 👇:",
-                "    📂 <Space>e    ➡️   Open File Explorer",
-                "    🔎 <Space>ff   ➡️   Find File",
-                "    🔄 <Space>qs   ➡️   Restore The Last Session",
-                "    ❌ <Space>qq   ➡️   Exit Neovim",
+                "    📂 <Space>e     ➡️   Open File Explorer",
+                "    🔎 <Space>ff    ➡️   Find File",
+                "    🔄 <Space>qs    ➡️   Restore The Last Session",
+                "    ❌ <Space>qq    ➡️   Exit Neovim",
             }
 
             local win_width = vim.api.nvim_win_get_width(0)

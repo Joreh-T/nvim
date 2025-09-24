@@ -141,3 +141,78 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
     end,
 })
 --------------- End of Welcome Buffer --------------
+
+--------------- Auto update config --------------
+vim.api.nvim_create_autocmd({ "VimEnter", "BufWinEnter" }, {
+    pattern = "*",
+    desc = "Auto update config from git repo once a day",
+    callback = function(args)
+        local config_path = vim.fn.stdpath("config")
+        -- Use vim.fs.joinpath for cross-platform compatibility
+        local today_file = vim.fs.joinpath(config_path, ".last_git_pull")
+        local today = os.date("%Y-%m-%d")
+
+        local last_pull_date = ""
+        if vim.fn.filereadable(today_file) == 1 then
+            local content = vim.fn.readfile(today_file)
+            last_pull_date = content[1] or ""
+        end
+
+        -- Only check for updates once a day
+        if last_pull_date == today then
+            return
+        end
+
+        local stdout_lines = {}
+        local stderr_lines = {}
+
+        vim.fn.jobstart({ "git", "-C", config_path, "pull", "--ff-only" }, {
+            on_stdout = function(_, data)
+                for _, line in ipairs(data) do
+                    if line ~= "" then
+                        table.insert(stdout_lines, line)
+                    end
+                end
+            end,
+            on_stderr = function(_, data)
+                for _, line in ipairs(data) do
+                    if line ~= "" then
+                        table.insert(stderr_lines, line)
+                    end
+                end
+            end,
+            on_exit = function(_, code)
+                if code ~= 0 then
+                    local msg = "Configuration updated failed, err：" .. code
+                    if #stderr_lines > 0 then
+                        local err_lines = {}
+                        for i = 1, math.min(3, #stderr_lines) do
+                            table.insert(err_lines, stderr_lines[i])
+                        end
+                        msg = msg .. "\n" .. table.concat(err_lines, "\n")
+                    end
+                    vim.notify(msg, vim.log.levels.ERROR, { title = "Git Pull" })
+                    return
+                end
+
+                -- Success, so write the date to the file
+                vim.fn.writefile({ today }, today_file)
+
+                local output_str = table.concat(stdout_lines, "\n")
+
+                -- Check if there was an actual update by checking the git pull output
+                -- for English and Chinese messages.
+                if not output_str:match("Already up to date") and not output_str:match("已经是最新的") then
+                    vim.notify("Configuration updated successfully", vim.log.levels.INFO, { title = "Git Pull" })
+                end
+            end,
+        })
+
+        -- Delete the autocmd so it doesn't run again in this session
+        if args and args.id then
+            vim.api.nvim_del_autocmd(args.id)
+        end
+    end,
+})
+
+--------------- End of auto update config --------------
