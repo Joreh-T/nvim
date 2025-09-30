@@ -2,6 +2,11 @@
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
 local utils = require("config.utils")
+
+local function newGroup(name)
+  return vim.api.nvim_create_augroup("my_" .. name, { clear = true })
+end
+
 -- Disable spelling check.
 vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
@@ -118,13 +123,13 @@ vim.api.nvim_create_autocmd({ "WinEnter", "VimResume" }, {
 --         end
 --     end,
 -- })
-
+local welcome_del_flag = 0
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+    group = newGroup("welcome-tips");
     pattern = "*",
     desc = "Joreh's Welcome Buffer",
     callback = function(args)
         local no_name_buf_id_neo_tree = 2
-        local no_name_buf_id_yazi = 1
         if not utils.has_yazi() and no_name_buf_id_neo_tree == args.buf then
             vim.defer_fn(function()
                 utils.focus_largest_window()
@@ -134,9 +139,16 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
                 end
                 vim.api.nvim_del_autocmd(args.id)
             end, 100)
-        elseif utils.has_yazi() and no_name_buf_id_yazi == args.buf then
-            utils.set_welcome_buffer(no_name_buf_id_yazi)
-            vim.api.nvim_del_autocmd(args.id)
+        elseif utils.has_yazi() then
+            utils.set_welcome_buffer(args.buf)
+            if (0 == welcome_del_flag) then
+                welcome_del_flag = 1
+                -- The ID of the empty buffer that is last displayed in the window cannot be determined.
+                -- To display the prompt interface in all empty buffers, delay the deletion of this autocmd
+                vim.defer_fn(function()
+                    vim.api.nvim_del_autocmd(args.id) 
+                end, 5000)
+            end
         end
     end,
 })
@@ -144,6 +156,7 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
 
 --------------- Auto update config --------------
 vim.api.nvim_create_autocmd({ "VimEnter", "BufWinEnter" }, {
+    group = newGroup("auto-update-config"),
     pattern = "*",
     desc = "Auto update config from git repo once a day",
     callback = function(args)

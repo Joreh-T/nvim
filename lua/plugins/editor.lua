@@ -909,8 +909,7 @@ return {
             -- },
         },
         opts = {
-            -- if you want to open yazi instead of netrw, see below for more info
-            open_for_directories = false,
+            open_for_directories = true, -- open yazi when opening a directory
             keymaps = {
                 show_help = "<f1>",
             },
@@ -920,25 +919,25 @@ return {
             },
         },
         init = function()
-            vim.api.nvim_create_autocmd("BufEnter", {
-                group = vim.api.nvim_create_augroup("Yazi_start_directory", { clear = true }),
-                desc = "Start Yazi with directory and focus",
-                once = true,
-                callback = function()
-                    if package.loaded["yazi"] then
-                        return
-                    end
-
-                    if vim.fn.argc() == 1 then
-                        local stats = vim.uv.fs_stat(vim.fn.argv(0))
-                        if stats and stats.type == "directory" then
-                            vim.defer_fn(function()
-                                vim.cmd("Yazi")
-                            end, 50)
-                        end
-                    end
-                end,
-            })
+            -- vim.api.nvim_create_autocmd("BufEnter", {
+            --     group = vim.api.nvim_create_augroup("Yazi_start_directory", { clear = true }),
+            --     desc = "Start Yazi with directory and focus",
+            --     once = true,
+            --     callback = function()
+            --         if package.loaded["yazi"] then
+            --             return
+            --         end
+            --
+            --         if vim.fn.argc() == 1 then
+            --             local stats = vim.uv.fs_stat(vim.fn.argv(0))
+            --             if stats and stats.type == "directory" then
+            --                 vim.defer_fn(function()
+            --                     vim.cmd("Yazi")
+            --                 end, 50)
+            --             end
+            --         end
+            --     end,
+            -- })
 
             -- 👇 if you use `open_for_directories=true`, this is recommended
             -- mark netrw as loaded so it's not loaded at all.
