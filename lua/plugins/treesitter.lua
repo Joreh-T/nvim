@@ -1,10 +1,50 @@
 local utils = require("config.utils")
+local languages_parser = {
+    "bash",
+    "c",
+    "cpp",
+    "c_sharp",
+    "cuda",
+    "cmake",
+    "diff",
+    "html",
+    "javascript",
+    "jsdoc",
+    "json",
+    "jsonc",
+    "lua",
+    "luadoc",
+    "luap",
+    "markdown",
+    "markdown_inline",
+    "printf",
+    "python",
+    "query",
+    "regex",
+    "toml",
+    "tsx",
+    "typescript",
+    "vim",
+    "vimdoc",
+    "xml",
+    "yaml",
+    "verilog",
+    "vhdl",
+    "arduino",
+}
 
--- if glibc
-if utils.is_linux() and utils.is_glibc_larger_than("2.31") then
+if utils.is_windows() or (utils.is_linux() and utils.is_glibc_larger_than("2.31")) then
     return {
         "nvim-treesitter/nvim-treesitter",
         branch = "main",
+        version = false,
+        event = { "LazyFile", "VeryLazy" },
+        opts = {
+            indent = { enable = true },
+            highlight = { enable = true },
+            folds = { enable = true },
+            ensure_installed = languages_parser,
+        },
     }
 else
     return {
@@ -25,33 +65,7 @@ else
         opts = {
             highlight = { enable = true },
             indent = { enable = true },
-            ensure_installed = {
-                "bash",
-                "c",
-                "cpp",
-                "diff",
-                "html",
-                "javascript",
-                "jsdoc",
-                "json",
-                "jsonc",
-                "lua",
-                "luadoc",
-                "luap",
-                "markdown",
-                "markdown_inline",
-                "printf",
-                "python",
-                "query",
-                "regex",
-                "toml",
-                "tsx",
-                "typescript",
-                "vim",
-                "vimdoc",
-                "xml",
-                "yaml",
-            },
+            ensure_installed = languages_parser,
             incremental_selection = {
                 enable = true,
                 keymaps = {

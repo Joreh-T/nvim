@@ -1,10 +1,9 @@
--- bootstrap lazy.nvim, LazyVim and your plugins
-require("config.lazy")
-
 -- Get the Os Name in lowercase
 _G.SYSTEM_NAME = (vim.loop.os_uname().sysname):lower()
-
 _G.MASON_BIN_PATH = vim.fn.stdpath("data") .. "/mason/bin" -- Can't work in Windows
+
+-- bootstrap lazy.nvim, LazyVim and your plugins
+require("config.lazy")
 
 local icons = require("lazyvim.config").icons
 
