@@ -627,4 +627,77 @@ function M.is_plugin_loaded(name)
     return plugin and plugin._.loaded or false
 end
 
+function M.get_glibc_version()
+  local output = vim.fn.system("/lib/x86_64-linux-gnu/libc.so.6 2>/dev/null")
+  local version = output:match("release version ([%d%.]+)")
+  if version then
+    return version
+  end
+
+  output = vim.fn.system("/usr/bin/ldd --version 2>/dev/null")
+  version = output:match("(%d+%.%d+)")
+  if version then
+    return version
+  end
+
+  return "unknown"
+end
+
+function M.show_glibc_version()
+  local version = M.get_glibc_version()
+  vim.notify("GLIBC version: " .. version, vim.log.levels.INFO)
+end
+
+function M.is_glibc_less_than(target_version)
+  local current = M.get_glibc_version()
+  if current == "unknown" then
+    return false
+  end
+
+  local function split(ver)
+    local t = {}
+    for num in ver:gmatch("(%d+)") do
+      table.insert(t, tonumber(num))
+    end
+    return t
+  end
+
+  local c = split(current)
+  local t = split(target_version)
+
+  for i = 1, math.max(#c, #t) do
+    local cv = c[i] or 0
+    local tv = t[i] or 0
+    if cv < tv then return true end
+    if cv > tv then return false end
+  end
+  return false
+end
+
+function M.is_glibc_larger_than(target_version)
+  local current = M.get_glibc_version()
+  if current == "unknown" then
+    return false
+  end
+
+  local function split(ver)
+    local t = {}
+    for num in ver:gmatch("(%d+)") do
+      table.insert(t, tonumber(num))
+    end
+    return t
+  end
+
+  local c = split(current)
+  local t = split(target_version)
+
+  for i = 1, math.max(#c, #t) do
+    local cv = c[i] or 0
+    local tv = t[i] or 0
+    if cv > tv then return true end
+    if cv < tv then return false end
+  end
+  return false
+end
+
 return M

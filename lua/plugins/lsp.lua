@@ -3,98 +3,12 @@ local utils = require("config.utils")
 return {
     {
         "neovim/nvim-lspconfig",
-        -- enabled = false,
-        dependencies = {
-            "mason-org/mason.nvim",
-            {
-                "mason-org/mason-lspconfig.nvim",
-                -- version = utils.is_nvim_le(0, 10) and "v1.32.0" or nil,
-                config = function() end,
-            },
-            opts = function(_, opts)
-                opts.ensure_installed = {
-                    "clangd",
-                    "bash-language-server",
-                    "gitui",
-                    "html-lsp",
-                    "json-lsp",
-                    "lua-language-server",
-                    "markdown-toc",
-                    "markdownlint-cli2",
-                    "marksman",
-                    "pyright",
-                    "ruff",
-                    "shellcheck",
-                    "shfmt",
-                    "stylua",
-                    "typescript-language-server",
-                    "yaml-language-server",
-                }
-            end,
-        },
         opts = function(_, opts)
-            opts.servers = opts.servers or {}
             opts.servers.harper_ls = {
                 autostart = false,
                 filetypes = {},
             }
-            opts.servers.clangd = vim.tbl_deep_extend("force", opts.servers.clangd or {}, {
-                cmd = {
-                    "clangd",
-                    "--background-index",
-                    "--clang-tidy",
-                    "-j=4",
-                    "--header-insertion=never",
-                    "--completion-style=detailed",
-                    "--function-arg-placeholders=false",
-                },
-                filetypes = { "c", "cpp", "objc", "objcpp" },
-                root_dir = require("lspconfig").util.root_pattern("compile_commands.json", "compile_flags.txt", ".clangd"),
-                settings = {
-                    clangd = {
-                        usePlaceholders = true,
-                        semanticHighlighting = true,
-                        clangdFileStatus = true,
-                        enableConfig = true,
-                        index = {
-                            enable = true,
-                        },
-                    },
-                },
-            })
-            opts.diagnostics.virtual_text = false
-            if vim.g.neovide then
-                opts.diagnostics.signs = {
-                    text = {
-                        -- [vim.diagnostic.severity.ERROR] = "😡",
-                        -- [vim.diagnostic.severity.WARN] = "😟",
-                        -- [vim.diagnostic.severity.INFO] = "🙂",
-                        -- [vim.diagnostic.severity.HINT] = "🤔",
-
-                        [vim.diagnostic.severity.ERROR] = "",
-                        [vim.diagnostic.severity.WARN] = "",
-                        [vim.diagnostic.severity.INFO] = "",
-                        [vim.diagnostic.severity.HINT] = "󰌵",
-                    },
-                }
-            else
-                opts.diagnostics.signs = {
-                    text = {
-                        [vim.diagnostic.severity.ERROR] = "😡",
-                        [vim.diagnostic.severity.WARN] = "😟",
-                        [vim.diagnostic.severity.INFO] = "🙂",
-                        [vim.diagnostic.severity.HINT] = "🤔",
-
-                        -- [vim.diagnostic.severity.ERROR] = '',
-                        -- [vim.diagnostic.severity.WARN] = '',
-                        -- [vim.diagnostic.severity.INFO] = '',
-                        -- [vim.diagnostic.severity.HINT] = '󰌵',
-                    },
-                }
-            end
-
-            -- opts.codelens.enabled = true
-            return opts
+            -- opts.diagnostics.virtual_text = false
         end,
     },
 

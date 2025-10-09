@@ -12,17 +12,16 @@ local icons = require("lazyvim.config").icons
 local is_wt = vim.fn.getenv("WT_SESSION") ~= vim.NIL -- Windows Terminal
 local is_wez = vim.fn.getenv("WEZTERM_PANE") ~= vim.NIL -- WezTerm
 
--- if vim.g.neovide or is_wez then
 if vim.g.neovide then
-    icons.diagnostics.Error = " "
-    icons.diagnostics.Warn = " "
-    icons.diagnostics.Info = " "
-    icons.diagnostics.Hint = "󰌵 "
+    icons.diagnostics.Error = ""
+    icons.diagnostics.Warn = ""
+    icons.diagnostics.Info = ""
+    icons.diagnostics.Hint = "󰌵"
 else
-    icons.diagnostics.Error = "😡 "
-    icons.diagnostics.Warn = "😟 "
-    icons.diagnostics.Info = "🙂 "
-    icons.diagnostics.Hint = "🤔 "
+    icons.diagnostics.Error = "😡"
+    icons.diagnostics.Warn = "😟"
+    icons.diagnostics.Info = "🙂"
+    icons.diagnostics.Hint = "🤔"
 end
 
 -- vim.lsp.enable({'clangd'})
