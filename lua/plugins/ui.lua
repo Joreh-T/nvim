@@ -5,8 +5,8 @@ local center_indent = math.floor((screen_width - 78) / 2) -- Try to center the s
 return {
     {
         "HiPhish/rainbow-delimiters.nvim",
+        event = "BufRead",
         config = function()
-            local rainbow_delimiters = require("rainbow-delimiters")
             vim.g.rainbow_delimiters = {
                 -- strategy = {
                 --   [""] = rainbow_delimiters.strategy["global"],
@@ -466,8 +466,9 @@ return {
                 globalstatus = vim.o.laststatus == 3,
                 disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard" } },
                 component_separators = {
-                    left = "%#WinBarNC#%*",
+                    -- left = "%#WinBarNC#%*",
                     -- right = "%#WinBarNC#%*",
+                    left = "",
                     right = "",
                 },
             }
@@ -552,14 +553,15 @@ return {
             }
             opts.sections.lualine_y = {
                 {
-                    function()
-                        local encoding = vim.opt.fileencoding:get()
-                        if encoding and encoding ~= "" then
-                            return encoding:upper()
-                        else
-                            return "UTF-8" -- fallback
-                        end
-                    end,
+                    -- function()
+                    --     local encoding = vim.opt.fileencoding:get()
+                    --     if encoding and encoding ~= "" then
+                    --         return encoding:upper()
+                    --     else
+                    --         return "Unknown" -- fallback
+                    --     end
+                    -- end,
+                    "encoding",
                     -- icon = "",
                     color = { fg = "#98c379" },
                     padding = { left = 1, right = 0 },

@@ -502,9 +502,15 @@ return {
         opts = {
             spec = {
                 {
+                    mode = {"n"},
+                    { "<leader>o", desc = "Toggle Outline", icon = { icon = "", color = "yellow" } },
+                },
+
+                {
                     mode = { "v" },
                     { "<leader>t", group = "Text case switch", icon = { icon = "" } },
                 },
+
                 {
                     mode = { "n", "v" },
                     { "<leader>p", group = "File path", icon = { icon = "󰴠", color = "cyan" } },
@@ -544,6 +550,7 @@ return {
                 { "<leader>K", group = "Keyword Manual", icon = { icon = "󰷈", color = "" } },
                 { "<leader>r", group = "Restart LSP", icon = { icon = "", color = "red" } },
                 { "<leader>a", group = "Avante", icon = { icon = "󰆾", color = "yellow" } },
+                { "<leader>t", group = "Task Runner", icon = { icon = "", color = "yellow" } },
             },
         },
     },
@@ -894,13 +901,13 @@ return {
                 "<leader>e",
                 mode = { "n", "v" },
                 "<cmd>Yazi<cr>",
-                desc = "Open yazi at the current file",
+                desc = "File Explorer Current File",
             },
             {
                 -- Open in the current working directory
                 "<leader>E",
                 "<cmd>Yazi cwd<cr>",
-                desc = "Open the file manager in nvim's working directory",
+                desc = "File Explorer CWD",
             },
             -- {
             --     "<c-up>",
@@ -948,7 +955,7 @@ return {
 
     {
         "Joreh-T/bookmarks.nvim",
-        event = "VeryLazy",
+        event = "BufRead",
         branch = "main",
         dependencies = { "kyazdani42/nvim-web-devicons", "nvim-telescope/telescope.nvim" },
         config = function()
@@ -956,7 +963,7 @@ return {
             if vim.g.neovide then
                 mark_icon = "󰍎"
             else
-                mark_icon = "🚥"
+                mark_icon = "⭐"
             end
 
             require("bookmarks").setup({
@@ -1004,10 +1011,10 @@ return {
                     "*.html",
                 }, -- Show virt text only on matched pattern
                 virt_ignore_pattern = {}, -- Ignore showing virt text on matched pattern, this works after virt_pattern
-                border_style = "rounded", -- 可选："single", "double", "rounded"
+                border_style = "rounded", -- "single", "double", "rounded"
                 hl = {
-                    -- border = "CustomBorder", -- 使用自定义高亮组设置边框颜色
-                    cursorline = "guibg=Gray guifg=White", -- 游标行高亮
+                    -- border = "CustomBorder",
+                    cursorline = "guibg=Gray guifg=White",
                 },
                 datetime_format = "%Y.%m.%d %H:%M", -- os.date
                 -- •%Y: Four-digit year
@@ -1037,5 +1044,73 @@ return {
             vim.keymap.set("n", "<Leader>iy", "<cmd>IconPickerYank<cr>", opts) --> Yank the selected icon into register
             -- vim.keymap.set("i", "<C-i>", "<cmd>IconPickerInsert<cr>", opts)
         end,
+    },
+
+    -- {
+    --     "skywind3000/asyncrun.vim", -- asynchronous run some task or cmds
+    -- },
+
+    {
+        "stevearc/overseer.nvim",
+        cmd = {
+            "OverseerOpen",
+            "OverseerClose",
+            "OverseerToggle",
+            "OverseerSaveBundle",
+            "OverseerLoadBundle",
+            "OverseerDeleteBundle",
+            "OverseerRunCmd",
+            "OverseerRun",
+            "OverseerInfo",
+            "OverseerBuild",
+            "OverseerQuickAction",
+            "OverseerTaskAction",
+            "OverseerClearCache",
+        },
+        opts = {
+            dap = false,
+            task_list = {
+                bindings = {
+                    ["<C-h>"] = false,
+                    ["<C-j>"] = false,
+                    ["<C-k>"] = false,
+                    ["<C-l>"] = false,
+                    ["j"] = "NextTask",
+                    ["k"] = "PrevTask",
+                },
+            },
+            form = {
+                win_opts = {
+                    winblend = 0,
+                },
+            },
+            confirm = {
+                win_opts = {
+                    winblend = 0,
+                },
+            },
+            task_win = {
+                win_opts = {
+                    winblend = 0,
+                },
+            },
+        },
+        keys = {
+            { "<leader>tl", "<cmd>OverseerToggle<cr>", desc = "Task list" },
+            { "<leader>tn", "<cmd>OverseerRun<cr>", desc = "Run new task" },
+            { "<leader>tr", "<cmd>OverseerQuickAction<cr>", desc = "Action recent task" },
+            { "<leader>ti", "<cmd>OverseerInfo<cr>", desc = "Overseer info" },
+            { "<leader>tc", "<cmd>OverseerBuild<cr>", desc = "Create task" },
+            { "<leader>ta", "<cmd>OverseerTaskAction<cr>", desc = "Task action" },
+            { "<leader>td", "<cmd>OverseerClearCache<cr>", desc = "Delete cache" },
+            -- disabled default keymaps
+            { "<leader>ow", false, "<cmd>OverseerToggle<cr>", desc = "Task list" },
+            { "<leader>oo", false, "<cmd>OverseerRun<cr>", desc = "Run task" },
+            { "<leader>oq", false, "<cmd>OverseerQuickAction<cr>", desc = "Action recent task" },
+            { "<leader>oi", false, "<cmd>OverseerInfo<cr>", desc = "Overseer Info" },
+            { "<leader>ob", false, "<cmd>OverseerBuild<cr>", desc = "Task builder" },
+            { "<leader>ot", false, "<cmd>OverseerTaskAction<cr>", desc = "Task action" },
+            { "<leader>oc", false, "<cmd>OverseerClearCache<cr>", desc = "Clear cache" },
+        },
     },
 }
